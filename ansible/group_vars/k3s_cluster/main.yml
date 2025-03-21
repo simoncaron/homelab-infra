@@ -1,0 +1,13 @@
+---
+# bootstrap
+bootstrap_initial_user: "debian"
+bootstrap_packages:
+  - sudo
+  - open-iscsi
+
+# k3s.orchestration
+k3s_version: v1.31.4+k3s1
+api_endpoint: "{{ hostvars[groups['k3s_server'][0]]['ansible_host'] | default(groups['k3s_server'][0]) }}"
+
+server_group: k3s_server
+agent_group: k3s_agent

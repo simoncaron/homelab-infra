@@ -1,0 +1,7 @@
+---
+- name: Gather hosts facts
+  ansible.builtin.setup:
+
+- name: Reset Ansible User
+  ansible.builtin.set_fact:
+    ansible_user: "{{ current_user }}"

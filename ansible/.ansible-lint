@@ -1,0 +1,6 @@
+skip_list:
+  - yaml[line-length]
+
+exclude_paths:
+  - galaxy_roles
+  - .venv

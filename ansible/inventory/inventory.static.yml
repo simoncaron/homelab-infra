@@ -1,0 +1,5 @@
+pve:
+  hosts:
+    pvenuc01:
+    pvenuc02:
+    pvenuc03:

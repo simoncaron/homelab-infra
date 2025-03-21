@@ -1,0 +1,9 @@
+---
+# k3s.orchestration.k3s_server
+extra_server_args: >
+  --disable=traefik
+  --disable=servicelb
+  --disable=local-storage
+  --node-taint CriticalAddonsOnly=true:NoExecute
+  --tls-san=192.168.1.249
+  --tls-san=k8s-cluster-01.simn.io

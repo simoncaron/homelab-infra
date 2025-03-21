@@ -1,0 +1,24 @@
+---
+collections:
+  - name: community.general
+    version: 10.1.0
+  - name: https://github.com/k3s-io/k3s-ansible.git
+    type: git
+    version: b915574
+
+roles:
+  - name: simoncaron.pve_addons
+    version: 2.0.0
+  - name: simoncaron.pve_acme
+    version: 1.4.0
+  - name: ironicbadger.figurine
+    src: https://github.com/ironicbadger/ansible-role-figurine
+    version: bf015ab
+  - name: geerlingguy.security
+    version: 2.4.0
+  - name: oefenweb.postfix
+    version: v3.7.3
+  - name: buluma.cron
+    version: 24.3.31
+  - name: geerlingguy.nut_client
+    version: 1.1.0

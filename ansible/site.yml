@@ -1,0 +1,42 @@
+---
+- name: Common Hosts Configurations
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: bootstrap
+    - role: ironicbadger.figurine
+      become: true
+    - role: geerlingguy.security
+      become: true
+
+- name: Proxmox Hosts Setup
+  hosts: pve
+  become: true
+  roles:
+    - simoncaron.pve_addons
+    - simoncaron.pve_acme
+    - geerlingguy.nut_client
+    - oefenweb.postfix
+    - buluma.cron
+
+- name: Setup k3s Cluster Prerequisites
+  gather_facts: true
+  become: true
+  tags: k8s
+  hosts: k3s_cluster
+  roles:
+    - k3s.orchestration.prereq
+
+- name: Setup k3s Cluster Control-Plane Nodes
+  become: true
+  tags: k8s
+  hosts: k3s_server
+  roles:
+    - k3s.orchestration.k3s_server
+
+- name: Setup k3s Cluster Worker Nodes
+  become: true
+  tags: k8s
+  hosts: k3s_agent
+  roles:
+    - k3s.orchestration.k3s_agent
