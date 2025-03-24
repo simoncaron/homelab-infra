@@ -4,9 +4,43 @@ pve_acme_domain: "{{ inventory_hostname }}.simn.io"
 
 # geerlingguy.security
 security_ssh_permit_root_login: "yes"
+security_fail2ban_enabled: false
 
 # geerlingguy.nut_client
 nut_client_server: "192.168.1.100"
+
+# network_configuration
+network_configuration_interfaces:
+  - device: "{{ ansible_cluster_network_device }}"
+    auto: false
+    method: manual
+    family: inet
+
+  - device: vmbr0
+    auto: true
+    method: static
+    family: inet
+    address: "{{ ansible_cluster_network_ip }}"
+    gateway: "192.168.1.1"
+    bridge:
+      ports: "{{ ansible_cluster_network_device }}"
+      stp: "off"
+      fd: 0
+
+  - device: "{{ ansible_storage_network_device }}"
+    auto: false
+    method: manual
+    family: inet
+
+  - device: vmbr1
+    auto: true
+    method: static
+    family: inet
+    address: "{{ ansible_storage_network_ip }}"
+    bridge:
+      ports: "{{ ansible_storage_network_device }}"
+      stp: "off"
+      fd: 0
 
 # oefenweb.postfix
 postfix_install:

@@ -1,0 +1,7 @@
+---
+- name: Configure network interfaces
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: "{{ network_configuration_path }}"
+    mode: "0644"
+  notify: Restart networking service

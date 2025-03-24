@@ -1,0 +1,4 @@
+---
+network_configuration_path: /etc/network/interfaces
+
+network_configuration_interfaces: []

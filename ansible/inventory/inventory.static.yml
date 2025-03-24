@@ -1,5 +1,17 @@
 pve:
   hosts:
     pvenuc01:
+      ansible_storage_network_device: enp114s0
+      ansible_storage_network_ip: 10.15.15.50/24
+      ansible_cluster_network_ip: 192.168.1.240/24
+      ansible_cluster_network_device: enx3c18a01c0017
     pvenuc02:
+      ansible_storage_network_device: enp114s0
+      ansible_storage_network_ip: 10.15.15.51/24
+      ansible_cluster_network_ip: 192.168.1.241/24
+      ansible_cluster_network_device: enx3c18a01c4a0f
     pvenuc03:
+      ansible_storage_network_device: enp114s0
+      ansible_storage_network_ip: 10.15.15.52/24
+      ansible_cluster_network_ip: 192.168.1.242/24
+      ansible_cluster_network_device: enx3c18a01bfff9
