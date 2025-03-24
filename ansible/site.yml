@@ -13,30 +13,9 @@
   hosts: pve
   become: true
   roles:
+    - network_configuration
     - simoncaron.pve_addons
     - simoncaron.pve_acme
     - geerlingguy.nut_client
     - oefenweb.postfix
     - buluma.cron
-
-- name: Setup k3s Cluster Prerequisites
-  gather_facts: true
-  become: true
-  tags: k8s
-  hosts: k3s_cluster
-  roles:
-    - k3s.orchestration.prereq
-
-- name: Setup k3s Cluster Control-Plane Nodes
-  become: true
-  tags: k8s
-  hosts: k3s_server
-  roles:
-    - k3s.orchestration.k3s_server
-
-- name: Setup k3s Cluster Worker Nodes
-  become: true
-  tags: k8s
-  hosts: k3s_agent
-  roles:
-    - k3s.orchestration.k3s_agent

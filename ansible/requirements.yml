@@ -2,9 +2,6 @@
 collections:
   - name: community.general
     version: 10.1.0
-  - name: https://github.com/k3s-io/k3s-ansible.git
-    type: git
-    version: b915574
 
 roles:
   - name: simoncaron.pve_addons
