@@ -14,3 +14,5 @@ provider "bitwarden" {
   email           = "infra@simn.io"
   master_password = var.bitwarden_master_password
 }
+
+provider "talos" {}

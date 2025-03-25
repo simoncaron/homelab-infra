@@ -9,5 +9,9 @@ terraform {
       source  = "maxlaverse/bitwarden"
       version = "0.13.5"
     }
+    talos = {
+      source  = "siderolabs/talos"
+      version = "0.7.1"
+    }
   }
 }

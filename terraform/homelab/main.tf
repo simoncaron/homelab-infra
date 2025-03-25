@@ -22,3 +22,9 @@ module "proxmox_cluster" {
     }
   ]
 }
+
+module "talos_image" {
+  source           = "../modules/talos_image"
+  talos_version    = "v1.9.3"
+  target_pve_nodes = ["pvenuc01", "pvenuc02", "pvenuc03"]
+}
