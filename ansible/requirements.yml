@@ -14,7 +14,7 @@ roles:
   - name: geerlingguy.security
     version: 2.4.0
   - name: oefenweb.postfix
-    version: v3.7.3
+    version: v3.7.4
   - name: buluma.cron
     version: 24.3.31
   - name: geerlingguy.nut_client
