@@ -1,6 +1,6 @@
 module "proxmox_cluster" {
   source            = "../modules/proxmox_cluster"
-  pve_cluster_nodes = ["pvenuc01", "pvenuc02", "pvenuc03"]
+  pve_cluster_nodes = local.pve_cluster_nodes
 
   dns_config = {
     domain  = "simn.io"
@@ -21,10 +21,4 @@ module "proxmox_cluster" {
       comment = "Resources managed using ansible"
     }
   ]
-}
-
-module "talos_image" {
-  source           = "../modules/talos_image"
-  talos_version    = "v1.9.3"
-  target_pve_nodes = ["pvenuc01", "pvenuc02", "pvenuc03"]
 }

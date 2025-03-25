@@ -13,5 +13,9 @@ terraform {
       source  = "siderolabs/talos"
       version = "0.7.1"
     }
+    adguard = {
+      source  = "gmichels/adguard"
+      version = "1.5.0"
+    }
   }
 }

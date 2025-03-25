@@ -16,3 +16,9 @@ provider "bitwarden" {
 }
 
 provider "talos" {}
+
+provider "adguard" {
+  host     = "dns01.simn.io"
+  username = data.bitwarden_item_login.adguard_home_credentials.username
+  password = data.bitwarden_item_login.adguard_home_credentials.password
+}
