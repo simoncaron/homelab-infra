@@ -18,6 +18,7 @@ variable "extensions" {
   type = list(string)
   default = [
     "siderolabs/iscsi-tools",
-    "siderolabs/qemu-guest-agent"
+    "siderolabs/qemu-guest-agent",
+    "siderolabs/util-linux-tools"
   ]
 }

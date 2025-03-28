@@ -1,18 +1,13 @@
 module "talos_image" {
   source           = "../modules/talos_image"
-  talos_version    = "v1.9.3"
-  target_pve_nodes = local.pve_cluster_nodes
-}
-
-module "talos_image_1_9_5" {
-  source           = "../modules/talos_image"
   talos_version    = "v1.9.5"
   target_pve_nodes = local.pve_cluster_nodes
 }
 
 module "control_plane_nodes" {
-  source   = "../modules/proxmox_vm"
-  for_each = { for k, v in local.machines : k => v if v.type == "controlplane" }
+  source     = "../modules/proxmox_vm"
+  depends_on = [module.talos_image]
+  for_each   = { for k, v in local.machines : k => v if v.type == "controlplane" }
 
   vm_name   = each.key
   node_name = each.value.pve_node
@@ -50,8 +45,9 @@ module "control_plane_nodes" {
 }
 
 module "worker_nodes" {
-  source   = "../modules/proxmox_vm"
-  for_each = { for k, v in local.machines : k => v if v.type == "worker" }
+  source     = "../modules/proxmox_vm"
+  depends_on = [module.talos_image]
+  for_each   = { for k, v in local.machines : k => v if v.type == "worker" }
 
   vm_name   = each.key
   node_name = each.value.pve_node
@@ -99,4 +95,17 @@ module "worker_nodes" {
       mac_address = each.value.interfaces[1].hardwareAddr
     }
   ]
+}
+
+module "talos_cluster" {
+  source = "../modules/talos_cluster"
+
+  cluster_name                           = "k8s-homelab-cluster"
+  cluster_endpoint                       = "192.168.1.243"
+  cluster_vip                            = "192.168.1.249"
+  cluster_allowSchedulingOnControlPlanes = false
+  machine_network_nameservers            = ["192.168.1.10", "192.168.1.114"]
+  kubernetes_version                     = "1.31.1"
+  talos_version                          = "v1.9.5"
+  machines                               = local.machines
 }
