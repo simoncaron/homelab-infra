@@ -30,7 +30,7 @@ variable "cluster_node_subnet" {
 variable "cluster_allowSchedulingOnControlPlanes" {
   description = "Whether to allow scheduling on control plane nodes."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "machine_network_nameservers" {
@@ -69,10 +69,21 @@ variable "timeout" {
   default     = "10m"
 }
 
+variable "machine_extensions" {
+  description = "A list of extensions to add to all machines in the cluster."
+  type        = list(string)
+  default = [
+    "siderolabs/iscsi-tools",
+    "siderolabs/qemu-guest-agent",
+    "siderolabs/util-linux-tools"
+  ]
+}
+
 variable "machines" {
   description = "A list of machines to create the talos cluster from."
   type = map(object({
-    type = string
+    type     = string
+    pve_node = string
     disks = optional(list(object({
       device = string
       partitions = list(object({
@@ -105,4 +116,3 @@ variable "machines" {
     }))
   }))
 }
-

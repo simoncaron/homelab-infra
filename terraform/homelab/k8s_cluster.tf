@@ -1,78 +1,118 @@
-module "talos_image" {
-  source           = "../modules/talos_image"
-  talos_version    = "v1.9.5"
-  target_pve_nodes = local.pve_cluster_nodes
-}
-
-module "k8s_cluster_nodes" {
-  source     = "../modules/proxmox_vm"
-  depends_on = [module.talos_image]
-  for_each   = local.machines
-
-  vm_name   = each.key
-  node_name = each.value.pve_node
-
-  tags = ["talos", "k8s", each.value.type]
-
-  cpu_cores        = 4
-  memory_dedicated = 16384
-
-  disks = concat(
-    [
-      {
-        datastore_id = "local-zfs"
-        file_id      = module.talos_image.proxmox_file_id
-        interface    = "scsi0"
-        size         = 64
-      }
-    ],
-    # Add a second disk for longhorn storage
-    each.value.type == "worker" ? [
-      {
-        datastore_id = "local-lvm"
-        interface    = "scsi1"
-        size         = 512
-      }
-    ] : []
-  )
-
-  initialization = {
-    datastore_id = "local-lvm"
-    ip_config = {
-      ipv4 = {
-        address = format("%s/24", each.value.interfaces[0].addresses[0])
-        gateway = "192.168.1.1"
-      }
+locals {
+  machines = {
+    "k8s-controlplane01" = {
+      pve_node = "pvenuc01"
+      type     = "controlplane"
+      interfaces = [{
+        hardwareAddr = "0c:c4:7a:a4:c1:00"
+        addresses    = ["192.168.1.243"]
+      }]
+    },
+    "k8s-controlplane02" = {
+      pve_node = "pvenuc02"
+      type     = "controlplane"
+      interfaces = [{
+        hardwareAddr = "0c:c4:7a:a4:c2:00"
+        addresses    = ["192.168.1.244"]
+      }]
+    },
+    "k8s-controlplane03" = {
+      pve_node = "pvenuc03"
+      type     = "controlplane"
+      interfaces = [{
+        hardwareAddr = "0c:c4:7a:a4:c3:00"
+        addresses    = ["192.168.1.245"]
+      }]
+    },
+    "k8s-worker01" = {
+      pve_node = "pvenuc01"
+      type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
+      interfaces = [
+        {
+          hardwareAddr = "0c:c4:7a:a4:b1:00"
+          addresses    = ["192.168.1.246"]
+        },
+        {
+          hardwareAddr = "0c:c4:7a:a4:b1:01"
+          addresses    = ["10.15.15.246"]
+        }
+      ]
+    },
+    "k8s-worker02" = {
+      pve_node = "pvenuc02"
+      type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
+      interfaces = [
+        {
+          hardwareAddr = "0c:c4:7a:a4:b2:00"
+          addresses    = ["192.168.1.247"]
+        },
+        {
+          hardwareAddr = "0c:c4:7a:a4:b2:01"
+          addresses    = ["10.15.15.247"]
+        }
+      ]
+    },
+    "k8s-worker03" = {
+      pve_node = "pvenuc03"
+      type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
+      interfaces = [
+        {
+          hardwareAddr = "0c:c4:7a:a4:b3:00"
+          addresses    = ["192.168.1.248"]
+        },
+        {
+          hardwareAddr = "0c:c4:7a:a4:b3:01"
+          addresses    = ["10.15.15.248"]
+        }
+      ]
     }
   }
-
-  network_devices = concat(
-    [
-      {
-        bridge      = "vmbr0"
-        mac_address = each.value.interfaces[0].hardwareAddr
-      }
-    ],
-    # Add a second network device for longhorn network
-    each.value.type == "worker" ? [
-      {
-        bridge      = "vmbr1"
-        mac_address = each.value.interfaces[1].hardwareAddr
-      }
-    ] : []
-  )
 }
 
 module "talos_cluster" {
-  source     = "../modules/talos_cluster"
-  depends_on = [module.k8s_cluster_nodes]
+  source = "../modules/talos_cluster"
 
-  cluster_name                           = "k8s-homelab-cluster"
-  cluster_endpoint                       = "192.168.1.243"
-  cluster_vip                            = "192.168.1.249"
-  cluster_allowSchedulingOnControlPlanes = false
-  machine_network_nameservers            = ["192.168.1.10", "192.168.1.114"]
-  kubernetes_version                     = "1.31.1"
-  talos_version                          = "v1.9.5"
-  machines                               = local.machines
+  cluster_name                = "k8s-homelab-cluster"
+  cluster_endpoint            = "192.168.1.243"
+  cluster_vip                 = "192.168.1.249"
+  machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
+  kubernetes_version          = "1.31.1"
+  talos_version               = "v1.9.5"
+  machines                    = local.machines
 }

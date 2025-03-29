@@ -10,6 +10,11 @@ resource "talos_machine_configuration_apply" "machines" {
   machine_configuration_input = data.talos_machine_configuration.this[each.key].machine_configuration
   node                        = each.key
   endpoint                    = each.value.interfaces[0].addresses[0]
+  depends_on                  = [module.k8s_cluster_nodes]
+  lifecycle {
+    # re-run config apply if vm changes
+    replace_triggered_by = [module.k8s_cluster_nodes[each.key]]
+  }
 }
 
 resource "talos_machine_bootstrap" "this" {

@@ -1,3 +1,7 @@
+locals {
+  pve_cluster_nodes = ["pvenuc01", "pvenuc02", "pvenuc03"]
+}
+
 module "proxmox_cluster" {
   source            = "../modules/proxmox_cluster"
   pve_cluster_nodes = local.pve_cluster_nodes

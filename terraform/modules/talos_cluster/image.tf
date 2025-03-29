@@ -1,12 +1,12 @@
 data "talos_image_factory_extensions_versions" "this" {
   talos_version = var.talos_version
   filters = {
-    names = var.extensions
+    names = var.machine_extensions
   }
 }
 
 resource "proxmox_virtual_environment_download_file" "talos_nocloud_image" {
-  for_each = var.target_pve_nodes
+  for_each = toset(distinct([for machine in var.machines : machine.pve_node]))
 
   content_type = "iso"
   datastore_id = "local"
