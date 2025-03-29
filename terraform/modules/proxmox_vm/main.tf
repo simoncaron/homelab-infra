@@ -26,6 +26,10 @@ resource "proxmox_virtual_environment_vm" "vm" {
     floating  = var.memory_floating
   }
 
+  machine = var.machine
+
+  boot_order = var.boot_order
+
   dynamic "disk" {
     for_each = var.disks
     content {

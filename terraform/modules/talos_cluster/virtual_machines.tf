@@ -10,6 +10,8 @@ module "k8s_cluster_nodes" {
   cpu_cores        = 4
   memory_dedicated = 16384
 
+  machine = "q35"
+
   disks = concat(
     [
       {
@@ -33,7 +35,7 @@ module "k8s_cluster_nodes" {
     datastore_id = "local-lvm"
     ip_config = {
       ipv4 = {
-        address = format("%s/24", each.value.interfaces[0].addresses[0])
+        address = "${each.value.interfaces[0].addresses[0]}/24"
         gateway = "192.168.1.1"
       }
     }

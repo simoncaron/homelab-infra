@@ -62,6 +62,18 @@ variable "memory_floating" {
   default     = null
 }
 
+variable "machine" {
+  description = "Machine type"
+  type        = string
+  default     = "pc"
+}
+
+variable "boot_order" {
+  description = "Boot order of the VM"
+  type        = list(string)
+  default     = ["scsi0"]
+}
+
 variable "disks" {
   description = "List of disk configurations"
   type = list(object({

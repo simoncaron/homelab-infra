@@ -1,5 +1,6 @@
 locals {
-  machines = {
+  # Common configuration for control plane nodes
+  controlplane_nodes = {
     "k8s-controlplane01" = {
       pve_node = "pvenuc01"
       type     = "controlplane"
@@ -23,22 +24,30 @@ locals {
         hardwareAddr = "0c:c4:7a:a4:c3:00"
         addresses    = ["192.168.1.245"]
       }]
-    },
+    }
+  }
+
+  # Common configuration for all worker nodes
+  worker_base_config = {
+    type = "worker"
+    disks = [{
+      device = "/dev/sdb"
+      partitions = [{
+        mountpoint = "/var/lib/longhorn"
+      }]
+    }]
+    extra_mounts = [{
+      source      = "/var/lib/longhorn"
+      destination = "/var/lib/longhorn"
+      type        = "bind"
+      options     = ["rbind", "rw", "rshared"]
+    }]
+  }
+
+  # Worker-specific configurations (unique properties per worker)
+  worker_nodes = {
     "k8s-worker01" = {
       pve_node = "pvenuc01"
-      type     = "worker"
-      disks = [{
-        device = "/dev/sdb"
-        partitions = [{
-          mountpoint = "/var/lib/longhorn"
-        }]
-      }],
-      extra_mounts = [{
-        source      = "/var/lib/longhorn"
-        destination = "/var/lib/longhorn"
-        type        = "bind"
-        options     = ["rbind", "rw", "rshared"]
-      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b1:00"
@@ -52,19 +61,6 @@ locals {
     },
     "k8s-worker02" = {
       pve_node = "pvenuc02"
-      type     = "worker"
-      disks = [{
-        device = "/dev/sdb"
-        partitions = [{
-          mountpoint = "/var/lib/longhorn"
-        }]
-      }],
-      extra_mounts = [{
-        source      = "/var/lib/longhorn"
-        destination = "/var/lib/longhorn"
-        type        = "bind"
-        options     = ["rbind", "rw", "rshared"]
-      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b2:00"
@@ -78,19 +74,6 @@ locals {
     },
     "k8s-worker03" = {
       pve_node = "pvenuc03"
-      type     = "worker"
-      disks = [{
-        device = "/dev/sdb"
-        partitions = [{
-          mountpoint = "/var/lib/longhorn"
-        }]
-      }],
-      extra_mounts = [{
-        source      = "/var/lib/longhorn"
-        destination = "/var/lib/longhorn"
-        type        = "bind"
-        options     = ["rbind", "rw", "rshared"]
-      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b3:00"
@@ -103,16 +86,26 @@ locals {
       ]
     }
   }
+
+  # Merge all configurations to create the final machines map
+  worker_configs = {
+    for name, node in local.worker_nodes : name => merge(local.worker_base_config, node)
+  }
+
+  machines = merge(local.controlplane_nodes, local.worker_configs)
 }
 
 module "talos_cluster" {
   source = "../modules/talos_cluster"
 
-  cluster_name                = "k8s-homelab-cluster"
-  cluster_endpoint            = "192.168.1.243"
-  cluster_vip                 = "192.168.1.249"
+  cluster_name     = "k8s-homelab-cluster"
+  cluster_endpoint = "192.168.1.243"
+  cluster_vip      = "192.168.1.249"
+
   machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
-  kubernetes_version          = "1.31.1"
-  talos_version               = "v1.9.5"
-  machines                    = local.machines
+
+  kubernetes_version = "1.30.0"
+  talos_version      = "v1.9.4"
+
+  machines = local.machines
 }

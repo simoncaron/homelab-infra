@@ -3,6 +3,14 @@ locals {
   bootstrap_endpoint = [for machine_key, machine in var.machines : machine.interfaces[0].addresses[0] if machine.type == "controlplane"][0]
 }
 
+resource "null_resource" "vm_change_trigger" {
+  for_each = module.k8s_cluster_nodes
+
+  triggers = {
+    name = each.value.vm_id
+  }
+}
+
 resource "talos_machine_configuration_apply" "machines" {
   for_each = var.machines
 
@@ -11,9 +19,11 @@ resource "talos_machine_configuration_apply" "machines" {
   node                        = each.key
   endpoint                    = each.value.interfaces[0].addresses[0]
   depends_on                  = [module.k8s_cluster_nodes]
+
   lifecycle {
-    # re-run config apply if vm changes
-    replace_triggered_by = [module.k8s_cluster_nodes[each.key]]
+    replace_triggered_by = [
+      null_resource.vm_change_trigger[each.key]
+    ]
   }
 }
 
