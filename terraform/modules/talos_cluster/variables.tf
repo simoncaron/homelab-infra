@@ -21,21 +21,16 @@ variable "cluster_vip" {
   default     = ""
 }
 
+variable "cluster_node_subnet" {
+  description = "The subnet to use for the Talos cluster nodes."
+  type        = string
+  default     = "192.168.1.0/24"
+}
+
 variable "cluster_allowSchedulingOnControlPlanes" {
   description = "Whether to allow scheduling on control plane nodes."
   type        = bool
   default     = true
-}
-
-variable "machine_kubelet_extraMounts" {
-  description = "A list of extra mounts to add to the kubelet."
-  type = list(object({
-    destination = string
-    type        = string
-    source      = string
-    options     = list(string)
-  }))
-  default = []
 }
 
 variable "machine_network_nameservers" {
@@ -84,6 +79,12 @@ variable "machines" {
         mountpoint = string
         size       = optional(string, "")
       }))
+    })), [])
+    extra_mounts = optional(list(object({
+      source      = string
+      destination = string
+      type        = string
+      options     = list(string)
     })), [])
     files = optional(list(object({
       content     = string

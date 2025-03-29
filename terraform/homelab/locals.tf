@@ -29,6 +29,18 @@ locals {
     "k8s-worker01" = {
       pve_node = "pvenuc01"
       type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b1:00"
@@ -43,6 +55,18 @@ locals {
     "k8s-worker02" = {
       pve_node = "pvenuc02"
       type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b2:00"
@@ -57,6 +81,18 @@ locals {
     "k8s-worker03" = {
       pve_node = "pvenuc03"
       type     = "worker"
+      disks = [{
+        device = "/dev/sdb"
+        partitions = [{
+          mountpoint = "/var/lib/longhorn"
+        }]
+      }],
+      extra_mounts = [{
+        source      = "/var/lib/longhorn"
+        destination = "/var/lib/longhorn"
+        type        = "bind"
+        options     = ["rbind", "rw", "rshared"]
+      }],
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b3:00"

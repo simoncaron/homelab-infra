@@ -1,6 +1,7 @@
 locals {
   nodes            = [for machine_key, machine in var.machines : machine_key]
   controlplane_ips = [for machine_key, machine in var.machines : machine.interfaces[0].addresses[0] if machine.type == "controlplane"]
+  worker_ips       = [for machine_key, machine in var.machines : machine.interfaces[0].addresses[0] if machine.type == "worker"]
 }
 
 resource "talos_machine_secrets" "this" {
@@ -24,9 +25,11 @@ data "talos_machine_configuration" "this" {
       machine_network_hostname    = each.key
       machine_network_interfaces  = each.value.interfaces
       machine_disks               = each.value.disks
-      machine_network_nameservers = var.machine_network_nameservers
-      machine_kubelet_extraMounts = var.machine_kubelet_extraMounts
+      machine_kubelet_extraMounts = each.value.extra_mounts
 
+      machine_network_nameservers = var.machine_network_nameservers
+
+      cluster_node_subnet                    = var.cluster_node_subnet
       cluster_name                           = var.cluster_name
       cluster_vip                            = var.cluster_vip
       cluster_allowSchedulingOnControlPlanes = var.cluster_allowSchedulingOnControlPlanes

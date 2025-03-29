@@ -22,14 +22,14 @@ machine:
         dhcp: ${interface.dhcp}
         dhcpOptions:
           routeMetric: ${interface.dhcp_routeMetric}
-%{ for vlan in interface.vlans ~}
         vlans:
+%{ for vlan in interface.vlans ~}
           - vlanId: ${vlan.vlanId}
             addresses:
 %{ for ip in vlan.addresses ~}
               - ${ip}
 %{ endfor ~}
-            dhcp: ${interface.dhcp}
+            dhcp: ${vlan.dhcp}
             dhcpOptions:
               routeMetric: ${vlan.dhcp_routeMetric}
 %{ endfor ~}
