@@ -105,7 +105,7 @@ module "talos_cluster" {
   machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
 
   kubernetes_version = "1.30.0"
-  talos_version      = "v1.9.4"
+  talos_version      = "v1.9.5"
 
   machines = local.machines
 }

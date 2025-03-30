@@ -6,9 +6,6 @@ terraform {
     local = {
       source = "hashicorp/local"
     }
-    time = {
-      source = "hashicorp/time"
-    }
     null = {
       source = "hashicorp/null"
     }

@@ -63,6 +63,13 @@ variable "talos_version" {
   default     = "v1.9.0"
 }
 
+variable "updated_talos_version" {
+  description = "The version of Talos to use."
+  type        = string
+  default     = null
+
+}
+
 variable "timeout" {
   description = "The timeout to use for the Talos cluster."
   type        = string
@@ -82,8 +89,9 @@ variable "machine_extensions" {
 variable "machines" {
   description = "A list of machines to create the talos cluster from."
   type = map(object({
-    type     = string
-    pve_node = string
+    type         = string
+    pve_node     = string
+    update_talos = optional(bool, false)
     disks = optional(list(object({
       device = string
       partitions = list(object({
@@ -97,11 +105,9 @@ variable "machines" {
       type        = string
       options     = list(string)
     })), [])
-    files = optional(list(object({
-      content     = string
-      permissions = string
-      path        = string
-      op          = string
+    labels = optional(list(object({
+      key   = string
+      value = optional(string, "")
     })), [])
     interfaces = list(object({
       hardwareAddr     = string

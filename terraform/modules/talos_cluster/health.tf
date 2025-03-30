@@ -1,4 +1,9 @@
 data "talos_cluster_health" "k8s_api_available" {
+  depends_on = [
+    talos_machine_configuration_apply.machines,
+    talos_machine_bootstrap.this
+  ]
+
   client_configuration   = data.talos_client_configuration.this.client_configuration
   endpoints              = local.controlplane_ips
   control_plane_nodes    = local.controlplane_ips
@@ -11,6 +16,11 @@ data "talos_cluster_health" "k8s_api_available" {
 }
 
 data "talos_cluster_health" "this" {
+  depends_on = [
+    talos_machine_configuration_apply.machines,
+    talos_machine_bootstrap.this
+  ]
+
   client_configuration   = data.talos_client_configuration.this.client_configuration
   endpoints              = local.controlplane_ips
   control_plane_nodes    = local.controlplane_ips

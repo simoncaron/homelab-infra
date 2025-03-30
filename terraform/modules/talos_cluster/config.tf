@@ -26,6 +26,7 @@ data "talos_machine_configuration" "this" {
       machine_network_interfaces  = each.value.interfaces
       machine_disks               = each.value.disks
       machine_kubelet_extraMounts = each.value.extra_mounts
+      machine_labels              = each.value.labels
 
       machine_network_nameservers = var.machine_network_nameservers
 

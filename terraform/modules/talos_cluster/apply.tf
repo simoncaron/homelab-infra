@@ -40,5 +40,5 @@ resource "talos_cluster_kubeconfig" "this" {
 
   client_configuration = talos_machine_secrets.this.client_configuration
   node                 = local.bootstrap_node
-  endpoint             = local.bootstrap_endpoint
+  endpoint             = var.cluster_vip
 }
