@@ -86,11 +86,19 @@ variable "machine_extensions" {
   ]
 }
 
+variable "enable_metrics_server" {
+  description = "Whether to enable the metrics server."
+  type        = bool
+  default     = true
+}
+
 variable "machines" {
   description = "A list of machines to create the talos cluster from."
   type = map(object({
     type         = string
     pve_node     = string
+    cpu          = number
+    memory       = number
     update_talos = optional(bool, false)
     disks = optional(list(object({
       device = string

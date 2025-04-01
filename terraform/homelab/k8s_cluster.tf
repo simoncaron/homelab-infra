@@ -1,9 +1,15 @@
 locals {
   # Common configuration for control plane nodes
+  controlplane_base_config = {
+    type   = "controlplane"
+    cpu    = 4
+    memory = 8192
+  }
+
+  # Control-plane-specific configurations (unique properties per worker)
   controlplane_nodes = {
     "k8s-controlplane01" = {
       pve_node = "pvenuc01"
-      type     = "controlplane"
       interfaces = [{
         hardwareAddr = "0c:c4:7a:a4:c1:00"
         addresses    = ["192.168.1.243"]
@@ -11,7 +17,6 @@ locals {
     },
     "k8s-controlplane02" = {
       pve_node = "pvenuc02"
-      type     = "controlplane"
       interfaces = [{
         hardwareAddr = "0c:c4:7a:a4:c2:00"
         addresses    = ["192.168.1.244"]
@@ -19,7 +24,6 @@ locals {
     },
     "k8s-controlplane03" = {
       pve_node = "pvenuc03"
-      type     = "controlplane"
       interfaces = [{
         hardwareAddr = "0c:c4:7a:a4:c3:00"
         addresses    = ["192.168.1.245"]
@@ -29,7 +33,9 @@ locals {
 
   # Common configuration for all worker nodes
   worker_base_config = {
-    type = "worker"
+    type   = "worker"
+    cpu    = 8
+    memory = 16384
     disks = [{
       device = "/dev/sdb"
       partitions = [{
@@ -77,22 +83,26 @@ locals {
       interfaces = [
         {
           hardwareAddr = "0c:c4:7a:a4:b3:00"
-          addresses    = ["192.168.1.248"]
+          addresses    = ["192.168.1.248"],
         },
         {
           hardwareAddr = "0c:c4:7a:a4:b3:01"
-          addresses    = ["10.15.15.248"]
+          addresses    = ["10.15.15.24"]
         }
       ]
     }
   }
 
   # Merge all configurations to create the final machines map
+  controlplane_configs = {
+    for name, node in local.controlplane_nodes : name => merge(local.controlplane_base_config, node)
+  }
+
   worker_configs = {
     for name, node in local.worker_nodes : name => merge(local.worker_base_config, node)
   }
 
-  machines = merge(local.controlplane_nodes, local.worker_configs)
+  machines = merge(local.controlplane_configs, local.worker_configs)
 }
 
 module "talos_cluster" {
@@ -104,7 +114,7 @@ module "talos_cluster" {
 
   machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
 
-  kubernetes_version = "1.30.0"
+  kubernetes_version = "1.31.2"
   talos_version      = "v1.9.5"
 
   machines = local.machines

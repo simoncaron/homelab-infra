@@ -25,7 +25,7 @@ output "talosconfig_raw" {
 }
 
 resource "local_sensitive_file" "kubeconfig" {
-  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
+  content         = replace(talos_cluster_kubeconfig.this.kubeconfig_raw, var.cluster_endpoint, var.cluster_vip)
   filename        = pathexpand("${var.kube_config_path}/${var.cluster_name}.yaml")
   file_permission = "0644"
 }

@@ -7,8 +7,8 @@ module "k8s_cluster_nodes" {
 
   tags = ["talos", "k8s", each.value.type]
 
-  cpu_cores        = 4
-  memory_dedicated = 16384
+  cpu_cores        = each.value.cpu
+  memory_dedicated = each.value.memory
 
   machine = "q35"
 
@@ -56,8 +56,4 @@ module "k8s_cluster_nodes" {
       }
     ] : []
   )
-}
-
-output "vm_id" {
-  value = { for k, v in module.k8s_cluster_nodes : k => v.vm_id }
 }
