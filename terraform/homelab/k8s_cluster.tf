@@ -87,7 +87,7 @@ locals {
         },
         {
           hardwareAddr = "0c:c4:7a:a4:b3:01"
-          addresses    = ["10.15.15.24"]
+          addresses    = ["10.15.15.248"]
         }
       ]
     }
