@@ -86,10 +86,13 @@ variable "machine_extensions" {
   ]
 }
 
-variable "enable_metrics_server" {
-  description = "Whether to enable the metrics server."
-  type        = bool
-  default     = true
+variable "machine_kubelet_extraArgs" {
+  description = "A list of extra arguments to pass to the kubelet."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }
 
 variable "machines" {

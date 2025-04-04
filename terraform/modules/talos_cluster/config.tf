@@ -28,9 +28,8 @@ data "talos_machine_configuration" "this" {
       machine_kubelet_extraMounts = each.value.extra_mounts
       machine_labels              = each.value.labels
 
+      machine_kubelet_extraArgs   = var.machine_kubelet_extraArgs
       machine_network_nameservers = var.machine_network_nameservers
-
-      enable_metrics_server = var.enable_metrics_server
 
       cluster_node_subnet                    = var.cluster_node_subnet
       cluster_name                           = var.cluster_name

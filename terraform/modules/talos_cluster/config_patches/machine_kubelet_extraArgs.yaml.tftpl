@@ -1,0 +1,9 @@
+# Configures kubelet extraArgs
+# https://www.talos.dev/v1.9/reference/configuration/v1alpha1/config/#Config.machine.kubelet
+---
+machine:
+  kubelet:
+    extraArgs:
+%{ for arg in machine_kubelet_extraArgs ~}
+      "${arg.name}": "${arg.value}"
+%{ endfor ~}
