@@ -18,7 +18,6 @@ spec:
   values:
     persistence:
       defaultDataLocality: "best-effort"
-
     defaultSettings:
       defaultDataLocality: "best-effort"
       defaultReplicaCount: "2"

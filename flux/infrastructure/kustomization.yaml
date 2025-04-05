@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - sources
   - multus
-#  - longhorn
+  - longhorn
