@@ -6,3 +6,4 @@ resources:
   - multus
   - whereabouts
   - longhorn
+  - metallb

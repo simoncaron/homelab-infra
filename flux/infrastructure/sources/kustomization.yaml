@@ -5,3 +5,4 @@ namespace: flux-system
 resources:
   - longhorn.yaml
   - bedag.yaml
+  - metallb.yaml
