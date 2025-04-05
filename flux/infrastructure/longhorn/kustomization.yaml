@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - config/longhornnetworkattachment.yaml
-  - release.yaml
+#  - release.yaml
