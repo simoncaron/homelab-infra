@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - release.yaml
-  - config/ipaddresspool.yaml
-  - config/l2advertisement.yaml
+  - configs.yaml

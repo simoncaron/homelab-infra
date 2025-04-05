@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infrastructure
+  name: infra-sources
   namespace: flux-system
 spec:
   interval: 1h
@@ -11,6 +11,61 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./flux/infrastructure
+  path: ./flux/infrastructure/sources
   prune: true
   wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-cni-plugins
+  namespace: flux-system
+spec:
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./flux/infrastructure/cni-plugins
+  prune: true
+  wait: true
+  dependsOn:
+    - name: infra-sources
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-operators
+  namespace: flux-system
+spec:
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./flux/infrastructure/operators
+  prune: true
+  wait: true
+  dependsOn:
+    - name: infra-sources
+    - name: infra-cni-plugins
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-controllers
+  namespace: flux-system
+spec:
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./flux/infrastructure/controllers
+  prune: true
+  wait: true
+  dependsOn:
+    - name: infra-sources
