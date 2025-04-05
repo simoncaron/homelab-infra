@@ -6,3 +6,4 @@ resources:
   - longhorn.yaml
   - bedag.yaml
   - metallb.yaml
+  - ingress-nginx.yaml
