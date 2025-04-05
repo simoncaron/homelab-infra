@@ -14,6 +14,7 @@ spec:
         kind: HelmRepository
         name: sealed-secrets
         namespace: flux-system
+  releaseName: sealed-secrets-controller
   install:
     crds: Create
   upgrade:
