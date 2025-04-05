@@ -8,3 +8,4 @@ resources:
   - metallb.yaml
   - ingress-nginx.yaml
   - jetstack.yaml
+  - sealed-secrets.yaml
