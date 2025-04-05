@@ -7,3 +7,4 @@ resources:
   - bedag.yaml
   - metallb.yaml
   - ingress-nginx.yaml
+  - jetstack.yaml
