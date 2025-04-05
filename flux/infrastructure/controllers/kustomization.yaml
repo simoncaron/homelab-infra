@@ -4,3 +4,4 @@ resources:
   - metallb
   - ingress-nginx
   - cert-manager
+  - sealed-secrets
