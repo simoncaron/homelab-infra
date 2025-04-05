@@ -10,4 +10,3 @@ spec:
     name: whereabouts
     namespace: flux-system
   interval: 12h
-  values: {}
