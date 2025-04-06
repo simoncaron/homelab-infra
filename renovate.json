@@ -8,5 +8,8 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
+  },
+  "flux": {
+    "fileMatch": ["flux/.+\\.yaml$"]
   }
 }

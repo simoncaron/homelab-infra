@@ -17,6 +17,8 @@ spec:
   dependsOn:
   - name: sealed-secrets
     namespace: kube-system
+  install:
+    disableSchemaValidation: true
   values:
     sources:
       - ingress
