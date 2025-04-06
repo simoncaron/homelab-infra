@@ -9,3 +9,4 @@ resources:
   - ingress-nginx.yaml
   - jetstack.yaml
   - sealed-secrets.yaml
+  - external-dns.yaml
