@@ -10,3 +10,4 @@ resources:
   - jetstack.yaml
   - sealed-secrets.yaml
   - external-dns.yaml
+  - csi-driver-smb.yaml
