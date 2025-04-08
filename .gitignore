@@ -218,3 +218,5 @@ terraform.rc
 .vscode
 ansible/galaxy_roles
 .vault_password
+
+flux/pub-sealed-secrets.pem
