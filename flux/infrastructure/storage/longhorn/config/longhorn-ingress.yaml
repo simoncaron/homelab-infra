@@ -33,7 +33,8 @@ spec:
         - longhorn.k8s.simn.io
       secretName: tls-longhorn
   rules:
-  - http:
+  - host: longhorn.k8s.simn.io
+    http:
       paths:
       - pathType: Prefix
         path: "/"
