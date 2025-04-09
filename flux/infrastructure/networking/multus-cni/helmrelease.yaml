@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: multus
+  name: multus-cni
   namespace: flux-system
 spec:
   interval: 24h
@@ -13,13 +13,13 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: multus
+  name: multus-cni
   namespace: kube-system
 spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: multus
+    name: multus-cni
     namespace: flux-system
   values:
     initContainers:

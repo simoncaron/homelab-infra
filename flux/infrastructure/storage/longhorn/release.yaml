@@ -6,7 +6,7 @@ metadata:
   namespace: longhorn-system
 spec:
   dependsOn:
-  - name: multus
+  - name: multus-cni
     namespace: kube-system
   - name: whereabouts
     namespace: kube-system
