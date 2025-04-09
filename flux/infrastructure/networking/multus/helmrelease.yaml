@@ -32,7 +32,7 @@ spec:
         volumeMounts:
           - mountPath: /host/opt/cni/bin
             mountPropagation: Bidirectional
-            name: cnibin
+            name: cni-bin-dir
     tolerations:
       - operator: Exists
         effect: NoSchedule
