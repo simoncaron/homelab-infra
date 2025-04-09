@@ -1,0 +1,38 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: multus
+  namespace: flux-system
+spec:
+  interval: 24h
+  ref:
+    tag: 2.2.10
+  url: oci://registry-1.docker.io/bitnamicharts/multus-cni
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: multus
+  namespace: kube-system
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: multus
+    namespace: flux-system
+  values:
+    initContainers:
+      - command:
+          - /install-cni.sh
+        image: ghcr.io/siderolabs/install-cni:v1.9.0
+        name: install-cni
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /host/opt/cni/bin
+            mountPropagation: Bidirectional
+            name: cnibin
+    tolerations:
+      - operator: Exists
+        effect: NoSchedule
