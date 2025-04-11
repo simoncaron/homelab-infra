@@ -16,9 +16,10 @@ module "k8s_cluster_nodes" {
     [
       {
         datastore_id = "local-zfs"
-        file_id      = proxmox_virtual_environment_download_file.talos_nocloud_image["${each.value.host_node}_${each.value.update_talos == true ? local.update_image_id : local.image_id}"].id
-        interface    = "scsi0"
-        size         = 64
+        file_id = proxmox_virtual_environment_download_file.this["${each.value.pve_node}_${each.value.update_talos == true ?
+        "${md5(join(",", var.talos_image.update_extensions))}_${var.talos_image.update_version}" : "${md5(join(",", var.talos_image.extensions))}_${var.talos_image.version}"}"].id
+        interface = "scsi0"
+        size      = 64
       }
     ],
     # Add a second disk for longhorn storage

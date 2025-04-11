@@ -60,29 +60,14 @@ variable "kubernetes_version" {
 variable "talos_image" {
   description = "The Talos image configuration."
   type = object({
-    version    = string
-    extensions = list(string)
+    arch              = optional(string, "amd64")
+    platform          = optional(string, "nocloud")
+    factory_url       = optional(string, "https://factory.talos.dev")
+    extensions        = list(string)
+    version           = string
+    update_extensions = optional(list(string))
+    update_version    = optional(string)
   })
-  default = {
-    version = "v1.9.5"
-    extensions = [
-      "siderolabs/iscsi-tools",
-      "siderolabs/qemu-guest-agent",
-      "siderolabs/util-linux-tools"
-    ]
-  }
-}
-
-variable "updated_talos_image" {
-  description = "The Talos updated image configuration."
-  type = object({
-    version    = string
-    extensions = list(string)
-  })
-  default = {
-    version    = "v1.9.5"
-    extensions = []
-  }
 }
 
 variable "timeout" {

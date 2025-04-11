@@ -122,15 +122,6 @@ module "talos_cluster" {
     extensions = [
       "siderolabs/iscsi-tools",
       "siderolabs/qemu-guest-agent",
-      "siderolabs/util-linux-tools"
-    ]
-  }
-
-  updated_talos_image = {
-    version = "v1.9.5"
-    extensions = [
-      "siderolabs/iscsi-tools",
-      "siderolabs/qemu-guest-agent",
       "siderolabs/util-linux-tools",
       "siderolabs/i915-ucode",
       "siderolabs/intel-ucode"
