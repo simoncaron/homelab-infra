@@ -5,6 +5,8 @@ metadata:
   name: infra-networking
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: infra-security
   interval: 1h
   retryInterval: 1m
   timeout: 5m
@@ -37,6 +39,8 @@ metadata:
   name: infra-storage
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: infra-networking 
   interval: 1h
   retryInterval: 1m
   timeout: 5m
