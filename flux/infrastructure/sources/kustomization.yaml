@@ -12,3 +12,5 @@ resources:
   - external-dns.yaml
   - csi-driver-smb.yaml
   - spegel.yaml
+  - multus-cni.yaml
+  - whereabouts.yaml
