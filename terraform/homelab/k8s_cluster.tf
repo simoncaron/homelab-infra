@@ -116,7 +116,26 @@ module "talos_cluster" {
   machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
 
   kubernetes_version = "1.31.2"
-  talos_version      = "v1.9.5"
+
+  talos_image = {
+    version = "v1.9.5"
+    extensions = [
+      "siderolabs/iscsi-tools",
+      "siderolabs/qemu-guest-agent",
+      "siderolabs/util-linux-tools"
+    ]
+  }
+
+  updated_talos_image = {
+    version = "v1.9.5"
+    extensions = [
+      "siderolabs/iscsi-tools",
+      "siderolabs/qemu-guest-agent",
+      "siderolabs/util-linux-tools",
+      "siderolabs/i915-ucode",
+      "siderolabs/intel-ucode"
+    ]
+  }
 
   machines = local.machines
 }

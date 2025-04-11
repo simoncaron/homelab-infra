@@ -5,7 +5,7 @@ locals {
 }
 
 resource "talos_machine_secrets" "this" {
-  talos_version = var.talos_version
+  talos_version = var.talos_image.version
 }
 
 data "talos_machine_configuration" "this" {
@@ -16,7 +16,7 @@ data "talos_machine_configuration" "this" {
   machine_type       = each.value.type
   machine_secrets    = talos_machine_secrets.this.machine_secrets
   kubernetes_version = var.kubernetes_version
-  talos_version      = var.talos_version
+  talos_version      = var.talos_image.version
 
   config_patches = [for patch in fileset("${path.module}/config_patches", "**") :
     templatefile("${path.module}/config_patches/${patch}", {

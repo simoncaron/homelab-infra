@@ -57,22 +57,32 @@ variable "kubernetes_version" {
   default     = "1.30.1"
 }
 
-variable "talos_version" {
-  description = "The version of Talos to use."
-  type        = string
-  default     = "v1.9.0"
+variable "talos_image" {
+  description = "The Talos image configuration."
+  type = object({
+    version    = string
+    extensions = list(string)
+  })
+  default = {
+    version = "v1.9.5"
+    extensions = [
+      "siderolabs/iscsi-tools",
+      "siderolabs/qemu-guest-agent",
+      "siderolabs/util-linux-tools"
+    ]
+  }
 }
 
-variable "updated_talos_version" {
-  description = "The version of Talos to use."
-  type        = string
-  default     = null
-}
-
-variable "machine_extensions" {
-  description = "A list of extensions to add to all machines in the cluster."
-  type        = list(string)
-  default     = []
+variable "updated_talos_image" {
+  description = "The Talos updated image configuration."
+  type = object({
+    version    = string
+    extensions = list(string)
+  })
+  default = {
+    version    = "v1.9.5"
+    extensions = []
+  }
 }
 
 variable "timeout" {

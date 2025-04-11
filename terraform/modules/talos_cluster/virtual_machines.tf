@@ -16,7 +16,7 @@ module "k8s_cluster_nodes" {
     [
       {
         datastore_id = "local-zfs"
-        file_id      = proxmox_virtual_environment_download_file.talos_nocloud_image["${each.value.pve_node}_${each.value.update_talos == true ? var.updated_talos_version : var.talos_version}"].id
+        file_id      = proxmox_virtual_environment_download_file.talos_nocloud_image["${each.value.host_node}_${each.value.update_talos == true ? local.update_image_id : local.image_id}"].id
         interface    = "scsi0"
         size         = 64
       }
