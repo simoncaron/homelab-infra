@@ -67,23 +67,18 @@ variable "updated_talos_version" {
   description = "The version of Talos to use."
   type        = string
   default     = null
+}
 
+variable "machine_extensions" {
+  description = "A list of extensions to add to all machines in the cluster."
+  type        = list(string)
+  default     = []
 }
 
 variable "timeout" {
   description = "The timeout to use for the Talos cluster."
   type        = string
   default     = "10m"
-}
-
-variable "machine_extensions" {
-  description = "A list of extensions to add to all machines in the cluster."
-  type        = list(string)
-  default = [
-    "siderolabs/iscsi-tools",
-    "siderolabs/qemu-guest-agent",
-    "siderolabs/util-linux-tools"
-  ]
 }
 
 variable "machine_kubelet_extraArgs" {
@@ -102,6 +97,7 @@ variable "machines" {
     pve_node     = string
     cpu          = number
     memory       = number
+    igpu         = optional(bool, false)
     update_talos = optional(bool, false)
     disks = optional(list(object({
       device = string

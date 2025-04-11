@@ -36,6 +36,7 @@ locals {
     type   = "worker"
     cpu    = 8
     memory = 16384
+    igpu   = true
     disks = [{
       device = "/dev/sdb"
       partitions = [{

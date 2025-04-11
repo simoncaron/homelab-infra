@@ -76,6 +76,16 @@ resource "proxmox_virtual_environment_vm" "vm" {
     }
   }
 
+  dynamic "hostpci" {
+    for_each = var.hostpci != null ? var.hostpci : []
+    content {
+      device  = hostpci.value.device
+      mapping = hostpci.value.mapping
+      pcie    = hostpci.value.pcie
+      rombar  = hostpci.value.rombar
+    }
+  }
+
   operating_system {
     type = var.operating_system.type
   }

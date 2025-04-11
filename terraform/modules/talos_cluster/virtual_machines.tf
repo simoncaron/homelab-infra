@@ -41,6 +41,16 @@ module "k8s_cluster_nodes" {
     }
   }
 
+  hostpci = concat(
+    each.value.igpu == true ? [
+      {
+        device  = "hostpci0"
+        mapping = proxmox_virtual_environment_hardware_mapping_pci.gpu_mapping.name
+        xvga    = false
+      }
+    ] : [],
+  )
+
   network_devices = concat(
     [
       {
@@ -56,4 +66,19 @@ module "k8s_cluster_nodes" {
       }
     ] : []
   )
+}
+
+resource "proxmox_virtual_environment_hardware_mapping_pci" "gpu_mapping" {
+  name = "iGPU"
+  map = flatten([
+    for node in distinct([for machine in var.machines : machine.pve_node]) : [
+      {
+        id           = "8086:4626"
+        iommu_group  = 0
+        node         = node
+        path         = "0000:00:02.0"
+        subsystem_id = "8086:3024"
+      }
+    ]
+  ])
 }

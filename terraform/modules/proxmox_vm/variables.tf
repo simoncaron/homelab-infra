@@ -120,6 +120,17 @@ variable "network_devices" {
   default = []
 }
 
+variable "hostpci" {
+  description = "A list of PCI passthrough configurations for the VM."
+  type = list(object({
+    device  = string
+    mapping = string
+    pcie    = optional(bool, true)
+    rombar  = optional(bool, true)
+  }))
+  default = []
+}
+
 variable "operating_system" {
   description = "Operating system type"
   type = object({
