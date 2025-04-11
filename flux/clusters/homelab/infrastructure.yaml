@@ -5,8 +5,6 @@ metadata:
   name: infra-sources
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: infra-security
   interval: 1h
   retryInterval: 1m
   timeout: 5m
