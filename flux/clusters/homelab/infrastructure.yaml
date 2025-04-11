@@ -42,7 +42,6 @@ metadata:
 spec:
   dependsOn:
     - name: infra-sources
-    - name: infra-secrets
   interval: 1h
   retryInterval: 1m
   timeout: 5m
