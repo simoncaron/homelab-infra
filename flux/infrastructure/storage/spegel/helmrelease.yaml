@@ -16,4 +16,5 @@ spec:
         name: spegel
         namespace: flux-system
   values:
-    containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+    spegel:
+      containerdRegistryConfigPath: /etc/cri/conf.d/hosts
