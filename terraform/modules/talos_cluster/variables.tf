@@ -39,6 +39,22 @@ variable "machine_network_nameservers" {
   default     = ["1.1.1.1", "1.0.0.1"]
 }
 
+variable "machine_files" {
+  description = "A list of files to add to all machines in the cluster. See: https://www.talos.dev/v1.9/reference/configuration/v1alpha1/config/#Config.machine.files."
+  type = list(object({
+    content     = string
+    permissions = optional(string, "0o644")
+    path        = string
+    op          = string
+  }))
+  default = []
+
+  validation {
+    condition     = alltrue([for file in var.machine_files : file.op == "create" || file.op == "append" || file.op == "overwrite"])
+    error_message = "The 'op' field in machine_files must be one of 'create', 'append', or 'overwrite'."
+  }
+}
+
 variable "talos_config_path" {
   description = "The path to output the Talos configuration file."
   type        = string
@@ -110,6 +126,12 @@ variable "machines" {
     labels = optional(list(object({
       key   = string
       value = optional(string, "")
+    })), [])
+    files = optional(list(object({
+      content     = string
+      permissions = string
+      path        = string
+      op          = string
     })), [])
     interfaces = list(object({
       hardwareAddr     = string

@@ -115,6 +115,18 @@ module "talos_cluster" {
 
   machine_network_nameservers = ["192.168.1.10", "192.168.1.114"]
 
+  # Spegel layer configuration
+  machine_files = [
+    {
+      path    = "/etc/cri/conf.d/20-customization.part"
+      op      = "create"
+      content = <<EOT
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+      EOT
+    }
+  ]
+
   kubernetes_version = "1.31.2"
 
   talos_image = {

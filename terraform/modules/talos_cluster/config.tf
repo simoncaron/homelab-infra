@@ -27,6 +27,7 @@ data "talos_machine_configuration" "this" {
       machine_disks               = each.value.disks
       machine_kubelet_extraMounts = each.value.extra_mounts
       machine_labels              = each.value.labels
+      machine_install_files       = concat(each.value.files, var.machine_files)
 
       machine_kubelet_extraArgs   = var.machine_kubelet_extraArgs
       machine_network_nameservers = var.machine_network_nameservers
