@@ -20,6 +20,8 @@ spec:
     namespace: kube-system
   install:
     disableSchemaValidation: true
+  upgrade:
+    disableSchemaValidation: true
   values:
     sources:
       - ingress
