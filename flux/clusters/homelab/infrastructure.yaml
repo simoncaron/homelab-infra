@@ -2,10 +2,29 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: infra-sources
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infra-security
+  interval: 1h
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./flux/infrastructure/sources
+  prune: true
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: infra-networking
   namespace: flux-system
 spec:
   dependsOn:
+    - name: infra-sources
     - name: infra-security
   interval: 1h
   retryInterval: 1m
@@ -20,26 +39,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-secrets
-  namespace: flux-system
-spec:
-  interval: 1h
-  retryInterval: 1m
-  timeout: 5m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./flux/infrastructure/security/sealed-secrets
-  prune: true
-  wait: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: infra-security
   namespace: flux-system
 spec:
   dependsOn:
+    - name: infra-sources
     - name: infra-secrets
   interval: 1h
   retryInterval: 1m
@@ -58,6 +62,8 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: infra-sources
+    - name: infra-security
     - name: infra-networking 
   interval: 1h
   retryInterval: 1m
