@@ -10,6 +10,7 @@ spec:
       "type": "macvlan",
       "master": "eth1",
       "mode": "bridge",
+      "mtu": 9000,
       "ipam": {
         "type": "whereabouts",
         "range": "10.15.15.0/24",
