@@ -31,12 +31,14 @@ network_configuration_interfaces:
     auto: false
     method: manual
     family: inet
+    mtu: 9000
 
   - device: vmbr1
     auto: true
     method: static
     family: inet
     address: "{{ ansible_storage_network_ip }}"
+    mtu: 9000
     bridge:
       ports: "{{ ansible_storage_network_device }}"
       stp: "off"

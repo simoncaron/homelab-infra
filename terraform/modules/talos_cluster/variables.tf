@@ -135,6 +135,7 @@ variable "machines" {
     })), [])
     interfaces = list(object({
       hardwareAddr     = string
+      mtu              = optional(number)
       addresses        = list(string)
       dhcp_routeMetric = optional(number, 100)
       dhcp             = optional(bool, false)

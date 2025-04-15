@@ -62,6 +62,7 @@ locals {
         },
         {
           hardwareAddr = "0c:c4:7a:a4:b1:01"
+          mtu          = 9000
           addresses    = ["10.15.15.246"]
         }
       ]
@@ -75,6 +76,7 @@ locals {
         },
         {
           hardwareAddr = "0c:c4:7a:a4:b2:01"
+          mtu          = 9000
           addresses    = ["10.15.15.247"]
         }
       ]
@@ -88,6 +90,7 @@ locals {
         },
         {
           hardwareAddr = "0c:c4:7a:a4:b3:01"
+          mtu          = 9000
           addresses    = ["10.15.15.248"]
         }
       ]

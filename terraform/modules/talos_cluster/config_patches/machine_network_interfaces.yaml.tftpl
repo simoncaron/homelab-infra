@@ -8,7 +8,9 @@ machine:
       - deviceSelector:
           hardwareAddr: ${interface.hardwareAddr}
           physical: true
-        mtu: 1500
+%{ if interface.mtu != null }
+        mtu: ${interface.mtu}
+%{ endif }
 %{ if type == "controlplane" }
 %{ if cluster_vip != "" }
         vip:

@@ -57,6 +57,7 @@ module "k8s_cluster_nodes" {
       {
         bridge      = "vmbr0"
         mac_address = each.value.interfaces[0].hardwareAddr
+        mtu         = each.value.interfaces[0].mtu
       }
     ],
     # Add a second network device for longhorn network
@@ -64,6 +65,7 @@ module "k8s_cluster_nodes" {
       {
         bridge      = "vmbr1"
         mac_address = each.value.interfaces[1].hardwareAddr
+        mtu         = each.value.interfaces[1].mtu
       }
     ] : []
   )

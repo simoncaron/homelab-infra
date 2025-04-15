@@ -73,6 +73,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
       bridge      = network_device.value.bridge
       mac_address = network_device.value.mac_address
       queues      = network_device.value.queues
+      mtu         = network_device.value.mtu
     }
   }
 

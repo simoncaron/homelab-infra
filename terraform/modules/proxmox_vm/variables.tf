@@ -115,6 +115,7 @@ variable "network_devices" {
   type = list(object({
     bridge      = string
     mac_address = optional(string)
+    mtu         = optional(number)
     queues      = optional(number, 4)
   }))
   default = []
