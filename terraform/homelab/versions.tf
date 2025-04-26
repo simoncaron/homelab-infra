@@ -3,11 +3,11 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.75.0"
+      version = "0.76.1"
     }
     bitwarden = {
       source  = "maxlaverse/bitwarden"
-      version = "0.13.5"
+      version = "0.13.6"
     }
     talos = {
       source  = "siderolabs/talos"
@@ -23,7 +23,7 @@ terraform {
     }
     null = {
       source  = "hashicorp/null"
-      version = "3.2.3"
+      version = "3.2.4"
     }
   }
 }
