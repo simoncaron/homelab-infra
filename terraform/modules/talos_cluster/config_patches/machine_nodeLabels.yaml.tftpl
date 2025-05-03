@@ -3,6 +3,8 @@
 ---
 machine:
   nodeLabels:
+    topology.kubernetes.io/region: ${proxmox_cluster}
+    topology.kubernetes.io/zone: ${proxmox_node}
 %{ for item in machine_labels ~}
     ${item.key}: "${item.value}"
 %{ endfor ~}

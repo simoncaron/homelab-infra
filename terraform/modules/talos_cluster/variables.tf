@@ -9,6 +9,13 @@ variable "cluster_name" {
   }
 }
 
+variable "proxmox_cluster" {
+  description = "The name of the Proxmox cluster."
+  type        = string
+  default     = ""
+
+}
+
 variable "cluster_endpoint" {
   description = "The endpoint for the Talos cluster."
   type        = string
