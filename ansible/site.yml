@@ -1,6 +1,6 @@
 ---
 - name: Common Hosts Configurations
-  hosts: all
+  hosts: all!talos
   gather_facts: false
   roles:
     - role: bootstrap

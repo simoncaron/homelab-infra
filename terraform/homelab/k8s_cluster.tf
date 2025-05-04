@@ -37,18 +37,6 @@ locals {
     cpu    = 8
     memory = 16384
     igpu   = true
-    disks = [{
-      device = "/dev/sdb"
-      partitions = [{
-        mountpoint = "/var/lib/longhorn"
-      }]
-    }]
-    extra_mounts = [{
-      source      = "/var/lib/longhorn"
-      destination = "/var/lib/longhorn"
-      type        = "bind"
-      options     = ["rbind", "rw", "rshared"]
-    }]
   }
 
   # Worker-specific configurations (unique properties per worker)
@@ -59,11 +47,6 @@ locals {
         {
           hardwareAddr = "0c:c4:7a:a4:b1:00"
           addresses    = ["192.168.1.246"]
-        },
-        {
-          hardwareAddr = "0c:c4:7a:a4:b1:01"
-          mtu          = 9000
-          addresses    = ["10.15.15.246"]
         }
       ]
     },
@@ -73,11 +56,6 @@ locals {
         {
           hardwareAddr = "0c:c4:7a:a4:b2:00"
           addresses    = ["192.168.1.247"]
-        },
-        {
-          hardwareAddr = "0c:c4:7a:a4:b2:01"
-          mtu          = 9000
-          addresses    = ["10.15.15.247"]
         }
       ]
     },
@@ -87,11 +65,6 @@ locals {
         {
           hardwareAddr = "0c:c4:7a:a4:b3:00"
           addresses    = ["192.168.1.248"],
-        },
-        {
-          hardwareAddr = "0c:c4:7a:a4:b3:01"
-          mtu          = 9000
-          addresses    = ["10.15.15.248"]
         }
       ]
     }
@@ -112,7 +85,9 @@ locals {
 module "talos_cluster" {
   source = "../modules/talos_cluster"
 
-  cluster_name     = "k8s-homelab-cluster"
+  cluster_name    = "k8s-homelab-cluster"
+  proxmox_cluster = "pve-cluster01"
+
   cluster_endpoint = "192.168.1.243"
   cluster_vip      = "192.168.1.249"
 
@@ -135,9 +110,7 @@ module "talos_cluster" {
   talos_image = {
     version = "v1.9.5"
     extensions = [
-      "siderolabs/iscsi-tools",
       "siderolabs/qemu-guest-agent",
-      "siderolabs/util-linux-tools",
       "siderolabs/i915-ucode",
       "siderolabs/intel-ucode"
     ]

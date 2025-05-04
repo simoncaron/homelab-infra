@@ -32,6 +32,9 @@ data "talos_machine_configuration" "this" {
       machine_kubelet_extraArgs   = var.machine_kubelet_extraArgs
       machine_network_nameservers = var.machine_network_nameservers
 
+      proxmox_cluster = var.proxmox_cluster
+      proxmox_node    = each.value.pve_node
+
       cluster_node_subnet                    = var.cluster_node_subnet
       cluster_name                           = var.cluster_name
       cluster_vip                            = var.cluster_vip
