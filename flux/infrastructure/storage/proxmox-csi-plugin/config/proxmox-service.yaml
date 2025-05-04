@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+    - name: https
+      protocol: TCP
+      port: 8006
+      targetPort: 8006
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: proxmox
+  namespace: kube-system
+subsets:
+  - addresses:
+      - ip: 192.168.1.240
+      - ip: 192.168.1.241
+      - ip: 192.168.1.242
+    ports:
+      - port: 8006
