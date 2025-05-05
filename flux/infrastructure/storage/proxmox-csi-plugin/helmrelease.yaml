@@ -19,14 +19,6 @@ spec:
         name: proxmox-csi-plugin
         namespace: flux-system
   values:
-    config:
-      clusters:
-        - url: https://pve-cluster01.simn.io:8006/api2/json
-          insecure: false
-          token_id: "kubernetes-csi@pve!csi"
-          token_secret: "b22498d9-9920-4a73-ae94-10958c48a65a"
-          region: pve-cluster01
-
     node:
       tolerations:
         - operator: Exists
