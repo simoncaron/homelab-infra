@@ -48,7 +48,7 @@ spec:
         mountOptions:
           - discard
         annotations:
-          storageclass.kubernetes.io/is-default-class: true
+          storageclass.kubernetes.io/is-default-class: "true"
       - name: proxmox-data-ext4
         storage: shared-ceph-k8s
         reclaimPolicy: Delete
