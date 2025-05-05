@@ -21,3 +21,22 @@ variable "dns_config" {
     servers = []
   }
 }
+
+variable "users" {
+  type = map(object({
+    name        = string
+    realm       = string
+    description = optional(string)
+
+    token = object({
+      name        = string
+      description = optional(string)
+    })
+
+    roles = list(object({
+      name       = string
+      privileges = list(string)
+    }))
+  }))
+  default = {}
+}

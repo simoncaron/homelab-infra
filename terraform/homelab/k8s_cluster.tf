@@ -118,3 +118,54 @@ module "talos_cluster" {
 
   machines = local.machines
 }
+
+module "k8s_secrets_bootstrap" {
+  source = "../modules/k8s_secrets_bootstrap"
+
+  secrets = {
+    "sealed-secret-key" = {
+      namespace = {
+        name   = "kube-system"
+        create = false
+      }
+      secret = {
+        name = "sealed-secrets-key"
+        type = "kubernetes.io/tls"
+        labels = {
+          "sealedsecrets.bitnami.com/sealed-secrets-key" : "active"
+        }
+        data = {
+          "tls.key" = data.bitwarden_item_secure_note.sealed_secrets_private_key.notes
+          "tls.crt" = data.bitwarden_item_secure_note.sealed_secrets_public_key.notes
+        }
+      }
+    }
+    "proxmox-csi-plugin" = {
+      name = "proxmox-csi-plugin"
+      namespace = {
+        name = "csi-proxmox"
+        labels = {
+          "pod-security.kubernetes.io/enforce" : "privileged"
+          "pod-security.kubernetes.io/audit" : "baseline"
+          "pod-security.kubernetes.io/warn" : "baseline"
+        }
+        create = true
+      }
+      secret = {
+        name   = "proxmox-csi-plugin"
+        type   = "Opaque"
+        labels = {}
+        data = {
+          "config.yaml" = <<EOF
+            clusters:
+            - url: "https://pve-cluster01.simn.io:8006/api2/json"
+              insecure: true
+              token_id: "${module.proxmox_cluster.user_tokens["kubernetes-csi"].token_id}"
+              token_secret: "${module.proxmox_cluster.user_tokens["kubernetes-csi"].token_secret}"
+              region: pve-cluster01
+            EOF
+        }
+      }
+    }
+  }
+}

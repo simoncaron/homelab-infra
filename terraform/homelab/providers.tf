@@ -17,6 +17,10 @@ provider "bitwarden" {
 
 provider "talos" {}
 
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
 provider "adguard" {
   host     = "dns01.simn.io"
   username = data.bitwarden_item_login.adguard_home_credentials.username

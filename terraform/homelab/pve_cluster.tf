@@ -25,4 +25,28 @@ module "proxmox_cluster" {
       comment = "Resources managed using ansible"
     }
   ]
+
+  users = {
+    "kubernetes-csi" = {
+      name  = "kubernetes-csi"
+      realm = "pve"
+
+      token = {
+        name = "csi"
+      }
+
+      roles = [
+        {
+          name = "CSI"
+          privileges = [
+            "VM.Audit",
+            "VM.Config.Disk",
+            "Datastore.Allocate",
+            "Datastore.AllocateSpace",
+            "Datastore.Audit"
+          ]
+        }
+      ]
+    }
+  }
 }
