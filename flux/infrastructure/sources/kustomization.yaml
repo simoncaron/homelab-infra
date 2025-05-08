@@ -12,3 +12,4 @@ resources:
   - external-dns.yaml
   - csi-driver-smb.yaml
   - spegel.yaml
+  - cloudnative-pg.yaml
