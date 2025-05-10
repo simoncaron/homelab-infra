@@ -1,6 +1,6 @@
 ---
 - name: Common Hosts Configurations
-  hosts: all!talos
+  hosts: all
   gather_facts: false
   roles:
     - role: bootstrap
@@ -18,4 +18,3 @@
     - simoncaron.pve_acme
     - geerlingguy.nut_client
     - oefenweb.postfix
-    - buluma.cron

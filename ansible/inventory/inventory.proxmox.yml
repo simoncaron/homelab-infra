@@ -22,6 +22,10 @@ want_proxmox_nodes_ansible_host: false
 compose:
   ansible_host: proxmox_ipconfig0.ip | default(proxmox_net0.ip) | ansible.utils.ipaddr('address')
 
+filters:
+  # Exclude talos hosts from inventory
+  - "'talos' not in (proxmox_tags_parsed | default([]))"
+
 keyed_groups:
   - key: proxmox_tags_parsed
     separator: ""

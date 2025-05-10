@@ -51,39 +51,3 @@ postfix_install:
 postfix_sasl_auth_enable: true
 postfix_sasl_security_options: noanonymous, noplaintext
 postfix_smtpd_tls_cert_file: /etc/ssl/certs
-
-# buluma.cron
-cron_jobs:
-  - name: pve_host_backup_pbs01
-    minute: "00"
-    hour: "00"
-    day: "*"
-    month: "*"
-    weekday: "*"
-    job: >
-      export PBS_REPOSITORY='{{ pbs01_repository }}';
-      export PBS_PASSWORD='{{ pbs01_password }}';
-      export PBS_ENCRYPTION_KEY_PATH='{{ pbs01_encryption_key_path }}';
-      proxmox-backup-client login --repository $PBS_REPOSITORY;
-      proxmox-backup-client backup pve.pxar:/etc/pve --repository $PBS_REPOSITORY --backup-id $(hostname) --keyfile $PBS_ENCRYPTION_KEY_PATH;
-      unset PBS_REPOSITORY;
-      unset PBS_PASSWORD;
-      unset PBS_ENCRYPTION_KEY_PATH
-    user: root
-
-  - name: pve_host_backup_tuxis
-    minute: "00"
-    hour: "00"
-    day: "*"
-    month: "*"
-    weekday: "0"
-    job: >
-      export PBS_REPOSITORY='{{ tuxis_repository }}';
-      export PBS_PASSWORD='{{ tuxis_password }}';
-      export PBS_ENCRYPTION_KEY_PATH='{{ tuxis_encryption_key_path }}';
-      proxmox-backup-client login --repository $PBS_REPOSITORY;
-      proxmox-backup-client backup pve.pxar:/etc/pve --repository $PBS_REPOSITORY --backup-id $(hostname) --keyfile $PBS_ENCRYPTION_KEY_PATH;
-      unset PBS_REPOSITORY;
-      unset PBS_PASSWORD;
-      unset PBS_ENCRYPTION_KEY_PATH
-    user: root

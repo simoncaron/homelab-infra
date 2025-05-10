@@ -15,7 +15,5 @@ roles:
     version: 3.0.0
   - name: oefenweb.postfix
     version: v3.7.4
-  - name: buluma.cron
-    version: 24.3.31
   - name: geerlingguy.nut_client
     version: 1.1.0
