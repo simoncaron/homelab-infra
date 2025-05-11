@@ -1,0 +1,16 @@
+---
+
+- name: Create storage keys path
+  ansible.builtin.file:
+    path: "{{ pve_storage_keys_path }}"
+    state: directory
+    group: www-data
+    owner: root
+    mode: '0700'
+
+- name: Create storage entries
+  ansible.builtin.include_tasks: storage.yml
+  loop: "{{ pve_storage_entries }}"
+  no_log: true
+  loop_control:
+    loop_var: pve_storage_entry

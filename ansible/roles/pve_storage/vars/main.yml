@@ -1,0 +1,4 @@
+---
+pve_storage_file_path: "/etc/pve/storage.cfg"
+
+pve_storage_keys_path: "/etc/pve/priv/storage"
