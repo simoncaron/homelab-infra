@@ -36,7 +36,7 @@ locals {
     type   = "worker"
     cpu    = 8
     memory = 16384
-    igpu   = true
+    igpu   = false
   }
 
   # Worker-specific configurations (unique properties per worker)
