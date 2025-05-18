@@ -1,8 +1,15 @@
 ---
+- name: Check if apt cache was refreshed already
+  ansible.builtin.stat:
+    path: /var/lib/apt/periodic/update-stamp
+  register: apt_cache_stat
+  changed_when: false
+
 - name: Refresh package cache
   ansible.builtin.apt:
     update_cache: true
-  failed_when: false  # Proxmox Enterprise Error
+  failed_when: false  # Handle Proxmox Enterprise repos error
+  when: apt_cache_stat.stat.exists
 
 - name: Install bootstrap packages
   ansible.builtin.apt:

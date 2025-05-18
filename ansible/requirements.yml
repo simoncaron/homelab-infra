@@ -7,7 +7,7 @@ roles:
   - name: simoncaron.pve_addons
     version: 2.0.0
   - name: simoncaron.pve_acme
-    version: 1.4.0
+    version: 1.4.1
   - name: ironicbadger.figurine
     src: https://github.com/ironicbadger/ansible-role-figurine
     version: bf015ab
@@ -17,3 +17,8 @@ roles:
     version: v3.7.4
   - name: geerlingguy.nut_client
     version: 1.1.0
+  - name: geerlingguy.ntp
+    version: 2.7.0
+  - name: lae.proxmox
+    src: https://github.com/lae/ansible-role-proxmox
+    version: develop

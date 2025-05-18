@@ -5,3 +5,6 @@
     dest: "{{ network_configuration_path }}"
     mode: "0644"
   notify: Restart networking service
+
+- name: Force networking service restart
+  ansible.builtin.meta: flush_handlers

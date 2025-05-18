@@ -9,6 +9,62 @@ security_fail2ban_enabled: false
 # geerlingguy.nut_client
 nut_client_server: "192.168.1.100"
 
+# geerlingguy.ntp
+ntp_manage_config: true
+ntp_area: 'ca'
+
+# lae.proxmox
+pve_group: pve
+
+pve_ceph_enabled: true
+pve_ceph_repository_line: "deb http://download.proxmox.com/debian/ceph-squid {{ ansible_distribution_release }} no-subscription"
+pve_ceph_network: "10.15.15.50/24"
+
+pve_ceph_osds:
+  - device: /dev/nvme0n1
+    crush.device.class: NVMe
+
+pve_ceph_pools:
+  - name: shared-ceph-k8s
+    autoscale_mode: "on"
+    storage: true
+
+pve_cluster_enabled: true
+pve_cluster_clustername: "pve-cluster01"
+
+pve_pools:
+  - name: terraform
+    comment: "Resources managed using terraform"
+  - name: manual
+    comment: "Manually created resources"
+  - name: ansible
+    comment: "Resources managed using ansible"
+
+pve_storages:
+  - name: remote-cifs-truenas01
+    type: dir
+    path: /mnt/pve/remote-cifs-truenas01
+    content: [ "images", "rootdir" ]
+    create_subdirs: false
+    is_mountpoint: true
+
+# cifs_mount_mount
+cifs_mount_mount_user:
+  create: true
+  name: lxc-shares
+  id: "110000"
+
+cifs_mount_mount_group:
+  create: true
+  name: lxc-shares
+  id: "110000"
+
+cifs_mount_mount_mountpoints:
+  - path: /mnt/pve/remote-cifs-truenas01
+    src: //192.168.1.100/media
+    fs: cifs
+    opts: vers=3.1.1,_netdev,iocharset=utf8,x-systemd.automount,noatime,uid={{ cifs_mount_mount_user.id }},gid={{ cifs_mount_mount_group.id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
+
 # network_configuration
 network_configuration_interfaces:
   - device: "{{ ansible_cluster_network_device }}"

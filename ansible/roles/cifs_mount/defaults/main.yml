@@ -1,0 +1,12 @@
+---
+cifs_mount_mount_user:
+  create: false
+  name: nobody
+  id: "65534"
+
+cifs_mount_mount_group:
+  create: false
+  name: nogroup
+  id: "65534"
+
+cifs_mount_mount_mountpoints: []

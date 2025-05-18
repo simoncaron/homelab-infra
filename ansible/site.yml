@@ -13,15 +13,10 @@
   hosts: pve
   become: true
   roles:
+    - geerlingguy.ntp
     - network_configuration
-    - simoncaron.pve_addons
+    - cifs_mount
+    - lae.proxmox
     - simoncaron.pve_acme
     - geerlingguy.nut_client
     - oefenweb.postfix
-
-- name: Proxmox Cluster Storage Setup
-  hosts: pvenuc01
-  become: true
-  tags: test
-  roles:
-    - pve_storage
