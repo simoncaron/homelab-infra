@@ -41,6 +41,10 @@ pve_pools:
     comment: "Resources managed using ansible"
 
 pve_storages:
+  - name: local
+    type: dir
+    path: /var/lib/vz
+    content: [ "iso", "backup", "vztmpl", "snippets" ]
   - name: remote-cifs-truenas01
     type: dir
     path: /mnt/pve/remote-cifs-truenas01
