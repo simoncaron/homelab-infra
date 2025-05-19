@@ -13,6 +13,14 @@ nut_client_server: "192.168.1.100"
 ntp_manage_config: true
 ntp_area: 'ca'
 
+# ahuffman.resolv
+resolv_nameservers:
+  - "192.168.1.10"
+  - "192.168.1.114"
+
+resolv_search:
+  - "simn.io"
+
 # lae.proxmox
 pve_group: pve
 
