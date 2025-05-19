@@ -18,7 +18,10 @@ provider "bitwarden" {
 provider "talos" {}
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  host                   = module.talos_cluster.kubeconfig_host
+  client_certificate     = module.talos_cluster.kubeconfig_client_certificate
+  client_key             = module.talos_cluster.kubeconfig_client_key
+  cluster_ca_certificate = module.talos_cluster.kubeconfig_cluster_ca_certificate
 }
 
 provider "adguard" {

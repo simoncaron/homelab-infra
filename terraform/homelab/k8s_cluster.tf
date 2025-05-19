@@ -116,7 +116,7 @@ module "proxmox_csi_plugin" {
   source     = "../modules/bootstrap/proxmox-csi-plugin"
 
   proxmox_cluster = {
-    endpoint     = "https://pve-cluster01.simn.io:8006/"
+    endpoint     = "https://pve-cluster01.simn.io:8006"
     insecure     = true
     cluster_name = "pve-cluster01"
   }
