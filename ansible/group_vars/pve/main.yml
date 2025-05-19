@@ -105,6 +105,22 @@ network_configuration_interfaces:
     auto: true
     method: static
     family: inet
+    address: "10.10.10.1"
+    netmask: 255.255.255.0
+    bridge:
+      ports: none
+      stp: "off"
+      fd: 0
+    post-up:
+      - echo 1 > /proc/sys/net/ipv4/ip_forward
+      - iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
+    post-down:
+      - iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
+
+  - device: vmbr2
+    auto: true
+    method: static
+    family: inet
     address: "{{ ansible_storage_network_ip }}"
     mtu: 9000
     bridge:

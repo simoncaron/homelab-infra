@@ -9,7 +9,7 @@
   ansible.builtin.apt:
     update_cache: true
   failed_when: false  # Handle Proxmox Enterprise repos error
-  when: apt_cache_stat.stat.exists
+  when: not apt_cache_stat.stat.exists
 
 - name: Install bootstrap packages
   ansible.builtin.apt:
