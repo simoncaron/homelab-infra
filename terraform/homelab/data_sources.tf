@@ -1,7 +1,3 @@
-data "bitwarden_item_login" "cloudflare_api_token" {
-  id = "26ce8b2c-4f13-4030-8a93-1d5b759e9574"
-}
-
 data "bitwarden_item_login" "proxmox_password" {
   id = "d68b9210-7ef9-4066-98db-1fee4492da8b"
 }

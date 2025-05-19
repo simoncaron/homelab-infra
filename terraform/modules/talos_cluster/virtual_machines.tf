@@ -15,7 +15,7 @@ module "k8s_cluster_nodes" {
   disks = concat(
     [
       {
-        datastore_id = "local-zfs"
+        datastore_id = "local-lvm"
         file_id = proxmox_virtual_environment_download_file.this["${each.value.pve_node}_${each.value.update_talos == true ?
         "${md5(join(",", var.talos_image.update_extensions))}_${var.talos_image.update_version}" : "${md5(join(",", var.talos_image.extensions))}_${var.talos_image.version}"}"].id
         interface = "scsi0"
@@ -25,7 +25,7 @@ module "k8s_cluster_nodes" {
   )
 
   initialization = {
-    datastore_id = "local-zfs"
+    datastore_id = "local-lvm"
     ip_config = {
       ipv4 = {
         address = "${each.value.interfaces[0].addresses[0]}/24"

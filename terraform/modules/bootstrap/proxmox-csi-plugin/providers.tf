@@ -3,5 +3,8 @@ terraform {
     proxmox = {
       source = "bpg/proxmox"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+    }
   }
 }
