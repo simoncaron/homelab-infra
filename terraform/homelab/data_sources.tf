@@ -17,3 +17,13 @@ data "bitwarden_item_secure_note" "sealed_secrets_private_key" {
 data "bitwarden_item_secure_note" "sealed_secrets_public_key" {
   id = "57f9dd37-16a3-4478-875f-07250b6210d4"
 }
+
+data "bitwarden_item_login" "default_root_password" {
+  id = "346d54b6-2be7-43aa-a23a-458285fd2a9f"
+}
+
+data "bitwarden_item_login" "default_ssh_public_key" {
+  id = "9a7a2810-5dcd-46a2-b805-d939a0267f17"
+}
+
+data "proxmox_virtual_environment_nodes" "pve_cluster_nodes" {}
