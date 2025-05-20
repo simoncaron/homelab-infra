@@ -94,24 +94,9 @@ variable "network_interfaces" {
   ]
 }
 
-variable "image_source" {
-  description = "The source of the Proxmox image. This is used to download the image from the Proxmox repository."
-  type = object({
-    content_type = string
-    datastore    = string
-    base_url     = string
-  })
-  default = {
-    base_url     = "http://download.proxmox.com/images/system"
-    content_type = "vztmpl"
-    datastore    = "local"
-  }
-}
-
-variable "os_image" {
+variable "template_file_id" {
+  description = "The Proxmox template file ID to use for the container."
   type        = string
-  default     = "debian-12-standard_12.2-1_amd64.tar.zst"
-  description = "The Proxmox image to use for the container. This is a required parameter."
 }
 
 variable "os_type" {

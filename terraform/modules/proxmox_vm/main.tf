@@ -1,4 +1,5 @@
 resource "proxmox_virtual_environment_vm" "vm" {
+  vm_id     = var.vm_id
   name      = var.vm_name
   node_name = var.node_name
   on_boot   = var.on_boot
@@ -8,8 +9,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
 
   pool_id = var.pool_id
-
-  tags = var.tags
+  tags    = var.tags
 
   serial_device {
     device = var.serial_device.device
@@ -26,8 +26,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
     floating  = var.memory_floating
   }
 
-  machine = var.machine
-
+  machine    = var.machine
   boot_order = var.boot_order
 
   dynamic "disk" {
@@ -53,10 +52,10 @@ resource "proxmox_virtual_environment_vm" "vm" {
       datastore_id = initialization.value.datastore_id
 
       dynamic "ip_config" {
-        for_each = initialization.value.ip_config != null ? [initialization.value.ip_config] : []
+        for_each = try(initialization.value.ip_config, null) != null ? [initialization.value.ip_config] : []
         content {
           dynamic "ipv4" {
-            for_each = ip_config.value.ipv4 != null ? [ip_config.value.ipv4] : []
+            for_each = try(ip_config.value.ipv4, null) != null ? [ip_config.value.ipv4] : []
             content {
               address = ipv4.value.address
               gateway = ipv4.value.gateway
@@ -64,6 +63,15 @@ resource "proxmox_virtual_environment_vm" "vm" {
           }
         }
       }
+
+      dynamic "user_account" {
+        for_each = try(initialization.value.user_account, null) != null ? [initialization.value.user_account] : []
+        content {
+          username = user_account.value.username
+          keys     = user_account.value.keys
+        }
+      }
+      vendor_data_file_id = try(initialization.value.vendor_data_file_id, null)
     }
   }
 
@@ -93,6 +101,15 @@ resource "proxmox_virtual_environment_vm" "vm" {
 }
 
 resource "adguard_rewrite" "proxmox_vm" {
+  count = var.initialization != null && can(var.initialization.ip_config.ipv4.address) ? 1 : 0
+
   answer = split("/", var.initialization.ip_config.ipv4.address)[0]
   domain = format("%s.%s", var.vm_name, var.domain)
+}
+
+resource "adguard_rewrite" "proxmox_vm_extra_rewrites" {
+  for_each = { for idx, rule in var.extra_adguard_rewrites : tostring(idx) => rule }
+
+  domain = each.value.domain
+  answer = each.value.answer
 }

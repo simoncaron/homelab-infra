@@ -8,6 +8,12 @@ variable "node_name" {
   type        = string
 }
 
+variable "vm_id" {
+  description = "Specific ID for the VM. If null or not provided, Proxmox will assign the next available ID."
+  type        = number
+  default     = null
+}
+
 variable "on_boot" {
   description = "Start the VM on boot"
   type        = bool
@@ -97,15 +103,20 @@ variable "scsi_hardware" {
 }
 
 variable "initialization" {
-  description = "Initialization configuration"
+  description = "Cloud-init configuration for the VM."
   type = object({
     datastore_id = string
-    ip_config = object({
-      ipv4 = object({
+    ip_config = optional(object({
+      ipv4 = optional(object({
         address = string
         gateway = string
-      })
-    })
+      }))
+    }))
+    user_account = optional(object({
+      username = string
+      keys     = list(string)
+    }))
+    vendor_data_file_id = optional(string)
   })
   default = null
 }
@@ -153,7 +164,16 @@ variable "serial_device" {
 }
 
 variable "domain" {
-  description = "Domain of the virtual machine"
+  description = "Domain of the virtual machine, used for the primary AdGuard rewrite rule."
   type        = string
   default     = "simn.io"
+}
+
+variable "extra_adguard_rewrites" {
+  description = "A list of extra AdGuard rewrite rules to create for the VM."
+  type = list(object({
+    domain = string
+    answer = string
+  }))
+  default = []
 }

@@ -1,8 +1,7 @@
 resource "proxmox_virtual_environment_file" "vpn_config_hook_script" {
-  for_each     = toset(data.proxmox_virtual_environment_nodes.pve_cluster_nodes.names)
   content_type = "snippets"
-  datastore_id = "local"
-  node_name    = each.value
+  datastore_id = "cephfs"
+  node_name    = "pvenuc01" # Not really important since cephfs is shared
 
   file_mode = "0700"
 
@@ -47,6 +46,22 @@ resource "proxmox_virtual_environment_file" "vpn_config_hook_script" {
   }
 }
 
+resource "proxmox_virtual_environment_download_file" "debian_12_container_template" {
+  content_type = "vztmpl"
+  datastore_id = "cephfs"
+  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  url          = "http://mirror.overthewire.com.au/proxmox/images/system/debian-12-standard_12.0-1_amd64.tar.zst"
+  overwrite    = false
+}
+
+resource "proxmox_virtual_environment_download_file" "debian_12_2_container_template" {
+  content_type = "vztmpl"
+  datastore_id = "cephfs"
+  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  url          = "http://download.proxmox.com/images/system/debian-12-standard_12.2-1_amd64.tar.zst"
+  overwrite    = false
+}
+
 module "lxc_dns02" {
   source = "../modules/proxmox_lxc"
 
@@ -88,8 +103,8 @@ EOT
     }
   ]
 
-  os_image            = "debian-12-standard_12.0-1_amd64.tar.zst"
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script["pvenuc01"].id
+  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
   tags                = ["debian", "dns-lxc", "tailscale"]
 
   cpu_cores        = 2
@@ -142,8 +157,8 @@ EOT
     }
   ]
 
-  os_image            = "debian-12-standard_12.0-1_amd64.tar.zst"
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script["pvenuc02"].id
+  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
   tags                = ["debian", "newt", "pangolin"]
 
   cpu_cores        = 2
@@ -174,7 +189,8 @@ module "lxc_jellyfin01" {
     }
   ]
 
-  tags = ["debian", "jellyfin", "gpu"]
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_2_container_template.id
+  tags             = ["debian", "jellyfin", "gpu"]
 
   cpu_cores        = 2
   memory_dedicated = 4096
@@ -215,7 +231,8 @@ module "lxc_plex01" {
     }
   ]
 
-  tags = ["debian", "plex", "gpu"]
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_2_container_template.id
+  tags             = ["debian", "plex", "gpu"]
 
   cpu_cores        = 2
   memory_dedicated = 4096
@@ -250,7 +267,8 @@ module "lxc_tdarr01" {
     }
   ]
 
-  tags = ["debian", "tdarr", "gpu"]
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_2_container_template.id
+  tags             = ["debian", "tdarr", "gpu"]
 
   cpu_cores        = 4
   memory_dedicated = 4096
@@ -285,7 +303,8 @@ module "lxc_forgejo01" {
     }
   ]
 
-  tags = ["debian", "git", "forgejo"]
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_2_container_template.id
+  tags             = ["debian", "git", "forgejo"]
 
   cpu_cores        = 4
   memory_dedicated = 4096
@@ -332,8 +351,8 @@ EOT
     }
   ]
 
-  os_image            = "debian-12-standard_12.0-1_amd64.tar.zst"
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script["pvenuc01"].id
+  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
   tags                = ["debian", "proxy", "tailscale"]
 
   # adguard_rewrite_rules = [

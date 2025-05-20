@@ -1,14 +1,4 @@
 # ./modules/lxc/main.tf
-
-resource "proxmox_virtual_environment_download_file" "os_image" {
-  content_type = var.image_source.content_type
-  datastore_id = var.image_source.datastore
-  node_name    = var.node_name
-  url          = "${var.image_source.base_url}/${var.os_image}"
-  file_name    = "${var.vm_id}-${var.os_image}"
-  overwrite    = false
-}
-
 resource "proxmox_virtual_environment_container" "lxc" {
   # Basic settings
   node_name     = var.node_name
@@ -27,7 +17,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
 
   # Operating System
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.os_image.id
+    template_file_id = var.template_file_id
     type             = var.os_type
   }
   unprivileged = var.unprivileged
