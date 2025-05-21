@@ -12,7 +12,7 @@ roles:
   - name: geerlingguy.security
     version: 3.0.0
   - name: oefenweb.postfix
-    version: v3.7.4
+    version: v3.7.5
   - name: geerlingguy.nut_client
     version: 1.1.0
   - name: geerlingguy.ntp
