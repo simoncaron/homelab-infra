@@ -32,7 +32,7 @@ spec:
 
     storageClass:
       - name: proxmox-data
-        storage: shared-ceph-k8s
+        storage: shared-ceph-rdb
         reclaimPolicy: Delete
         fstype: xfs
         cache: writeback
@@ -42,7 +42,7 @@ spec:
         annotations:
           storageclass.kubernetes.io/is-default-class: "true"
       - name: proxmox-data-ext4
-        storage: shared-ceph-k8s
+        storage: shared-ceph-rdb
         reclaimPolicy: Delete
         fstype: ext4
         cache: writeback

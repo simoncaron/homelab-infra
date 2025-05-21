@@ -29,13 +29,19 @@ pve_ceph_repository_line: "deb http://download.proxmox.com/debian/ceph-squid {{ 
 pve_ceph_network: "10.15.15.50/24"
 
 pve_ceph_osds:
-  - device: /dev/nvme0n1
+  - device: /dev/nvme1n1
     crush.device.class: NVMe
 
 pve_ceph_pools:
-  - name: shared-ceph-k8s
+  - name: shared-ceph-rdb
     autoscale_mode: "on"
     storage: true
+
+pve_ceph_fs:
+  - name: shared-ceph-fs
+    pgs: 64
+    storage: true
+    rule: replicated_rule
 
 pve_cluster_enabled: true
 pve_cluster_clustername: "pve-cluster01"
@@ -53,6 +59,11 @@ pve_storages:
     type: dir
     path: /var/lib/vz
     content: [ "iso", "backup", "vztmpl", "snippets" ]
+  - name: shared-ceph-fs
+    type: cephfs
+    path: /mnt/pve/shared-ceph-fs
+    content: [ "vztmpl", "iso", "snippets" ]
+    fsname: shared-ceph-fs
   - name: remote-cifs-truenas01
     type: dir
     path: /mnt/pve/remote-cifs-truenas01
@@ -102,22 +113,6 @@ network_configuration_interfaces:
     mtu: 9000
 
   - device: vmbr1
-    auto: true
-    method: static
-    family: inet
-    address: "10.10.10.1"
-    netmask: 255.255.255.0
-    bridge:
-      ports: none
-      stp: "off"
-      fd: 0
-    post-up:
-      - echo 1 > /proc/sys/net/ipv4/ip_forward
-      - iptables -t nat -A POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
-    post-down:
-      - iptables -t nat -D POSTROUTING -s '10.10.10.0/24' -o vmbr0 -j MASQUERADE
-
-  - device: vmbr2
     auto: true
     method: static
     family: inet

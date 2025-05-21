@@ -1,0 +1,5 @@
+---
+# lae.proxmox
+pve_ceph_osds:
+  - device: /dev/nvme0n1
+    crush.device.class: NVMe
