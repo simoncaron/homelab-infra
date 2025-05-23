@@ -58,16 +58,16 @@ pve_storages:
   - name: local
     type: dir
     path: /var/lib/vz
-    content: [ "iso", "backup", "vztmpl", "snippets" ]
+    content: ["iso", "backup", "vztmpl", "snippets"]
   - name: shared-ceph-fs
     type: cephfs
     path: /mnt/pve/shared-ceph-fs
-    content: [ "vztmpl", "iso", "snippets" ]
+    content: ["vztmpl", "iso", "snippets"]
     fsname: shared-ceph-fs
   - name: remote-cifs-truenas01
     type: dir
     path: /mnt/pve/remote-cifs-truenas01
-    content: [ "images", "rootdir" ]
+    content: ["images", "rootdir"]
     create_subdirs: false
     is_mountpoint: true
 

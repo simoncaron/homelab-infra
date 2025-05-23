@@ -2,3 +2,7 @@
 network_configuration_path: /etc/network/interfaces
 
 network_configuration_interfaces: []
+
+network_configuration_rename_default_nic_device: true
+
+network_configuration_rename_default_nic_device_name: "eno1"

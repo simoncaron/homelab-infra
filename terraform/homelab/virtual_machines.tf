@@ -1,7 +1,7 @@
 resource "proxmox_virtual_environment_download_file" "debian-12_cloud_image" {
   content_type = "iso"
-  datastore_id = "cephfs"
-  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  datastore_id = "shared-ceph-fs"
+  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
 
   file_name = "debian-12-generic-amd64.qcow2.img"
   url       = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
@@ -10,8 +10,8 @@ resource "proxmox_virtual_environment_download_file" "debian-12_cloud_image" {
 
 resource "proxmox_virtual_environment_file" "cloud_config_vendor" {
   content_type = "snippets"
-  datastore_id = "cephfs"
-  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  datastore_id = "shared-ceph-fs"
+  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
 
   source_raw {
     data = <<-EOF
@@ -75,7 +75,7 @@ module "vm_nextcloud01" {
   }
 
   network_devices = [{
-    bridge = "vmbr1"
+    bridge = "vnet01"
   }]
 
   extra_adguard_rewrites = [
@@ -126,7 +126,7 @@ module "vm_monitoring01" {
   }
 
   network_devices = [{
-    bridge = "vmbr1"
+    bridge = "vnet01"
   }]
 }
 
@@ -170,7 +170,7 @@ module "vm_docker01" {
   }
 
   network_devices = [{
-    bridge = "vmbr1"
+    bridge = "vnet01"
   }]
 }
 
@@ -214,6 +214,6 @@ module "vm_docker02" {
   }
 
   network_devices = [{
-    bridge = "vmbr1"
+    bridge = "vnet01"
   }]
 }

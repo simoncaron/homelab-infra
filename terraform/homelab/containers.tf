@@ -1,7 +1,7 @@
 resource "proxmox_virtual_environment_file" "vpn_config_hook_script" {
   content_type = "snippets"
-  datastore_id = "cephfs"
-  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  datastore_id = "shared-ceph-fs"
+  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
 
   file_mode = "0700"
 
@@ -48,16 +48,16 @@ resource "proxmox_virtual_environment_file" "vpn_config_hook_script" {
 
 resource "proxmox_virtual_environment_download_file" "debian_12_container_template" {
   content_type = "vztmpl"
-  datastore_id = "cephfs"
-  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  datastore_id = "shared-ceph-fs"
+  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
   url          = "http://mirror.overthewire.com.au/proxmox/images/system/debian-12-standard_12.0-1_amd64.tar.zst"
   overwrite    = false
 }
 
 resource "proxmox_virtual_environment_download_file" "debian_12_2_container_template" {
   content_type = "vztmpl"
-  datastore_id = "cephfs"
-  node_name    = "pvenuc01" # Not really important since cephfs is shared
+  datastore_id = "shared-ceph-fs"
+  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
   url          = "http://download.proxmox.com/images/system/debian-12-standard_12.2-1_amd64.tar.zst"
   overwrite    = false
 }
@@ -97,7 +97,7 @@ EOT
     },
     {
       name   = "eth1"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.114/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }
@@ -151,7 +151,7 @@ EOT
   network_interfaces = [
     {
       name   = "eth0"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.118/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }
@@ -225,7 +225,7 @@ module "lxc_plex01" {
     },
     {
       name   = "eth1"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.124/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }
@@ -261,7 +261,7 @@ module "lxc_tdarr01" {
   network_interfaces = [
     {
       name   = "eth0"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.129/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }
@@ -297,7 +297,7 @@ module "lxc_forgejo01" {
   network_interfaces = [
     {
       name   = "eth0"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.127/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }
@@ -325,7 +325,7 @@ module "lxc_proxy01" {
 
   description = <<EOT
 # proxy01.simn.io
-Private traefik routing proxy for vmbr1
+Private traefik routing proxy for vnet01
 EOT
 
   root_password   = data.bitwarden_item_login.default_root_password.password
@@ -345,7 +345,7 @@ EOT
     },
     {
       name   = "eth1"
-      bridge = "vmbr1"
+      bridge = "vnet01"
       ipv4   = { address = "10.10.10.113/24", gateway = "10.10.10.1" }
       ipv6   = { address = "auto" }
     }

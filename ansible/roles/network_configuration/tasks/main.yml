@@ -4,7 +4,15 @@
     src: interfaces.j2
     dest: "{{ network_configuration_path }}"
     mode: "0644"
-  notify: Restart networking service
+  notify: Reboot server
 
-- name: Force networking service restart
+- name: Rename Default NIC device
+  ansible.builtin.template:
+    src: 00-lan-rename.link.j2
+    dest: /etc/systemd/network/00-lan-rename.link
+    mode: "644"
+  when: network_configuration_rename_default_nic_device
+  notify: Reboot server
+
+- name: Force networking reload
   ansible.builtin.meta: flush_handlers
