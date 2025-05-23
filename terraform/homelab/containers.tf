@@ -1,51 +1,3 @@
-resource "proxmox_virtual_environment_file" "vpn_config_hook_script" {
-  content_type = "snippets"
-  datastore_id = "shared-ceph-fs"
-  node_name    = "pvenuc01" # Not really important since shared-ceph-fs is shared
-
-  file_mode = "0700"
-
-  source_raw {
-    data      = <<-EOF
-      #!/usr/bin/perl
-      use strict;
-      use warnings;
-
-      my $vmid = shift;
-      my $phase = shift;
-
-      if ($phase eq 'pre-start') {
-
-          my $file = "/etc/pve/lxc/$${vmid}.conf";
-
-          my @lines_to_add = (
-              'lxc.cgroup2.devices.allow: c 10:200 rwm',
-              'lxc.mount.entry: /dev/net dev/net none bind,create=dir',
-          );
-
-          open(my $fh, '<', $file) or die "Failed to open file '$file' : $!";
-          my @file_contents = <$fh>;
-          close($fh);
-
-          @file_contents = grep {
-              !/^lxc\.mount\.entry/ && !/^lxc\.cgroup2\.devices\.allow/
-          } @file_contents;
-
-          foreach my $line (@lines_to_add) {
-              unless (grep { $_ =~ /^\Q$line\E$/ } @file_contents) {
-                  push @file_contents, "$line\n";
-              }
-          }
-
-          open(my $fh_out, '>', $file) or die "Failed to open file '$file' in write mode : $!";
-          print $fh_out @file_contents;
-          close($fh_out);
-      }
-      EOF
-    file_name = "vpn-config-hook-script.pl"
-  }
-}
-
 resource "proxmox_virtual_environment_download_file" "debian_12_container_template" {
   content_type = "vztmpl"
   datastore_id = "shared-ceph-fs"
@@ -103,9 +55,13 @@ EOT
     }
   ]
 
-  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
-  tags                = ["debian", "dns-lxc", "tailscale"]
+  device_passthrough = [{
+    path = "/dev/net/tun"
+    mode = "0666"
+  }]
+
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  tags             = ["debian", "dns-lxc", "tailscale"]
 
   cpu_cores        = 2
   memory_dedicated = 512
@@ -157,9 +113,13 @@ EOT
     }
   ]
 
-  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
-  tags                = ["debian", "newt", "pangolin"]
+  device_passthrough = [{
+    path = "/dev/net/tun"
+    mode = "0666"
+  }]
+
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  tags             = ["debian", "newt", "pangolin"]
 
   cpu_cores        = 2
   memory_dedicated = 512
@@ -195,6 +155,11 @@ module "lxc_jellyfin01" {
   cpu_cores        = 2
   memory_dedicated = 4096
   disk_size        = 128
+
+  device_passthrough = [{
+    path = "/dev/dri/renderD128"
+    mode = "0666"
+  }]
 
   mount_points = [
     { path = "/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
@@ -238,6 +203,11 @@ module "lxc_plex01" {
   memory_dedicated = 4096
   disk_size        = 128
 
+  device_passthrough = [{
+    path = "/dev/dri/renderD128"
+    mode = "0666"
+  }]
+
   mount_points = [
     { path = "/data", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]
@@ -273,6 +243,11 @@ module "lxc_tdarr01" {
   cpu_cores        = 4
   memory_dedicated = 4096
   disk_size        = 128
+
+  device_passthrough = [{
+    path = "/dev/dri/renderD128"
+    mode = "0666"
+  }]
 
   mount_points = [
     { path = "/mnt/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
@@ -351,9 +326,13 @@ EOT
     }
   ]
 
-  template_file_id    = proxmox_virtual_environment_download_file.debian_12_container_template.id
-  hook_script_file_id = proxmox_virtual_environment_file.vpn_config_hook_script.id
-  tags                = ["debian", "proxy", "tailscale"]
+  device_passthrough = [{
+    path = "/dev/net/tun"
+    mode = "0666"
+  }]
+
+  template_file_id = proxmox_virtual_environment_download_file.debian_12_container_template.id
+  tags             = ["debian", "proxy", "tailscale"]
 
   # adguard_rewrite_rules = [
   #   { domain = "proxy01.simn.io", answer = "192.168.1.113" },
