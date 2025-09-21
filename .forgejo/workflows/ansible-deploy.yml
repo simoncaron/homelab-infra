@@ -15,7 +15,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v5
         with:
-          ref: master
+          ref: main
           token: ${{ secrets.REPOSITORIES_TOKEN }}
           submodules: true
 
