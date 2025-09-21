@@ -1,4 +1,4 @@
-# Infrastructure
+# homelab-infra
 
 ## Requirements
 
@@ -14,9 +14,7 @@
 
 ### Private Settings
 
-Ansible integrates with Hashicorp Vault Secrets through its CLI.
-
-Terraform secrets need to be referenced in `terraform/secrets.tf`.
+This project uses ansible-vault for managing secrets for both Ansible/Docker configurations and Terraform deployments.
 
 ## Deploying
 
