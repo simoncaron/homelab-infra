@@ -1,0 +1,64 @@
+---
+- name: Setting docker compose app variables
+  ansible.builtin.set_fact:
+    app_name: "{{ compose_file_path | basename }}"
+    app_folder: "{{ docker_compose_base_folder }}/{{ compose_file_path | basename }}"
+
+- name: "{{ '[{}] Create install directory'.format(app_name) }}"
+  ansible.builtin.file:
+    path: "{{ app_folder }}"
+    state: directory
+    owner: "{{ docker_compose_user_name }}"
+    group: "{{ docker_compose_user_name }}"
+    mode: "{{ docker_compose_directory_mask }}"
+
+- name: "{{ '[{}] List configuration files'.format(app_name) }}"
+  delegate_to: localhost
+  ansible.builtin.find:
+    paths: "{{ compose_file_path }}"
+    recurse: true
+    excludes: docker-compose.yml
+    hidden: true
+  register: app_config_files
+  become: false
+
+- name: Get configuration files paths
+  ansible.builtin.set_fact:
+    config_files: "{{ app_config_files.files | map(attribute='path') | list }}"
+
+- name: "{{ '[{}] Ensures configuration directories exists'.format(app_name) }}"
+  ansible.builtin.file:
+    path: "{{ item | regex_replace('^' + (item.startswith(docker_compose_local_common_folder) | ternary(docker_compose_local_common_folder, docker_compose_local_folder)), docker_compose_base_folder) | dirname }}"
+    state: directory
+    owner: "{{ docker_compose_user_name }}"
+    group: "{{ docker_compose_user_name }}"
+    mode: "{{ docker_compose_directory_mask }}"
+  loop: "{{ config_files }}"
+
+- name: "{{ '[{}] Copy configuration files'.format(app_name) }}"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ item | regex_replace('^' + (item.startswith(docker_compose_local_common_folder) | ternary(docker_compose_local_common_folder, docker_compose_local_folder)), docker_compose_base_folder) }}"
+    owner: "{{ docker_compose_user_name }}"
+    group: "{{ docker_compose_user_name }}"
+    mode: "{{ (item.endswith('.sh')) | ternary('0755', '0644') }}"
+  loop: "{{ config_files }}"
+  register: config_files_results
+
+- name: "{{ '[{}] Copy docker-compose file'.format(app_name) }}"
+  ansible.builtin.template:
+    src: "{{ compose_file_path }}/docker-compose.yml"
+    dest: "{{ app_folder }}/docker-compose.yml"
+    mode: "{{ docker_compose_file_mask }}"
+    owner: "{{ docker_compose_user_name }}"
+    group: "{{ docker_compose_user_name }}"
+  register: docker_compose_file
+
+- name: "{{ '[{}] Restart docker-compose apps'.format(app_name) }}"
+  ansible.builtin.shell:
+    chdir: "{{ app_folder }}"
+    cmd: "{{ docker_update_command }}"
+  when: docker_compose_file.changed or config_files_results.results|select("changed")|length > 0
+  register: compose_output
+  changed_when: compose_output.rc == 0
+  failed_when: compose_output.rc != 0

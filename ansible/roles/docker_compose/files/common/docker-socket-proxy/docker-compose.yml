@@ -1,0 +1,20 @@
+---
+services:
+  app:
+    image: ghcr.io/tecnativa/docker-socket-proxy:v0.4.1
+    container_name: docker-socket-proxy
+    ports:
+      - 2375:2375
+    environment:
+      CONTAINERS: "1"
+      INFO: "1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    logging:
+      driver: none
+
+networks:
+  default:
+    name: internal
+    external: true

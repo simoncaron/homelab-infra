@@ -1,0 +1,59 @@
+---
+services:
+  app:
+    image: ghcr.io/rommapp/romm:4.2.0
+    environment:
+      DB_HOST: db
+      DB_NAME: romm
+      HASHEOUS_API_ENABLED: "true"
+    env_file: .env
+    networks:
+      - default
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.romm.rule: Host(`romm.simn.io`)
+      traefik.http.services.romm.loadbalancer.server.port: "8080"
+    ports:
+      - 8080:8080
+    volumes:
+      - /opt/romm/resources:/romm/resources
+      - /opt/redis/romm:/redis-data
+      - /opt/romm/assets:/romm/assets
+      - /opt/romm/config:/romm/config
+      - cifs-media-roms-volume:/romm/library/roms
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    restart: unless-stopped
+
+  db:
+    image: mariadb:11.8.3
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWD}
+      MYSQL_DATABASE: romm
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWD}
+    volumes:
+      - /opt/mariadb/romm:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      start_period: 30s
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cifs-media-roms-volume:
+    driver_opts:
+      type: cifs
+      o: vers=3.1.1,_netdev,iocharset=utf8,noatime,dir_mode=0755,file_mode=0644,user={{ cifs_username }},pass={{ cifs_password }}
+      device: //{{ network_hosts.truenas01.ip }}/roms/us-retail
+
+networks:
+  traefik:
+    name: internal
+    external: true

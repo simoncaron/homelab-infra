@@ -1,0 +1,12 @@
+---
+services:
+  app:
+    image: ghcr.io/realorangeone/db-auto-backup@sha256:1e4b5028fbc31159fa123725d97f35f54611d642f5195c79e86e561144753129
+    restart: unless-stopped
+    network_mode: none
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/db-auto-backup/backups:/var/backups
+    environment:
+      COMPRESSION: gzip
+      INCLUDE_LOGS: true

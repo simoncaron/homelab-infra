@@ -1,0 +1,18 @@
+[Unit]
+Description=AdGuardHome DNS Server
+ConditionFileIsExecutable=/usr/local/bin/AdGuardHome
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=0
+User=adguardhome
+Group=adguardhome
+WorkingDirectory=/var/lib/adguardhome
+ExecStart=/usr/local/bin/AdGuardHome --config /etc/adguardhome/AdGuardHome.yaml --work-dir /var/lib/adguardhome
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target

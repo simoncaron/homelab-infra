@@ -1,0 +1,53 @@
+---
+name: Ansible Deploy Docker Compose
+on:
+  schedule:
+    - cron: 0 7 * * *
+  workflow_dispatch:
+
+jobs:
+  ansible:
+    name: Ansible Docker Deploy
+    runs-on: ubuntu-latest
+    env:
+      ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v5
+        with:
+          ref: master
+          token: ${{ secrets.REPOSITORIES_TOKEN }}
+          submodules: true
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.13
+
+      - uses: taiki-e/install-action@just
+
+      - name: Ansible Setup
+        run: just ansible-setup
+
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+
+      - name: Ansible Deploy Docker
+        run: just ansible-deploy --limit docker --tags docker-compose
+
+      - name: Ansible Deploy Newt
+        run: just ansible-deploy --limit newt --tags newt
+
+      - name: Ansible Deploy Adguard Home
+        run: just ansible-deploy --limit dns --tags adguardhome
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          curl -s \
+            --form-string "token=$${{ secrets.PUSHOVER_APP_TOKEN }}" \
+            --form-string "user=$${{ secrets.PUSHOVER_USER_TOKEN }}" \
+            --form-string "message=Ansible Deploy Pipeline Failed!" \
+            https://api.pushover.net/1/messages.json

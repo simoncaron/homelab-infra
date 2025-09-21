@@ -1,0 +1,13 @@
+---
+bootstrap_initial_user: root
+
+bootstrap_default_locale: en_US.UTF-8
+
+bootstrap_packages:
+  - sudo
+
+bootstrap_groups: []
+
+bootstrap_users: []
+
+bootstrap_extra_users: []

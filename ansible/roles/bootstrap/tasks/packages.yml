@@ -1,0 +1,11 @@
+---
+- name: Refresh package cache
+  ansible.builtin.apt:
+    update_cache: true
+  failed_when: false  # Handle Proxmox Enterprise repos error
+  changed_when: false
+
+- name: Install bootstrap packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  with_items: "{{ bootstrap_packages }}"

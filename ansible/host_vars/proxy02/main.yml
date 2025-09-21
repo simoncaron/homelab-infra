@@ -1,0 +1,24 @@
+# artis3n.tailscale.machine
+tailscale_args: --advertise-routes={{ pve_hosts.cidr_external }}
+
+# onkeldom.traefik
+traefik_rules_config:
+  - name: compress
+    content:
+      http:
+        middlewares:
+          compress:
+            compress: {}
+
+  - name: plex
+    content:
+      http:
+        routers:
+          router-plex:
+            rule: Host(`plex.simn.io`) || Host(`pms.simn.io`)
+            service: service-plex
+        services:
+          service-plex:
+            loadBalancer:
+              servers:
+                - url: https://{{ pve_hosts.plex01.ip }}:32400

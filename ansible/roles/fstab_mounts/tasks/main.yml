@@ -1,0 +1,37 @@
+---
+- name: Create mount group
+  ansible.builtin.group:
+    name: "{{ fstab_mounts_group.name }}"
+    state: present
+    gid: "{{ fstab_mounts_group.id }}"
+  become: true
+  when: fstab_mounts_group.create
+
+- name: Create mount user
+  ansible.builtin.user:
+    name: "{{ fstab_mounts_user.name }}"
+    uid: "{{ fstab_mounts_user.id }}"
+    group: "{{ fstab_mounts_group.name }}"
+    create_home: false
+  become: true
+  when: fstab_mounts_user.create
+
+- name: Create /mnt points
+  ansible.builtin.file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{ fstab_mounts_user.id }}"
+    group: "{{ fstab_mounts_group.id }}"
+    mode: "0770"
+  with_items:
+    - "{{ fstab_mounts_mountpoints }}"
+
+- name: Mount disks
+  ansible.posix.mount:
+    name: "{{ item.path }}"
+    src: "{{ item.src }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    state: mounted
+  with_items:
+    - "{{ fstab_mounts_mountpoints }}"

@@ -1,0 +1,20 @@
+---
+network_interfaces_resolv_nameservers: []
+
+network_interfaces_resolv_domain: ""
+
+network_interfaces_resolv_search: []
+
+network_interfaces_resolv_sortlist: []
+
+network_interfaces_resolv_options: []
+
+network_interfaces_config_path: /etc/network/interfaces
+
+network_interfaces_list: []
+
+network_interfaces_extra_config: []
+
+network_interfaces_packages: []
+
+network_interfaces_enable_ip_forwarding: true

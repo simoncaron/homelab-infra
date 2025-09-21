@@ -1,0 +1,14 @@
+skip_list:
+  - command-instead-of-shell
+  - no-handler
+  - git-latest
+  - yaml[line-length]
+  - args[module]
+  - risky-file-permissions
+  - var-naming[no-role-prefix]
+  - name[play]
+
+exclude_paths:
+  - .ansible/
+  - "**/vault.yml"
+  - .venv

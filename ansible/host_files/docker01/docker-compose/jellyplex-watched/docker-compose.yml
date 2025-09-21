@@ -1,0 +1,14 @@
+---
+services:
+  app:
+    image: ghcr.io/luigi311/jellyplex-watched:8.3.0
+    restart: unless-stopped
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+    env_file: .env
+
+networks:
+  default:
+    name: internal
+    external: true

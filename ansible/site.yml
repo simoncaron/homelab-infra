@@ -1,0 +1,73 @@
+---
+- hosts: all
+  gather_facts: false
+  roles:
+    - bootstrap
+    - geerlingguy.security
+
+- hosts: pve
+  roles:
+    - network_interfaces
+    - fstab_mounts
+    - lae.proxmox
+    - simoncaron.pve_acme
+    - geerlingguy.nut_client
+    - oefenweb.postfix
+
+- hosts: raspberrypi
+  roles:
+    - geerlingguy.raspberry-pi
+
+- hosts: docker
+  roles:
+    - geerlingguy.docker
+    - role: docker_compose
+      tags: [docker-compose]
+
+- hosts: forgejo
+  roles:
+    - geerlingguy.redis
+    - geerlingguy.mysql
+    - role: wzzrd.gitea.gitea
+      tags: [forgejo]
+
+- hosts:
+    - pve01
+    - gpu
+  roles:
+    - simoncaron.pve_nvidia_passthrough
+
+- hosts: tdarr
+  roles:
+    - tdarr
+
+- hosts: newt
+  tags: [newt]
+  roles:
+    - newt
+
+- hosts: jellyfin
+  roles:
+    - jellyfin
+
+- hosts: plex
+  roles:
+    - plex
+
+- hosts: proxy
+  roles:
+    - geerlingguy.redis
+    - simoncaron.traefik
+
+- hosts:
+    - dns
+    - proxy
+  roles:
+    - artis3n.tailscale.machine
+
+- hosts: dns
+  roles:
+    - dns_prereq
+    - nickjj.acme_sh
+    - role: bcook254.adguardhome
+      tags: [adguardhome]

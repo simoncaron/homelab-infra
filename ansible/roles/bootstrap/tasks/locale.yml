@@ -1,0 +1,23 @@
+---
+- name: Check current default locale value
+  ansible.builtin.set_fact:
+    current_locale: "{{ lookup('env', 'LANG') }}"
+
+- name: Ensure a locale exists
+  community.general.locale_gen:
+    name: "{{ bootstrap_default_locale }}"
+    state: present
+  when: current_locale != bootstrap_default_locale
+
+- name: Copy default locale file
+  ansible.builtin.template:
+    src: locale.j2
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: "0644"
+  when: current_locale != bootstrap_default_locale
+
+- name: Run update-locale
+  ansible.builtin.command: update-locale
+  changed_when: false

@@ -1,0 +1,35 @@
+---
+services:
+  app:
+    image: ghcr.io/atuinsh/atuin:v18.8.0
+    environment:
+      TZ: America/Toronto
+      RUST_LOG: info
+      ATUIN_DB_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+      ATUIN_HOST: 0.0.0.0
+      ATUIN_OPEN_REGISTRATION: false
+    command: server start
+    labels:
+      traefik.enable: true
+      traefik.http.routers.atuin.rule: Host(`atuin.simn.io`)
+      traefik.http.services.atuin.loadbalancer.server.port: "8888"
+    ports:
+      - 8888:8888
+    networks:
+      - default
+      - traefik
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:17.6
+    env_file: .env
+    volumes:
+      - /opt/postgresql/atuin:/var/lib/postgresql/data
+    restart: unless-stopped
+
+networks:
+  traefik:
+    name: internal
+    external: true

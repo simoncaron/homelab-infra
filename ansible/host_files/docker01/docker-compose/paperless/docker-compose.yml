@@ -1,0 +1,53 @@
+---
+services:
+  redis:
+    image: redis:8.2.1-alpine
+    restart: unless-stopped
+    volumes:
+      - /opt/redis/paperless:/data
+
+  db:
+    image: postgres:16.1-alpine3.17
+    restart: unless-stopped
+    volumes:
+      - /opt/postgresql/paperless:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: ${PAPERLESS_DBUSER}
+      POSTGRES_PASSWORD: ${PAPERLESS_DBPASS}
+
+  app:
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.18.4
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    networks:
+      - default
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.paperless.rule: Host(`paperless.simn.io`)
+      traefik.http.services.paperless.loadbalancer.server.port: "8000"
+    ports:
+      - 8000:8000
+    volumes:
+      - /opt/paperless/data:/usr/src/paperless/data
+      - /opt/paperless/media:/usr/src/paperless/media
+      - /opt/paperless/export:/usr/src/paperless/export
+      - /opt/paperless/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_OCR_LANGUAGES: fra eng
+      PAPERLESS_OCR_LANGUAGE: fra
+      PAPERLESS_TIME_ZONE: "{{ default_timezone }}"
+      PAPERLESS_URL: https://paperless.simn.io
+      USERMAP_UID: "{{ docker_compose_user_id }}"
+      USERMAP_GID: "{{ docker_compose_group_id }}"
+    env_file: .env
+
+networks:
+  traefik:
+    name: internal
+    external: true

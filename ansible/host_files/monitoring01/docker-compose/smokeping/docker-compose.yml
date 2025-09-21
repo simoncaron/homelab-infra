@@ -1,0 +1,19 @@
+---
+services:
+  app:
+    image: lscr.io/linuxserver/smokeping:2.9.0
+    environment:
+      TZ: "{{ default_timezone }}"
+      PUID: "{{ docker_compose_user_id }}"
+      PGID: "{{ docker_compose_group_id }}"
+      UMASK: "022"
+    restart: unless-stopped
+    ports:
+      - 80:80
+    labels:
+      traefik.enable: true
+      traefik.http.routers.smokeping.rule: Host(`smokeping.simn.io`)
+      traefik.http.services.smokeping.loadbalancer.server.port: "80"
+    volumes:
+      - /opt/smokeping/config:/config
+      - /opt/smokeping/data:/data

@@ -1,0 +1,12 @@
+---
+services:
+  app:
+    image: telegraf:1.36.1
+    env_file: .env
+    command: --config https://influxdb.simn.io:8086/api/v2/telegrafs/0d68220456b74000
+    restart: unless-stopped
+
+networks:
+  default:
+    name: internal
+    external: true

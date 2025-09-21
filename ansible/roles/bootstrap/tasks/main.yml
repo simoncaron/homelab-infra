@@ -1,0 +1,46 @@
+---
+- name: Check if initial user config is already done
+  ansible.builtin.command: ssh -q -o BatchMode=yes -o ConnectTimeout=3 {{ ansible_user }}@{{ inventory_hostname }} "echo OK"
+  delegate_to: 127.0.0.1
+  changed_when: false
+  failed_when: false
+  register: boostrap_check_ansible_user
+  become: false
+
+- name: Save current Ansible User
+  ansible.builtin.set_fact:
+    current_user: "{{ ansible_user }}"
+
+- name: Set Ansible User
+  ansible.builtin.set_fact:
+    ansible_user: "{{ bootstrap_initial_user }}"
+  # yamllint disable-line rule:quoted-strings
+  when: '"OK" not in boostrap_check_ansible_user.stdout'
+
+- name: Create Ansible user and grant privileges
+  block:
+    - name: Install required packages
+      ansible.builtin.include_tasks: packages.yml
+
+    - name: Check/Create bootstrap groups
+      ansible.builtin.include_tasks: groups.yml
+      loop: "{{ bootstrap_groups }}"
+      loop_control:
+        loop_var: group
+
+    - name: Check/Create bootstrap users
+      ansible.builtin.include_tasks: users.yml
+      loop: "{{ bootstrap_users + bootstrap_extra_users }}"
+      loop_control:
+        loop_var: user
+      no_log: true
+
+    - name: Configure locale
+      ansible.builtin.include_tasks: locale.yml
+
+- name: Gather facts
+  ansible.builtin.include_tasks: facts.yml
+
+- name: Reset Ansible User
+  ansible.builtin.set_fact:
+    ansible_user: "{{ current_user }}"

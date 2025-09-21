@@ -1,0 +1,57 @@
+---
+services:
+  server:
+    image: ghcr.io/immich-app/immich-server:v1.142.1
+    volumes:
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    networks:
+      - default
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.immich.rule: Host(`immich.simn.io`)
+      traefik.http.services.immich-proxy.loadbalancer.server.port: "2283"
+    ports:
+      - 2283:2283
+    depends_on:
+      - redis
+      - database
+    restart: unless-stopped
+    healthcheck:
+      disable: false
+
+  machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:v1.142.1
+    volumes:
+      - /opt/immich/model-cache:/cache
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      disable: false
+
+  redis:
+    image: docker.io/valkey/valkey:8-bookworm@sha256:fea8b3e67b15729d4bb70589eb03367bab9ad1ee89c876f54327fc7c6e618571
+    healthcheck:
+      test: redis-cli ping || exit 1
+    restart: unless-stopped
+
+  database:
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      POSTGRES_INITDB_ARGS: --data-checksums
+    volumes:
+      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+    shm_size: 128mb
+    restart: unless-stopped
+
+networks:
+  traefik:
+    name: internal
+    external: true

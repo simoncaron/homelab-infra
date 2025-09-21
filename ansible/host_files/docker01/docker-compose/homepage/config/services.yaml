@@ -1,0 +1,178 @@
+- Infrastructure:
+    - TrueNAS SCALE:
+        href: https://truenas01.simn.io
+        icon: truenas-scale.png
+        description: truenas01.simn.io
+        widget:
+          type: truenas
+          url: https://truenas01.simn.io
+          key: "{{ '{{' }}HOMEPAGE_VAR_services_truenas_key{{ '}}' }}"
+    - Proxmox Virtual Environment:
+        href: https://pve01.simn.io:8006/
+        icon: proxmox.png
+        description: pve01.simn.io
+        widget:
+          type: proxmox
+          url: https://pve01.simn.io:8006
+          username: "{{ '{{' }}HOMEPAGE_VAR_services_pve_username{{ '}}' }}"
+          password: "{{ '{{' }}HOMEPAGE_VAR_services_pve_password{{ '}}' }}"
+    - Unifi Controller:
+        href: https://unifi.ui.com/
+        icon: unifi.png
+        description: unifi.ui.com
+        widget:
+          type: unifi
+          url: https://{{ network_hosts.gateway.ip }}:443
+          username: "{{ '{{' }}HOMEPAGE_VAR_settings_unifi_username{{ '}}' }}"
+          password: "{{ '{{' }}HOMEPAGE_VAR_settings_unifi_password{{ '}}' }}"
+    - AdGuard Home - DNS01:
+        href: https://dns01.simn.io/
+        icon: adguard-home.png
+        description: dns01.simn.io
+        widget:
+          type: adguard
+          url: https://dns01.simn.io
+          username: "{{ '{{' }}HOMEPAGE_VAR_services_adguard_username{{ '}}' }}"
+          password: "{{ '{{' }}HOMEPAGE_VAR_services_adguard_password{{ '}}' }}"
+    - AdGuard Home - DNS02:
+        href: https://dns02.simn.io/
+        icon: adguard-home.png
+        description: dns02.simn.io
+        widget:
+          type: adguard
+          url: https://dns02.simn.io
+          username: "{{ '{{' }}HOMEPAGE_VAR_services_adguard_username{{ '}}' }}"
+          password: "{{ '{{' }}HOMEPAGE_VAR_services_adguard_password{{ '}}' }}"
+    - PeaNUT:
+        href: https://peanut.simn.io/
+        icon: https://github.com/Brandawg93/PeaNUT/raw/main/src/app/icon.svg
+        container: peanut-app-1
+        server: monitoring01
+        description: peanut.simn.io
+        widget:
+          type: customapi
+          url: https://peanut.simn.io/api/v1/devices/nut-server
+          mappings:
+            - field: battery.charge
+              label: Battery Charge
+              format: percent
+            - field: ups.load
+              label: UPS Load
+              format: percent
+            - field: ups.status
+              label: UPS Status
+              format: text
+              remap:
+                - value: OL
+                  to: Online
+                - value: OB
+                  to: On Battery
+                - value: LB
+                  to: Low Battery
+                - any: true
+                  to: Unknown
+
+- Streaming Media Providers:
+    - Plex:
+        icon: plex.png
+        href: https://plex.simn.io/
+        description: plex.simn.io
+        widget:
+          type: plex
+          url: https://plex.simn.io
+          key: "{{ '{{' }}HOMEPAGE_VAR_services_plex_key{{ '}}' }}"
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://jellyfin.simn.io/
+        description: jellyfin.simn.io
+        widget:
+          type: jellyfin
+          url: https://jellyfin.simn.io
+          key: "{{ '{{' }}HOMEPAGE_VAR_services_jellyfin_key{{ '}}' }}"
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: https://audiobookshelf.simn.io/
+        container: audiobookshelf-app-1
+        server: docker01
+        description: audiobookshelf.simn.io
+        widget:
+          type: audiobookshelf
+          url: https://audiobookshelf.simn.io
+          key: "{{ '{{' }}HOMEPAGE_VAR_services_audiobookshelf_key{{ '}}' }}"
+    - Tautulli:
+        icon: tautulli.png
+        href: https://tautulli.simn.io/
+        container: tautulli-app-1
+        server: docker01
+        description: tautulli.simn.io
+    - Jellystat:
+        icon: jellystat.png
+        href: https://jellystat.simn.io/
+        container: jellystat-app-1
+        server: docker01
+        description: jellystat.simn.io
+    - Jellyseerr:
+        icon: jellyseerr.png
+        href: https://jellyseerr.simn.io/
+        container: jellyseerr-app-1
+        server: docker01
+        description: jellyseerr.simn.io
+
+- Media Management Tools:
+    - Tdarr:
+        icon: tdarr.png
+        weight: 10
+        href: https://tdarr.simn.io/
+        description: tdarr.simn.io
+
+- Self-Hosting:
+    - Vaultwarden:
+        href: https://bw.simn.io/
+        icon: bitwarden.png
+        server: docker01
+        container: vaultwarden-app-1
+        description: bw.simn.io
+    - Paperless:
+        href: https://paperless.simn.io/
+        icon: paperless.png
+        server: docker01
+        container: paperless-app-1
+        description: paperless.simn.io
+    - Forgejo:
+        href: https://git.simn.io/
+        icon: forgejo.png
+        description: git.simn.io
+    - Nextcloud:
+        href: https://cloud.simn.io/
+        icon: nextcloud.png
+        description: cloud.simn.io
+    - immich:
+        icon: immich.png
+        href: https://immich.simn.io/
+        container: immich-server-1
+        server: docker01
+        description: immich.simn.io
+
+- Remote Administration:
+    - iLO 4 - HPE Proliant Microserver Gen8:
+        href: https://ilo.truenas01.simn.io/
+        icon: https://i.imgur.com/us9ijiq.png
+        description: ilo.truenas01.simn.io
+    - iLO 5 - HPE Proliant Microserver Gen10 Plus:
+        href: https://ilo.pve01.simn.io/
+        icon: https://i.imgur.com/us9ijiq.png
+        description: ilo.pve01.simn.io
+
+- Backups/Security:
+    - Proxmox Backup Server:
+        href: https://pbs01.simn.io:8007/
+        icon: proxmox.png
+        description: pbs01.simn.io
+    - Proxmox Backup Server:
+        href: https://pbs001.tuxis.nl:8007/
+        description: pbs001.tuxis.nl
+        icon: proxmox.png
+    - Authelia:
+        href: https://auth.simn.io/
+        icon: authelia.png
+        description: auth.simn.io

@@ -1,0 +1,22 @@
+---
+- name: Create user {{ user.name }}
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    password: "{{ user.password | default(omit) }}"
+    shell: "{{ user.shell | default(omit) }}"
+    uid: "{{ user.uid | default(omit) }}"
+    create_home: "{{ user.create_home | default(true) }}"
+
+- name: Add authorized key for user {{ user.name }}
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub', errors='warn') }}"
+    exclusive: true
+  when: user.ssh_key is defined
+
+- name: Allow sudo for user {{ user.name }}
+  ansible.builtin.copy:
+    content: "{{ user.visudo }}"
+    dest: /etc/sudoers.d/{{ user.name }}
+    mode: "0600"
+  when: user.visudo is defined

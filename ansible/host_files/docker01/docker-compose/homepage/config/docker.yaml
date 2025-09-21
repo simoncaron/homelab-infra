@@ -1,0 +1,19 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/docker/
+
+# my-docker:
+#   host: 127.0.0.1
+#   port: 2375
+
+docker01:
+  host: "{{ pve_hosts.docker01.ip }}"
+  port: 2375
+
+docker02:
+  host: "{{ pve_hosts.docker02.ip }}"
+  port: 2375
+
+monitoring01:
+  host: "{{ pve_hosts.monitoring01.ip }}"
+  port: 2375

@@ -1,0 +1,3 @@
+---
+jellyfin_apt_gpg_key: https://repo.jellyfin.org/jellyfin_team.gpg.key
+jellyfin_apt_arch: amd64

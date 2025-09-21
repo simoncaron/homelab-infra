@@ -1,0 +1,152 @@
+---
+# network_interfaces
+network_interfaces_resolv_nameservers:
+  - 192.168.1.10
+  - 192.168.1.114
+
+network_interfaces_resolv_search:
+  - simn.io
+
+network_interfaces_list:
+  - device: eno1
+    auto: false
+    method: manual
+    family: inet
+
+  - device: eno2
+    auto: false
+    method: manual
+    family: inet
+
+  - device: eno3
+    auto: false
+    method: manual
+    family: inet
+
+  - device: eno4
+    auto: false
+    method: manual
+    family: inet
+
+  # main bond device
+  - device: bond0
+    method: manual
+    auto: false
+    family: inet
+    bond:
+      mode: 802.3ad
+      xmit-hash-policy: layer2+3
+      miimon: 100
+      slaves: eno1 eno2 eno3 eno4
+
+  # main bridge device
+  - device: vmbr0
+    auto: true
+    method: static
+    family: inet
+    address: "{{ network_hosts.pve01.ip }}/24"
+    gateway: "{{ network_hosts.gateway.ip }}"
+    bridge:
+      ports: bond0
+      stp: "off"
+      fd: 0
+
+network_interfaces_packages:
+  - frr-pythontools
+
+network_interfaces_extra_config:
+  - source /etc/network/interfaces.d/*
+
+# geerlingguy.nut_client
+nut_client_server: "{{ network_hosts.truenas01.ip }}"
+
+# fstab_mounts
+fstab_mounts_user:
+  create: true
+  name: lxc-shares
+  id: "110000"
+
+fstab_mounts_group:
+  create: true
+  name: lxc-shares
+  id: "110000"
+
+fstab_mounts_mountpoints:
+  - path: /mnt/pve/remote-cifs-truenas01
+    src: //{{ network_hosts.truenas01.ip }}/media
+    fs: cifs
+    opts: vers=3.1.1,_netdev,iocharset=utf8,x-systemd.automount,noatime,uid={{ fstab_mounts_user.id }},gid={{ fstab_mounts_group.id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
+
+# simoncaron.pve_nvidia_passthrough
+pve_nvidia_passthrough_driver_version: 570.172.08
+
+# oefenweb.postfix
+postfix_install:
+  - libsasl2-modules
+
+postfix_sasl_auth_enable: true
+postfix_sasl_security_options: noanonymous, noplaintext
+postfix_smtpd_tls_cert_file: /etc/ssl/certs
+
+# lae.proxmox
+pve_group: pve
+
+pve_remove_old_kernels: false
+pve_reboot_on_kernel_update: true
+
+pve_zfs_enabled: true
+pve_zfs_options: zfs_arc_max=6726615040
+
+pve_groups:
+  - name: api-ro-users
+
+pve_acls:
+  - path: /
+    roles: [PVEAuditor]
+    groups: [api-ro-users]
+
+pve_pools:
+  - name: terraform
+    comment: Resources managed using terraform
+  - name: manual
+    comment: Manually created resources
+  - name: ansible
+    comment: Resources managed using ansible
+
+pve_storages:
+  - name: local
+    type: dir
+    path: /var/lib/vz
+    content: [iso, backup, vztmpl, snippets]
+  - name: remote-cifs-truenas01
+    type: dir
+    path: /mnt/pve/remote-cifs-truenas01
+    content: [images, rootdir]
+    create_subdirs: false
+    is_mountpoint: true
+  - name: remote-pbs-truenas01
+    type: pbs
+    content: [backup]
+    server: pbs01.simn.io
+    username: "{{ pbs01_server_username }}"
+    password: "{{ pbs01_server_password }}"
+    datastore: local-truenas01
+    encryption_key: "{{ pbs_server_encryption_key }}"
+  - name: remote-pbs-tuxis
+    type: pbs
+    content: [backup]
+    server: pbs001.tuxis.nl
+    username: "{{ pbs001_server_username }}"
+    password: "{{ pbs001_server_password }}"
+    datastore: DB1465_dazzling-davinci
+    encryption_key: "{{ pbs_server_encryption_key }}"
+
+pve_metric_servers:
+  - id: influxdb
+    port: 8086
+    server: influxdb.simn.io
+    type: influxdb
+    protocol: https
+    organization: homelab
+    bucket: proxmox
+    token: "{{ metric_server_token }}"

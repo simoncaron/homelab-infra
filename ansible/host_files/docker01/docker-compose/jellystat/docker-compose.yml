@@ -1,0 +1,36 @@
+---
+services:
+  app:
+    image: cyfershepard/jellystat:1.1.6
+    environment:
+      POSTGRES_IP: db
+      POSTGRES_PORT: 5432
+    env_file: .env
+    extra_hosts:
+      - jellyfin.simn.io:{{ pve_hosts.proxy01.ip }}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellystat.rule: Host(`jellystat.simn.io`)
+      traefik.http.services.jellystat.loadbalancer.server.port: "3000"
+    ports:
+      - 3000:3000
+    networks:
+      - default
+      - traefik
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:17.6
+    environment:
+      POSTGRES_DB: jfstat
+    env_file: .env
+    volumes:
+      - /opt/postgresql/jellystat:/var/lib/postgresql/data
+    restart: unless-stopped
+
+networks:
+  traefik:
+    name: internal
+    external: true

@@ -1,0 +1,22 @@
+---
+
+services:
+  app:
+    image: ghcr.io/renovatebot/renovate:41
+    command: /entrypoint.sh
+    user: "{{ docker_compose_user_id }}"
+    environment:
+      TZ: "{{ default_timezone }}"
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+    networks:
+      - traefik
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - /opt/renovate/config/config.js:/usr/src/app/config.js:ro
+      - /opt/renovate/config/entrypoint.sh:/entrypoint.sh:ro
+
+networks:
+  traefik:
+    name: internal
+    external: true

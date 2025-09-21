@@ -1,0 +1,49 @@
+---
+services:
+  gotify:
+    container_name: gotify
+    hostname: gotify
+    image: gotify/server:2.7.2
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 8680:80
+    volumes:
+      - /opt/gotify/data:/app/data
+    env_file: .env
+    labels:
+      traefik.enable: true
+      traefik.http.middlewares.redirect-https.redirectScheme.scheme: https
+      traefik.http.middlewares.redirect-https.redirectScheme.permanent: true
+      traefik.http.routers.gotify-server.rule: Host(`gotify.simn.io`)
+      traefik.http.routers.gotify-server.middlewares: redirect-https
+      traefik.http.routers.gotify-server.service: gotify-server
+      traefik.http.services.gotify-server.loadbalancer.passhostheader: true
+      traefik.http.services.gotify-server.loadbalancer.server.port: "8680"
+      traefik.http.services.gotify-server.loadbalancer.sticky: true
+      traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto: http
+
+  igotify:
+    container_name: igotify
+    hostname: igotify
+    image: ghcr.io/androidseb25/igotify-notification-assist:latest@sha256:d817cbc04a8c164e521d9ef9797d13a336159518376cd22dc55c9722c7367594
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 8681:8080
+    volumes:
+      - /opt/gotify/api-data:/app/data
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.igotify-secure.middlewares: default@file
+      traefik.http.routers.igotify-secure.rule: Host(`igotify.simn.io`)
+      traefik.http.routers.igotify-secure.service: igotify
+      traefik.http.routers.igotify.rule: Host(`igotify.simn.io`)
+      traefik.http.services.igotify.loadbalancer.server.port: "8681"
+
+networks:
+  default:
+    name: internal
+    external: true

@@ -1,0 +1,23 @@
+---
+services:
+  app:
+    image: lscr.io/linuxserver/tautulli:2.16.0
+    environment:
+      TZ: "{{ default_timezone }}"
+      PUID: "{{ docker_compose_user_id }}"
+      PGID: "{{ docker_compose_group_id }}"
+      UMASK: "022"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tautulli.rule: Host(`tautulli.simn.io`)
+      traefik.http.services.tautulli.loadbalancer.server.port: "8181"
+    ports:
+      - 8181:8181
+    volumes:
+      - /opt/tautulli/config:/config:rw
+    restart: unless-stopped
+
+networks:
+  default:
+    name: internal
+    external: true

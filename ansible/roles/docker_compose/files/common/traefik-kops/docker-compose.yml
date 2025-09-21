@@ -1,0 +1,16 @@
+---
+
+services:
+  app:
+    image: ghcr.io/jittering/traefik-kop:0.13.3
+    env_file: .env
+    environment:
+      REDIS_ADDR: "{{ pve_hosts.proxy01.ip }}:6379"
+      BIND_IP: "{{ pve_hosts[inventory_hostname].ip }}"
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+    restart: unless-stopped
+
+networks:
+  default:
+    name: internal
+    external: true

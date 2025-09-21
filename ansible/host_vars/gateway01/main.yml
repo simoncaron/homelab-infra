@@ -1,0 +1,11 @@
+---
+# bootstrap
+bootstrap_packages:
+  - sudo
+  - rsyslog
+
+# geerlingguy.security
+security_ssh_port: "32222"
+
+# docker_compose
+docker_compose_deploy_common_files: false

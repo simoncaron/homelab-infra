@@ -1,0 +1,33 @@
+---
+name: Terraform fmt/validate
+'on':
+  push:
+    paths:
+      - terraform/**
+
+jobs:
+  terraform:
+    defaults:
+      run:
+        working-directory: terraform
+    name: Terraform fmt/validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - uses: taiki-e/install-action@just
+
+      - name: Terraform Init
+        env:
+          ACCESS_KEY: ${{ secrets.TERRAFORM_S3_ACCESS_KEY }}
+          SECRET_KEY: ${{ secrets.TERRAFORM_S3_SECRET_KEY }}
+        run: just terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+
+      - name: Terraform Lint
+        run: just terraform-lint

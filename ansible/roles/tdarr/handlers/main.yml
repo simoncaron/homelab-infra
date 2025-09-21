@@ -1,0 +1,12 @@
+---
+- name: Enable service tdarr-server service
+  ansible.builtin.service:
+    name: tdarr-server
+    enabled: true
+    state: restarted
+
+- name: Enable service tdarr-node service
+  ansible.builtin.service:
+    name: tdarr-node
+    enabled: true
+    state: restarted

@@ -1,0 +1,12 @@
+---
+fstab_mounts_user:
+  create: false
+  name: nobody
+  id: "65534"
+
+fstab_mounts_group:
+  create: false
+  name: nogroup
+  id: "65534"
+
+fstab_mounts_mountpoints: []

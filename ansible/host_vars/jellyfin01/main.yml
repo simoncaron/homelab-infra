@@ -1,0 +1,10 @@
+# bootstrap
+bootstrap_extra_users:
+  - name: jellyfin
+    uid: "10000"
+    shell: /usr/sbin/nologin
+    create_home: false
+
+# geerlingguy.security
+security_autoupdate_additional_origins:
+  - origin=Jellyfin,component=main

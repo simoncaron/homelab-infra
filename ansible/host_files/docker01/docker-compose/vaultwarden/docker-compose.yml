@@ -1,0 +1,50 @@
+---
+services:
+  app:
+    image: ghcr.io/dani-garcia/vaultwarden:1.34.3-alpine
+    restart: unless-stopped
+    user: "{{ docker_compose_user_id }}:{{ docker_compose_group_id }}"
+    volumes:
+      - /opt/vaultwarden/data:/data:rw
+    depends_on:
+      - db
+    networks:
+      - default
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.vaultwarden.rule: Host(`bw.simn.io`)
+      traefik.http.routers.vaultwarden.service: vaultwarden
+      traefik.http.services.vaultwarden.loadbalancer.server.port: "8083"
+    ports:
+      - 8083:80
+    env_file: .env
+    environment:
+      DOMAIN: https://bw.simn.io
+      INVITATIONS_ALLOWED: "false"
+      SIGNUPS_ALLOWED: "false"
+      SHOW_PASSWORD_HINT: "false"
+      LOG_FILE: /data/bitwarden.log
+      WEBSOCKET_ENABLED: "false"
+      SMTP_HOST: mail.smtp2go.com
+      DATABASE_URL: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@db/vaultwarden
+      PUSH_ENABLED: "true"
+      AUTHENTICATOR_DISABLE_TIME_DRIFT: "true"
+      EMERGENCY_ACCESS_ALLOWED: "false"
+      ROCKET_WORKERS: "2"
+      EXPERIMENTAL_CLIENT_FEATURE_FLAGS: ssh-key-vault-item,ssh-agent
+
+  db:
+    image: postgres:16.1-alpine3.17
+    restart: unless-stopped
+    volumes:
+      - /opt/postgresql/vaultwarden:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_DB: vaultwarden
+
+networks:
+  traefik:
+    name: internal
+    external: true

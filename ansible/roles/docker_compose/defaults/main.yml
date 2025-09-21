@@ -1,0 +1,23 @@
+---
+docker_compose_user_id: "3000"
+docker_compose_user_name: docker-user
+
+docker_compose_group_id: "3000"
+docker_compose_group_name: docker-user
+
+docker_compose_networks:
+  - internal
+
+docker_compose_dockerhub_username: ""
+docker_compose_dockerhub_password: ""
+
+docker_compose_local_folder: host_files/{{ inventory_hostname }}/docker-compose
+docker_compose_local_common_folder: "{{ role_path }}/files/common"
+
+docker_compose_deploy_common_files: true
+
+docker_compose_base_folder: /opt
+docker_compose_file_mask: "0664"
+docker_compose_directory_mask: "0775"
+
+docker_update_command: docker compose down --remove-orphans && docker compose rm && docker compose up -d

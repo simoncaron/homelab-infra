@@ -1,0 +1,19 @@
+---
+services:
+  app:
+    image: brandawg93/peanut:5.15.0
+    env_file: .env
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.peanut.rule: Host(`peanut.simn.io`)
+      traefik.http.services.peanut.loadbalancer.server.port: "8085"
+    ports:
+      - 8085:8080
+    environment:
+      NUT_HOST: "{{ network_hosts.truenas01.ip }}"
+      NUT_PORT: 3493
+      WEB_PORT: 8080
+      INFLUX_HOST: https://influxdb.simn.io:8086
+      INFLUX_ORG: homelab
+      INFLUX_BUCKET: nut

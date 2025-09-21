@@ -1,0 +1,37 @@
+---
+- name: Install apt-transport-https
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: present
+
+- name: Check if Plex apt key exists
+  ansible.builtin.stat:
+    path: /etc/apt/keyrings/plexmediaserver.asc
+  register: plex_key
+
+- name: Add Plex apt key (Ubuntu & Debian with systemd)
+  ansible.builtin.get_url:
+    url: https://downloads.plex.tv/plex-keys/PlexSign.key
+    dest: /etc/apt/keyrings/plexmediaserver.asc
+    mode: "0644"
+    force: true
+  when: not plex_key.stat.exists
+
+- name: Add Plex apt repo (Ubuntu & Debian with systemd)
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/plexmediaserver.asc] https://downloads.plex.tv/repo/deb public main
+    state: present
+    filename: plexmediaserver
+
+- name: Apt install Plex
+  ansible.builtin.apt:
+    name: plexmediaserver
+    state: present
+    update_cache: true
+  notify: restart plex
+
+- name: Autostart Plex and start service
+  ansible.builtin.service:
+    name: plexmediaserver
+    enabled: true
+  notify: restart plex

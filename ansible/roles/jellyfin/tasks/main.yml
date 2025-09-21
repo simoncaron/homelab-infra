@@ -1,0 +1,58 @@
+---
+- name: Ensure dependencies are present.
+  ansible.builtin.apt:
+    name:
+      - python3-debian
+    state: present
+
+- name: Ensure directory exists for /etc/apt/keyrings
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Check if Jellyfin apt key exists
+  ansible.builtin.stat:
+    path: /etc/apt/keyrings/jellyfin.asc
+  register: jellyfin_key
+
+- name: Add Jellyfin apt key
+  ansible.builtin.get_url:
+    url: "{{ jellyfin_apt_gpg_key }}"
+    dest: /etc/apt/keyrings/jellyfin.asc
+    owner: root
+    group: root
+    mode: "0644"
+  register: jellyfin_apt_key
+  when: not jellyfin_key.stat.exists
+
+- name: Add Jellyfin repository
+  ansible.builtin.deb822_repository:
+    name: jellyfin
+    types: deb
+    uris: https://repo.jellyfin.org/{{ ansible_distribution | lower }}
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    architectures: "{{ jellyfin_apt_arch }}"
+    signed_by: /etc/apt/keyrings/jellyfin.asc
+    state: present
+  register: jellyfin_repo
+
+- name: Update apt cache if repo was added  # noqa: no-handler
+  ansible.builtin.apt:
+    update_cache: true
+  when: jellyfin_repo is changed
+
+- name: Install Jellyfin package
+  ansible.builtin.package:
+    name: jellyfin
+    state: present
+
+- name: Ensure Jellyfin is started and enabled at boot
+  ansible.builtin.service:
+    name: jellyfin
+    state: started
+    enabled: true
+  ignore_errors: "{{ ansible_check_mode }}"

@@ -1,0 +1,36 @@
+---
+- name: Configure network interfaces
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: "{{ network_interfaces_config_path }}"
+    mode: "0644"
+  register: interfaces
+
+- name: Configure resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: "0644"
+  become: true
+
+- name: Restart networking service
+  ansible.builtin.systemd:
+    state: restarted
+    name: networking
+  when: interfaces.changed
+
+- name: Install extra network packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ network_interfaces_packages }}"
+
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: true
+    sysctl_file: /etc/sysctl.d/99-sysctl.conf
+    state: present
+    reload: true
+  when: network_interfaces_enable_ip_forwarding

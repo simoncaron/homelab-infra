@@ -1,0 +1,10 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/widgets
+- weatherapi:
+    label: Québec
+    latitude: 46.78534
+    longitude: -71.17216
+    units: metric
+    apiKey: "{{ '{{' }}HOMEPAGE_VAR_settings_weatherapi_key{{ '}}' }}"
+    cache: 5

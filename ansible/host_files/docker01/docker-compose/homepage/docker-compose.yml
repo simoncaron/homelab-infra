@@ -1,0 +1,26 @@
+---
+services:
+  app:
+    image: ghcr.io/gethomepage/homepage:v1.4.6
+    restart: unless-stopped
+    environment:
+      PUID: "{{ docker_compose_user_id }}"
+      PGID: "{{ docker_compose_group_id }}"
+      HOMEPAGE_ALLOWED_HOSTS: homepage.simn.io
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homepage.rule: Host(`homepage.simn.io`)
+      traefik.http.services.homepage.loadbalancer.server.port: "3002"
+    ports:
+      - 3002:3000
+    env_file: .env
+    volumes:
+      - /opt/homepage/config:/app/config:rw
+      - /opt/homepage/images:/app/public/images
+    healthcheck:
+      test: [NONE]
+
+networks:
+  default:
+    name: internal
+    external: true

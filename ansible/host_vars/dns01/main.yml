@@ -1,0 +1,22 @@
+---
+# geerlingguy.raspberry-pi
+raspberry_pi_boot_config_options:
+  # Set the GPU memory split value.
+  - regexp: ^#?gpu_mem
+    line: gpu_mem=16
+  # Disable wi-fi
+  - regexp: ^dtoverlay=disable-wifi
+    line: dtoverlay=disable-wifi
+  # Disable bluetooth
+  - regexp: ^dtoverlay=disable-bt
+    line: dtoverlay=disable-bt
+  # Turn off Power LED
+  - regexp: ^dtparam=pwr_led_trigger=default-on
+    line: dtparam=pwr_led_trigger=default-on
+  - regexp: ^dtparam=pwr_led_activelow=off
+    line: dtparam=pwr_led_activelow=off
+  # Turn off Activity LED
+  - regexp: ^dtparam=act_led_trigger=none
+    line: dtparam=act_led_trigger=none
+  - regexp: ^dtparam=act_led_activelow=off
+    line: dtparam=act_led_activelow=off

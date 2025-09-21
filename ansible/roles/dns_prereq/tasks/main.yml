@@ -1,0 +1,20 @@
+---
+- name: Enable IP forwarding (for Tailscale)
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: true
+    sysctl_file: /etc/sysctl.d/99-sysctl.conf
+    state: present
+    reload: true
+  with_items:
+    - net.ipv4.ip_forward
+    - net.ipv6.conf.all.forwarding
+
+- name: Copy adguardhome systemd unit file
+  ansible.builtin.copy:
+    src: adguardhome.service
+    dest: /etc/systemd/system/adguardhome.service
+    owner: root
+    group: root
+    mode: "0644"

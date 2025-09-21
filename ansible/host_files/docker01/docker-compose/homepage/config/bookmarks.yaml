@@ -1,0 +1,33 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/bookmarks
+
+- Cloud:
+    - Github:
+        - abbr: GH
+          href: https://github.com/simoncaron
+    - Jupiter Broadcasting:
+        - abbr: JB
+          href: https://jupiterbroadcasting.com
+    - Microsoft Azure:
+        - abbr: AZ
+          href: https://portal.azure.com
+    - Oracle Cloud Infrastructure:
+        - abbr: OC
+          href: https://cloud.oracle.com
+
+- Entertainment:
+    - YouTube:
+        - abbr: YT
+          href: https://youtube.com/
+    - ArsTechnica:
+        - abbr: AS
+          href: https://https://arstechnica.com/
+    - The Verge:
+        - abbr: TV
+          href: https://https://theverge.com/
+
+- Social:
+    - Reddit:
+        - abbr: RE
+          href: https://reddit.com/

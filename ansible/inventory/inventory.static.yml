@@ -1,0 +1,29 @@
+gateway:
+  hosts:
+    gateway01:
+      ansible_port: "32222"
+
+pve:
+  hosts:
+    pve01:
+
+docker:
+  children:
+    gateway:
+
+dns:
+  children:
+    dns_pi:
+    dns_lxc:
+
+dns_pi:
+  hosts:
+    dns01:
+
+raspberrypi:
+  children:
+    dns_pi:
+
+cloudinit:
+  children:
+    proxmox_all_qemu:

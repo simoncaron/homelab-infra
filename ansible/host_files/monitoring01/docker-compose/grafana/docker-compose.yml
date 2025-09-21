@@ -1,0 +1,13 @@
+---
+services:
+  app:
+    image: grafana/grafana:12.1.1
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    labels:
+      traefik.enable: true
+      traefik.http.routers.grafana.rule: Host(`grafana.simn.io`)
+      traefik.http.services.grafana.loadbalancer.server.port: "3000"
+    volumes:
+      - /opt/grafana/data:/var/lib/grafana

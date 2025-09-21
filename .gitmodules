@@ -1,0 +1,3 @@
+[submodule "ansible/host_files/docker02"]
+	path = ansible/host_files/docker02
+	url = https://git.simn.io/Simon/homelab-apps

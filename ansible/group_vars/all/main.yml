@@ -1,0 +1,71 @@
+---
+network_hosts:
+  cidr: 192.168.1.0/24
+
+  gateway:
+    ip: 192.168.1.1
+
+  pve01:
+    ip: 192.168.1.201
+
+  dns01:
+    ip: 192.168.1.10
+
+  dns02:
+    ip: 192.168.1.114
+
+  truenas01:
+    ip: 192.168.1.100
+
+  pbs01:
+    ip: 192.168.1.102
+
+  proxy01:
+    ip: 192.168.1.113
+
+  proxy02:
+    ip: 192.168.1.119
+
+  gateway01:
+    ip: 51.161.34.166
+
+pve_hosts:
+  cidr_internal: 10.10.10.0/24
+  cidr_external: 10.10.20.0/24
+  gateway:
+    ip: 10.10.10.1
+
+  dns02:
+    ip: 10.10.10.114
+
+  docker01:
+    ip: 10.10.10.115
+
+  docker02:
+    ip: 10.10.10.116
+
+  monitoring01:
+    ip: 10.10.10.117
+
+  proxy01:
+    ip: 10.10.10.113
+
+  proxy02:
+    ip: 10.10.20.119
+
+  jellyfin01:
+    ip: 10.10.10.125
+
+  nextcloud01:
+    ip: 10.10.10.128
+
+  plex01:
+    ip: 10.10.20.124
+
+  forgejo01:
+    ip: 10.10.10.127
+
+  tdarr01:
+    ip: 10.10.10.129
+
+default_timezone: America/Toronto

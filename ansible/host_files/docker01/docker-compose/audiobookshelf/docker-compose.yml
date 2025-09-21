@@ -1,0 +1,43 @@
+---
+services:
+  app:
+    image: ghcr.io/advplyr/audiobookshelf:2.29.0
+    environment:
+      TZ: "{{ default_timezone }}"
+      AUDIOBOOKSHELF_UID: "{{ docker_compose_user_id }}"
+      AUDIOBOOKSHELF_GID: "{{ docker_compose_group_id }}"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.audiobookshelf.rule: Host(`audiobookshelf.simn.io`)
+      traefik.http.services.audiobookshelf.loadbalancer.server.port: "80"
+    ports:
+      - 80:80
+    volumes:
+      - /opt/audiobookshelf/config:/config
+      - /opt/audiobookshelf/metadata:/metadata
+      - cifs-media-audiobooks-volume:/audiobooks:rw
+      - cifs-media-podcasts-volume:/podcasts:rw
+      - cifs-media-ebooks-volume:/ebooks:rw
+    restart: unless-stopped
+
+volumes:
+  cifs-media-podcasts-volume:
+    driver_opts:
+      type: cifs
+      o: vers=3.1.1,_netdev,iocharset=utf8,noatime,uid={{ docker_compose_user_id }},gid={{ docker_compose_group_id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
+      device: //{{ network_hosts.truenas01.ip }}/media/podcasts
+  cifs-media-audiobooks-volume:
+    driver_opts:
+      type: cifs
+      o: vers=3.1.1,_netdev,iocharset=utf8,noatime,uid={{ docker_compose_user_id }},gid={{ docker_compose_group_id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
+      device: //{{ network_hosts.truenas01.ip }}/media/audiobooks
+  cifs-media-ebooks-volume:
+    driver_opts:
+      type: cifs
+      o: vers=3.1.1,_netdev,iocharset=utf8,noatime,uid={{ docker_compose_user_id }},gid={{ docker_compose_group_id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
+      device: //{{ network_hosts.truenas01.ip }}/media/ebooks
+
+networks:
+  default:
+    name: internal
+    external: true

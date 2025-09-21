@@ -1,0 +1,68 @@
+---
+- name: Create docker group
+  ansible.builtin.group:
+    name: "{{ docker_compose_group_name }}"
+    state: present
+    gid: "{{ docker_compose_group_id }}"
+
+- name: Install python3-pip package
+  ansible.builtin.apt:
+    name:
+      - python3-yaml
+      - python3-docker
+
+- name: Create docker user
+  ansible.builtin.user:
+    name: "{{ docker_compose_user_name }}"
+    uid: "{{ docker_compose_user_id }}"
+    group: "{{ docker_compose_group_name }}"
+    create_home: false
+
+- name: Add user to docker user group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: "{{ docker_compose_group_name }}"
+    append: true
+
+- name: Ensure cron is installed
+  ansible.builtin.apt:
+    name: cron
+
+- name: Add containers auto-clean cronjob
+  ansible.builtin.cron:
+    name: clean up docker containers
+    hour: 1
+    minute: 0
+    job: docker system prune -af --volumes
+
+- name: Log into DockerHub
+  community.docker.docker_login:
+    username: "{{ docker_compose_dockerhub_username }}"
+    password: "{{ docker_compose_dockerhub_password }}"
+  become: false
+
+- name: Create default docker networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+  with_items: "{{ docker_compose_networks }}"
+
+- name: List docker-compose files
+  delegate_to: localhost
+  ansible.builtin.find:
+    paths:
+      - "{{ docker_compose_deploy_common_files | ternary(docker_compose_local_common_folder, omit) }}"
+      - "{{ docker_compose_local_folder }}"
+    file_type: directory
+  register: docker_compose_files
+  changed_when: false
+  become: false
+
+- name: Get docker compose files paths
+  ansible.builtin.set_fact:
+    files: "{{ docker_compose_files.files | map(attribute='path') | list }}"
+
+- name: Install docker-compose files
+  ansible.builtin.include_tasks: setup_compose.yml
+  loop: "{{ files | sort }}"
+  loop_control:
+    loop_var: compose_file_path

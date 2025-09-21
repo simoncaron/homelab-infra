@@ -1,0 +1,103 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "git-submodules": {
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^ansible/host_vars/newt01/main\\.yml$/"
+      ],
+      "matchStrings": [
+        "# newt\\s*\\n\\s*newt_version:\\s*(?<currentValue>[\\d\\.]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "fosrl/newt",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^ansible/group_vars/dns/main\\.yml$/"
+      ],
+      "matchStrings": [
+        "# bcook254.adguardhome\\s*\\n\\s*adguardhome_version:\\s*(?<currentValue>[\\d\\.]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "AdguardTeam/AdGuardHome",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^ansible/host_files/gateway01/docker-compose/pangolin/config/traefik/traefik_config\\.yml$/"
+      ],
+      "matchStrings": [
+        "moduleName: github\\.com/(?<depName>[^\\s]+)\\s+version: v(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "git-tags",
+      "depNameTemplate": "forgejo/forgejo",
+      "extractVersionTemplate": "^v(?<version>\\d+\\.\\d+\\.\\d+)$",
+      "managerFilePatterns": [
+        "/^ansible/host_vars/forgejo01/main\\.yml$/"
+      ],
+      "matchStrings": [
+        "gitea_version:\\s*(?<currentValue>[\\d\\.]+)"
+      ],
+      "packageNameTemplate": "https://codeberg.org/forgejo/forgejo",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchDepNames": [
+        "code.forgejo.org/forgejo/runner",
+        "ghcr.io/immich-app/immich-server",
+        "ghcr.io/immich-app/immich-machine-learning",
+        "fosrl/gerbil",
+        "fosrl/pangolin",
+        "fosrl/newt"
+      ],
+      "automerge": false
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchDepNames": [
+        "ghcr.io/androidseb25/igotify-notification-assist"
+      ],
+      "pinDigests": true,
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "automerge": true
+    }
+  ]
+}

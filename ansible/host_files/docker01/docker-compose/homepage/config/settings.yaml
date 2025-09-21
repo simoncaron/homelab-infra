@@ -1,0 +1,37 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/settings
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: "{{ '{{' }}HOMEPAGE_VAR_settings_weatherapi_key{{ '}}' }}"
+
+headerStyle: clean
+language: en
+
+background:
+  image: /images/starry.png
+  brightness: 50
+
+cardBlur: sm
+
+layout:
+  Infrastructure:
+    style: row
+    columns: 3
+
+  Streaming Media Providers:
+    style: row
+    columns: 3
+
+  Media Management Tools:
+    style: row
+    columns: 4
+
+  Download Clients:
+    style: row
+    columns: 4
+
+  Self-Hosting:
+    style: row
+    columns: 3
