@@ -7,13 +7,13 @@
 #   port: 2375
 
 docker01:
-  host: "{{ pve_hosts.docker01.ip }}"
+  host: docker01.simn.io
   port: 2375
 
 docker02:
-  host: "{{ pve_hosts.docker02.ip }}"
+  host: docker02.simn.io
   port: 2375
 
 monitoring01:
-  host: "{{ pve_hosts.monitoring01.ip }}"
+  host: monitoring01.simn.io
   port: 2375

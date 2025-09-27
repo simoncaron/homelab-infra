@@ -3,8 +3,6 @@ services:
     image: louislam/uptime-kuma:1.23.16
     volumes:
       - /opt/uptime-kuma/data:/app/data
-    extra_hosts:
-      - pms.simn.io:{{ network_hosts.gateway01.ip }}
     ports:
       - 3001:3001
     labels:
