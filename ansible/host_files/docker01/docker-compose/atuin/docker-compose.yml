@@ -3,7 +3,7 @@ services:
   app:
     image: ghcr.io/atuinsh/atuin:v18.8.0
     environment:
-      TZ: America/Toronto
+      TZ: "{{ default_timezone }}"
       RUST_LOG: info
       ATUIN_DB_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
       ATUIN_HOST: 0.0.0.0

@@ -5,7 +5,7 @@ services:
     image: ghcr.io/jittering/traefik-kop:0.13.3
     env_file: .env
     environment:
-      REDIS_ADDR: "docker01.simn.io:6379"
+      REDIS_ADDR: proxy01.simn.io:6379
       DOCKER_HOST: tcp://docker-socket-proxy:2375
     restart: unless-stopped
 
