@@ -15,6 +15,4 @@ network_interfaces_list: []
 
 network_interfaces_extra_config: []
 
-network_interfaces_packages: []
-
 network_interfaces_enable_ip_forwarding: true

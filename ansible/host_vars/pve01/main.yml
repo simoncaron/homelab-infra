@@ -51,9 +51,6 @@ network_interfaces_list:
       stp: "off"
       fd: 0
 
-network_interfaces_packages:
-  - frr-pythontools
-
 network_interfaces_extra_config:
   - source /etc/network/interfaces.d/*
 

@@ -19,12 +19,6 @@
     name: networking
   when: interfaces.changed
 
-- name: Install extra network packages
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ network_interfaces_packages }}"
-
 - name: Enable IP forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -34,3 +28,15 @@
     state: present
     reload: true
   when: network_interfaces_enable_ip_forwarding
+
+# https://pve.proxmox.com/wiki/Software-Defined_Network#pvesdn_install_dhcp_ipam
+- name: Install dnsmasq
+  ansible.builtin.package:
+    name: dnsmasq
+    state: present
+
+- name: Disable and stop dnsmasq service
+  ansible.builtin.systemd:
+    name: dnsmasq
+    enabled: false
+    state: stopped
