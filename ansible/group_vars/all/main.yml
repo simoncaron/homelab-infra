@@ -8,26 +8,14 @@ network_hosts:
   pve01:
     ip: 192.168.1.201
 
-  dns01:
-    ip: 192.168.1.10
-
-  dns02:
-    ip: 192.168.1.114
-
   truenas01:
     ip: 192.168.1.100
-
-  pbs01:
-    ip: 192.168.1.102
 
   proxy01:
     ip: 192.168.1.113
 
   proxy02:
     ip: 192.168.1.119
-
-  gateway01:
-    ip: 51.161.34.166
 
 pve_hosts:
   cidr_internal: 10.10.10.0/24

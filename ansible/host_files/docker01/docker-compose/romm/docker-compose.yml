@@ -51,7 +51,7 @@ volumes:
     driver_opts:
       type: cifs
       o: vers=3.1.1,_netdev,iocharset=utf8,noatime,dir_mode=0755,file_mode=0644,user={{ cifs_username }},pass={{ cifs_password }}
-      device: //{{ network_hosts.truenas01.ip }}/roms/us-retail
+      device: //truenas01.simn.io/roms/us-retail
 
 networks:
   traefik:

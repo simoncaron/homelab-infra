@@ -58,7 +58,7 @@ network_interfaces_extra_config:
   - source /etc/network/interfaces.d/*
 
 # geerlingguy.nut_client
-nut_client_server: "{{ network_hosts.truenas01.ip }}"
+nut_client_server: "truenas01.simn.io"
 
 # fstab_mounts
 fstab_mounts_user:
@@ -73,7 +73,7 @@ fstab_mounts_group:
 
 fstab_mounts_mountpoints:
   - path: /mnt/pve/remote-cifs-truenas01
-    src: //{{ network_hosts.truenas01.ip }}/media
+    src: //truenas01.simn.io/media
     fs: cifs
     opts: vers=3.1.1,_netdev,iocharset=utf8,x-systemd.automount,noatime,uid={{ fstab_mounts_user.id }},gid={{ fstab_mounts_group.id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
 
