@@ -85,19 +85,6 @@
         "fosrl/newt"
       ],
       "automerge": false
-    },
-    {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchDepNames": [
-        "ghcr.io/androidseb25/igotify-notification-assist"
-      ],
-      "pinDigests": true,
-      "matchUpdateTypes": [
-        "digest"
-      ],
-      "automerge": true
     }
   ]
 }
