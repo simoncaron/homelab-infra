@@ -6,8 +6,6 @@ services:
       POSTGRES_IP: db
       POSTGRES_PORT: 5432
     env_file: .env
-    extra_hosts:
-      - jellyfin.simn.io:{{ pve_hosts.proxy01.ip }}
     labels:
       traefik.enable: true
       traefik.http.routers.jellystat.rule: Host(`jellystat.simn.io`)

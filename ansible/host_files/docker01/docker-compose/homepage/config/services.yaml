@@ -22,7 +22,7 @@
         description: unifi.ui.com
         widget:
           type: unifi
-          url: https://{{ network_hosts.gateway.ip }}:443
+          url: https://192.168.1.1:443
           username: "{{ '{{' }}HOMEPAGE_VAR_settings_unifi_username{{ '}}' }}"
           password: "{{ '{{' }}HOMEPAGE_VAR_settings_unifi_password{{ '}}' }}"
     - AdGuard Home - DNS01:
