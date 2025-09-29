@@ -20,7 +20,7 @@ acme_sh_domains: [domains: ["{{ ansible_hostname }}.simn.io"]]
 acme_sh_default_install_cert_reloadcmd: sudo systemctl restart adguardhome
 
 # bcook254.adguardhome
-adguardhome_version: 0.107.66
+adguardhome_version: 0.107.67
 adguardhome_manage_config: false
 
 adguardhome_webhost: 0.0.0.0
