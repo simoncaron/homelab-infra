@@ -82,7 +82,11 @@
         "ghcr.io/immich-app/immich-machine-learning",
         "fosrl/gerbil",
         "fosrl/pangolin",
-        "fosrl/newt"
+        "fosrl/newt",
+        "fredrikburmester/streamystats-v2-migrate",
+        "fredrikburmester/streamystats-v2-nextjs",
+        "fredrikburmester/streamystats-v2-job-server",
+        "tensorchord/vchord-postgres"
       ],
       "automerge": false
     }
