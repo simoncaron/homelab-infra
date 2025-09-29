@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:17.6
+    image: postgres:18.0
     environment:
       POSTGRES_DB: romm
       POSTGRES_USER: ${DB_USER}

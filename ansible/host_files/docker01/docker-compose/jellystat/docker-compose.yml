@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:17.6
+    image: postgres:18.0
     environment:
       POSTGRES_DB: jfstat
     env_file: .env
