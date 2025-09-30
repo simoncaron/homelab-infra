@@ -2,7 +2,7 @@
 
 services:
   app:
-    image: ghcr.io/jittering/traefik-kop:0.13.3
+    image: ghcr.io/jittering/traefik-kop:0.18.1
     env_file: .env
     environment:
       REDIS_ADDR: proxy01.simn.io:6379
