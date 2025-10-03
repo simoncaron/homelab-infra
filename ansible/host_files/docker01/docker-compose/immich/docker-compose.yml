@@ -24,7 +24,7 @@ services:
       disable: false
 
   machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v2.0.0
+    image: ghcr.io/immich-app/immich-machine-learning:v2.0.1
     volumes:
       - /opt/immich/model-cache:/cache
     env_file:
