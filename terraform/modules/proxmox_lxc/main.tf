@@ -22,6 +22,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
   features {
     keyctl  = var.features.keyctl
     nesting = var.features.nesting
+    mount   = var.features.mount
   }
 
   operating_system {
@@ -118,4 +119,3 @@ resource "adguard_rewrite" "defined_rules" {
   domain = local.all_dns_records[count.index].domain
   answer = local.all_dns_records[count.index].answer
 }
-

@@ -38,6 +38,7 @@ variable "features" {
   type = object({
     keyctl  = optional(bool, false)
     nesting = optional(bool, true)
+    mount   = optional(list(string), [])
   })
   default = {
     keyctl  = false
@@ -76,9 +77,9 @@ variable "network_interfaces" {
     firewall = optional(bool, false)
     vlan_id  = optional(number)
     ipv4 = optional(object({
-      address = string
+      address = optional(string, "dhcp")
       gateway = optional(string)
-    }), null)
+    }), { address = "dhcp" })
     ipv6 = optional(object({
       address = optional(string, "auto")
       gateway = optional(string)

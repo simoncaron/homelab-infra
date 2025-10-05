@@ -75,7 +75,7 @@ module "lxc_newt01" {
 
   network_interfaces = [
     {
-      name   = "eth1"
+      name   = "eth0"
       bridge = "vnet2"
       ipv4   = { address = "10.10.20.118/24", gateway = "10.10.20.1" }
     }
