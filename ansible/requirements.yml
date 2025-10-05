@@ -21,8 +21,6 @@ roles:
     version: 5.1.0
   - name: geerlingguy.security
     version: 3.0.0
-  - name: geerlingguy.raspberry-pi
-    version: 1.2.0
   - name: geerlingguy.nut_client
     version: 1.1.0
   - name: geerlingguy.redis

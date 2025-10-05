@@ -20,10 +20,6 @@ dns_pi:
   hosts:
     dns01:
 
-raspberrypi:
-  children:
-    dns_pi:
-
 cloudinit:
   children:
     proxmox_all_qemu:
