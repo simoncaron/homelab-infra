@@ -11,7 +11,7 @@ terraform {
     }
     tailscale = {
       source  = "tailscale/tailscale"
-      version = "0.22.0"
+      version = "0.23.0"
     }
     adguard = {
       source  = "gmichels/adguard"
