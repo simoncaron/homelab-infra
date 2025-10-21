@@ -16,7 +16,7 @@ roles:
   - name: oefenweb.postfix
     version: v3.7.6
   - name: geerlingguy.docker
-    version: 7.7.0
+    version: 7.8.0
   - name: geerlingguy.mysql
     version: 5.1.0
   - name: geerlingguy.security
