@@ -23,7 +23,7 @@ services:
         - cscli
         - capi
         - status
-    image: crowdsecurity/crowdsec:v1.7.0
+    image: crowdsecurity/crowdsec:v1.7.2
     labels:
       - traefik.enable=false
     ports:
