@@ -3,6 +3,7 @@ resource "proxmox_virtual_environment_sdn_zone_simple" "sdn_zone_priv01" {
   nodes = ["pve01"]
 
   ipam = "pve"
+  dhcp = "dnsmasq"
 
   depends_on = [
     proxmox_virtual_environment_sdn_applier.finalizer
@@ -14,6 +15,7 @@ resource "proxmox_virtual_environment_sdn_zone_simple" "sdn_zone_pub01" {
   nodes = ["pve01"]
 
   ipam = "pve"
+  dhcp = "dnsmasq"
 
   depends_on = [
     proxmox_virtual_environment_sdn_applier.finalizer
