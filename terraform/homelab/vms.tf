@@ -88,13 +88,6 @@ module "vm_nextcloud01" {
   network_devices = [{
     bridge = "vnet1"
   }]
-
-  additional_dns_records = [
-    {
-      domain = "cloud.simn.io"
-      answer = "192.168.1.113"
-    }
-  ]
 }
 
 module "vm_monitoring01" {

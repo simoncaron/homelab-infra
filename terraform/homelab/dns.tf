@@ -370,3 +370,8 @@ resource "adguard_rewrite" "pve01_adguardhome_dns_record" {
   answer = "192.168.1.201"
   domain = "pve01.simn.io"
 }
+
+resource "adguard_rewrite" "default_simnio_adguardhome_dns_record" {
+  answer = "192.168.1.113"
+  domain = "*.simn.io"
+}

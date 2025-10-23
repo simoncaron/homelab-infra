@@ -110,10 +110,6 @@ module "lxc_jellyfin01" {
   mount_points = [
     { path = "/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]
-
-  additional_dns_records = [
-    { domain = "jellyfin.simn.io", answer = "192.168.1.113" }
-  ]
 }
 
 module "lxc_plex01" {
@@ -174,10 +170,6 @@ module "lxc_tdarr01" {
   mount_points = [
     { path = "/mnt/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]
-
-  additional_dns_records = [
-    { domain = "tdarr.simn.io", answer = "192.168.1.113" }
-  ]
 }
 
 module "lxc_forgejo01" {
@@ -199,10 +191,6 @@ module "lxc_forgejo01" {
       bridge = "vnet1"
       ipv4   = { address = "10.10.10.127/24", gateway = "10.10.10.1" }
     }
-  ]
-
-  additional_dns_records = [
-    { domain = "git.simn.io", answer = "192.168.1.113" }
   ]
 }
 
