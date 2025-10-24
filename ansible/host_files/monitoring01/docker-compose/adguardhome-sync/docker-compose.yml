@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/bakito/adguardhome-sync:v0.8.1
+    image: ghcr.io/bakito/adguardhome-sync:v0.8.2
     restart: unless-stopped
     env_file: .env
     volumes:
