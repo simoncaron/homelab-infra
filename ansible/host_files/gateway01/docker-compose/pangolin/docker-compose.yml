@@ -80,7 +80,7 @@ services:
       pangolin:
         condition: service_healthy
     env_file: .env
-    image: traefik:v3.5.3
+    image: traefik:v3.5.4
     network_mode: service:gerbil
     restart: unless-stopped
     volumes:
