@@ -32,7 +32,7 @@ roles:
   - name: nickjj.acme_sh
     version: v1.1.0
   - name: bcook254.adguardhome
-    version: 107.66.0
+    version: 107.68.1
   - name: simoncaron.traefik
     version: 1.0.0
   - name: lae.proxmox
