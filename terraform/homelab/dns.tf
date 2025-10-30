@@ -366,6 +366,11 @@ resource "adguard_rewrite" "pve01_ilo_adguardhome_dns_record" {
   domain = "ilo.pve01.simn.io"
 }
 
+resource "adguard_rewrite" "pms_adguardhome_dns_record" {
+  answer = "gateway01.simn.io"
+  domain = "pms.simn.io"
+}
+
 resource "adguard_rewrite" "pve01_adguardhome_dns_record" {
   answer = "192.168.1.201"
   domain = "pve01.simn.io"
