@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/realorangeone/db-auto-backup@sha256:1e4b5028fbc31159fa123725d97f35f54611d642f5195c79e86e561144753129
+    image: ghcr.io/realorangeone/db-auto-backup@sha256:2eb5558526b986d38e69efb7ae77454d455838b4578d09d899655d65c82c8614
     restart: unless-stopped
     network_mode: none
     volumes:
