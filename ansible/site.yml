@@ -58,6 +58,7 @@
 - hosts:
     - dns
     - proxy
+  tags: [tailscale]
   roles:
     - artis3n.tailscale.machine
 

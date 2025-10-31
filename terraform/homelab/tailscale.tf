@@ -69,3 +69,27 @@ resource "tailscale_device_subnet_routes" "proxy02_subnet_routes" {
     "10.10.20.0/24",
   ]
 }
+
+resource "tailscale_acl" "homelab_acls" {
+  acl = jsonencode({
+    "grants" : [
+      {
+        "src" : ["*"],
+        "dst" : ["*"],
+        "ip" : ["*"],
+      },
+    ],
+    "ssh" : [
+      {
+        "action" : "check",
+        "src" : ["autogroup:member"],
+        "dst" : ["autogroup:self"],
+        "users" : ["autogroup:nonroot", "root"],
+      },
+    ],
+    "tagOwners" : {
+      "tag:proxy" : [],
+      "tag:dns" : [],
+    },
+  })
+}
