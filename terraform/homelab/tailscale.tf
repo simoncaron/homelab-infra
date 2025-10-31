@@ -14,22 +14,16 @@ data "tailscale_device" "proxy02_tailscale_device" {
   name = "proxy02.tail26f47.ts.net"
 }
 
-resource "tailscale_dns_nameservers" "tailscale_nameservers" {
-  nameservers = [
-    "192.168.1.10",
-    "192.168.1.114"
-  ]
-}
-
-resource "tailscale_dns_preferences" "tailscale_preferences" {
-  magic_dns = true
-}
-
-resource "tailscale_dns_search_paths" "tailscale_search_paths" {
-  search_paths = [
-    "local",
-    "simn.io"
-  ]
+resource "tailscale_dns_configuration" "tailscale_dns_configuration" {
+  nameservers {
+    address = "192.168.1.10"
+  }
+  nameservers {
+    address = "192.168.1.114"
+  }
+  search_paths       = ["local", "simn.io"]
+  override_local_dns = true
+  magic_dns          = true
 }
 
 resource "tailscale_device_subnet_routes" "dns01_subnet_routes" {
