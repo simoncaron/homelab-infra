@@ -34,7 +34,7 @@ roles:
   - name: bcook254.adguardhome
     version: 107.68.2
   - name: simoncaron.traefik
-    version: 1.0.0
+    version: 1.0.1
   - name: lae.proxmox
     src: https://github.com/lae/ansible-role-proxmox
     version: 248def5
