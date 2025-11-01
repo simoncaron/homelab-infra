@@ -62,7 +62,7 @@ module "lxc_newt01" {
   vm_id    = 118
   hostname = "newt01"
 
-  template_file_id = proxmox_virtual_environment_file.debian_12_container_template.id
+  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
   tags             = ["debian", "newt", "pangolin"]
 
   cpu_cores        = 2
@@ -200,7 +200,7 @@ module "lxc_proxy01" {
   vm_id    = 113
   hostname = "proxy01"
 
-  template_file_id = proxmox_virtual_environment_file.debian_12_container_template.id
+  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
   tags             = ["debian", "proxy", "tailscale"]
 
   features = {
@@ -229,7 +229,7 @@ module "lxc_proxy02" {
   vm_id    = 119
   hostname = "proxy02"
 
-  template_file_id = proxmox_virtual_environment_file.debian_12_container_template.id
+  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
   tags             = ["debian", "proxy", "tailscale"]
 
   features = {
