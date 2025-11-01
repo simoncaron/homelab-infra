@@ -138,10 +138,6 @@ module "lxc_plex01" {
   mount_points = [
     { path = "/data", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]
-
-  additional_dns_records = [
-    { domain = "plex.simn.io", answer = "192.168.1.119" }
-  ]
 }
 
 module "lxc_tdarr01" {

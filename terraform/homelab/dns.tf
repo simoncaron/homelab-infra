@@ -371,6 +371,16 @@ resource "adguard_rewrite" "pms_adguardhome_dns_record" {
   domain = "pms.simn.io"
 }
 
+resource "adguard_rewrite" "plex_adguardhome_dns_record" {
+  answer = "192.168.1.119"
+  domain = "plex.simn.io"
+}
+
+resource "adguard_rewrite" "homeassistant_adguardhome_dns_record" {
+  answer = "192.168.1.133"
+  domain = "homeassistant.simn.io"
+}
+
 resource "adguard_rewrite" "pve01_adguardhome_dns_record" {
   answer = "192.168.1.201"
   domain = "pve01.simn.io"

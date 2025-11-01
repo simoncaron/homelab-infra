@@ -7,7 +7,7 @@ services:
     environment:
       REDIS_ADDR: proxy01.simn.io:6379
       DOCKER_HOST: tcp://docker-socket-proxy:2375
-      BIND_IP: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+      BIND_IP: "{{ ansible_hostname }}.simn.io"
     restart: unless-stopped
 
 networks:

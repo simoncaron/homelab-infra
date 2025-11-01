@@ -7,3 +7,8 @@ output "vm_id" {
   description = "The numeric VMID of the LXC container."
   value       = proxmox_virtual_environment_container.lxc.vm_id
 }
+
+output "default_ip" {
+  description = "The default IP address of the LXC container."
+  value       = proxmox_virtual_environment_container.lxc.ipv4["eth0"]
+}

@@ -193,15 +193,6 @@ variable "domain" {
   default     = "simn.io"
 }
 
-variable "additional_dns_records" {
-  description = "A list of extra DNS records to create for the VM."
-  type = list(object({
-    domain = string
-    answer = string
-  }))
-  default = []
-}
-
 variable "virtiofs" {
   description = "A list of virtiofs mount configurations for the VM. Each object must have a 'mapping' attribute."
   type = list(object({

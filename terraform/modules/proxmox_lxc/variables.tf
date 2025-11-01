@@ -174,15 +174,6 @@ variable "domain" {
   default     = "simn.io"
 }
 
-variable "additional_dns_records" {
-  description = "A list of additional DNS records to create in AdGuard Home for this container."
-  type = list(object({
-    domain = string
-    answer = string
-  }))
-  default = []
-}
-
 variable "passthrough_gpu" {
   description = "Whether to enable GPU passthrough for the container."
   type        = bool

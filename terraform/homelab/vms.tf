@@ -221,17 +221,6 @@ module "vm_haos01" {
   network_devices = [{
     bridge = "vmbr0"
   }]
-
-  additional_dns_records = [
-    {
-      domain = "homeassistant.simn.io"
-      answer = "192.168.1.133"
-    },
-    {
-      domain = "haos.simn.io"
-      answer = "192.168.1.133"
-    }
-  ]
 }
 
 module "vm_gateway01" {

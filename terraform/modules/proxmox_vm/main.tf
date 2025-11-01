@@ -126,10 +126,3 @@ resource "adguard_rewrite" "proxmox_vm" {
   answer = split("/", var.initialization.ip_config.ipv4.address)[0]
   domain = format("%s.%s", var.vm_name, var.domain)
 }
-
-resource "adguard_rewrite" "proxmox_vm_extra_rewrites" {
-  for_each = { for idx, rule in var.additional_dns_records : tostring(idx) => rule }
-
-  domain = each.value.domain
-  answer = each.value.answer
-}

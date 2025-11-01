@@ -3,11 +3,6 @@ locals {
   passthrough_tun_device  = var.passthrough_tun ? ["/dev/net/tun"] : []
 
   all_passthrough_devices = concat(local.passthrough_gpu_devices, local.passthrough_tun_device)
-
-  default_dns_record = { domain = format("%s.%s", var.hostname, var.domain), answer = split("/", var.network_interfaces[0].ipv4.address)[0] }
-  extra_dns_records  = var.additional_dns_records != null ? var.additional_dns_records : []
-
-  all_dns_records = concat([local.default_dns_record], local.extra_dns_records)
 }
 
 resource "proxmox_virtual_environment_container" "lxc" {
@@ -114,8 +109,6 @@ resource "proxmox_virtual_environment_container" "lxc" {
 }
 
 resource "adguard_rewrite" "defined_rules" {
-  count = length(local.all_dns_records) > 0 ? length(local.all_dns_records) : 0
-
-  domain = local.all_dns_records[count.index].domain
-  answer = local.all_dns_records[count.index].answer
+  domain = format("%s.%s", var.hostname, var.domain)
+  answer = proxmox_virtual_environment_container.lxc.ipv4[var.network_interfaces[0].name]
 }
