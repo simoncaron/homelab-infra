@@ -6,3 +6,5 @@ services:
     env_file: .env
     volumes:
       - /opt/adguardhome-sync/config:/config
+    logging:
+      driver: none
