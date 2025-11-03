@@ -55,16 +55,16 @@
     - geerlingguy.redis
     - simoncaron.traefik
 
-- hosts:
-    - dns
-    - proxy
-  tags: [tailscale]
-  roles:
-    - artis3n.tailscale.machine
-
 - hosts: dns
   roles:
     - dns_prereq
     - nickjj.acme_sh
     - role: bcook254.adguardhome
       tags: [adguardhome]
+
+- hosts:
+    - dns
+    - proxy
+  tags: [tailscale]
+  roles:
+    - artis3n.tailscale.machine

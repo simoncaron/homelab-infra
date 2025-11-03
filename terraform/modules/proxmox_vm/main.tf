@@ -121,8 +121,6 @@ resource "proxmox_virtual_environment_vm" "vm" {
 }
 
 resource "adguard_rewrite" "proxmox_vm" {
-  count = var.initialization != null && can(var.initialization.ip_config.ipv4.address) ? 1 : 0
-
-  answer = split("/", var.initialization.ip_config.ipv4.address)[0]
+  answer = proxmox_virtual_environment_vm.vm.ipv4_addresses[1][0]
   domain = format("%s.%s", var.vm_name, var.domain)
 }

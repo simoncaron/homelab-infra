@@ -60,7 +60,6 @@ resource "proxmox_virtual_environment_file" "cloud_config_vendor" {
 module "vm_nextcloud01" {
   source = "../modules/proxmox_vm"
 
-  vm_id            = 128
   vm_name          = "nextcloud01"
   tags             = ["debian", "nextcloud", "docker"]
   memory_dedicated = 6144
@@ -72,12 +71,6 @@ module "vm_nextcloud01" {
   }]
 
   initialization = {
-    ip_config = {
-      ipv4 = {
-        address = "10.10.10.128/24"
-        gateway = "10.10.10.1"
-      }
-    }
     user_account = {
       username = "debian"
       keys     = [data.ansiblevault_string.default_ssh_public_key.value]
@@ -93,7 +86,6 @@ module "vm_nextcloud01" {
 module "vm_monitoring01" {
   source = "../modules/proxmox_vm"
 
-  vm_id            = 117
   vm_name          = "monitoring01"
   tags             = ["debian", "docker", "metrics"]
   memory_dedicated = 8192
@@ -105,12 +97,6 @@ module "vm_monitoring01" {
   }]
 
   initialization = {
-    ip_config = {
-      ipv4 = {
-        address = "10.10.10.117/24"
-        gateway = "10.10.10.1"
-      }
-    }
     user_account = {
       username = "debian"
       keys     = [data.ansiblevault_string.default_ssh_public_key.value]
@@ -126,7 +112,6 @@ module "vm_monitoring01" {
 module "vm_docker01" {
   source = "../modules/proxmox_vm"
 
-  vm_id            = 115
   vm_name          = "docker01"
   tags             = ["debian", "docker", "apps"]
   memory_dedicated = 8192
@@ -138,12 +123,6 @@ module "vm_docker01" {
   }]
 
   initialization = {
-    ip_config = {
-      ipv4 = {
-        address = "10.10.10.115/24"
-        gateway = "10.10.10.1"
-      }
-    }
     user_account = {
       username = "debian"
       keys     = [data.ansiblevault_string.default_ssh_public_key.value]
@@ -159,7 +138,6 @@ module "vm_docker01" {
 module "vm_docker02" {
   source = "../modules/proxmox_vm"
 
-  vm_id            = 116
   vm_name          = "docker02"
   tags             = ["debian", "docker", "vpn"]
   memory_dedicated = 8192
@@ -171,12 +149,6 @@ module "vm_docker02" {
   }]
 
   initialization = {
-    ip_config = {
-      ipv4 = {
-        address = "10.10.10.116/24"
-        gateway = "10.10.10.1"
-      }
-    }
     user_account = {
       username = "debian"
       keys     = [data.ansiblevault_string.default_ssh_public_key.value]
@@ -192,7 +164,6 @@ module "vm_docker02" {
 module "vm_haos01" {
   source = "../modules/proxmox_vm"
 
-  vm_id   = 133
   vm_name = "haos01"
   tags    = ["home-assistant", "ansible-skip"]
 

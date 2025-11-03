@@ -30,8 +30,6 @@ resource "tailscale_device_subnet_routes" "dns01_subnet_routes" {
   device_id = data.tailscale_device.dns01_tailscale_device.id
   routes = [
     "192.168.1.0/24",
-    "192.168.10.0/24",
-    "192.168.20.0/24",
     # Configure as an exit node
     "0.0.0.0/0",
     "::/0"
@@ -42,8 +40,6 @@ resource "tailscale_device_subnet_routes" "dns02_subnet_routes" {
   device_id = data.tailscale_device.dns02_tailscale_device.id
   routes = [
     "192.168.1.0/24",
-    "192.168.10.0/24",
-    "192.168.20.0/24",
     # Configure as an exit node
     "0.0.0.0/0",
     "::/0"

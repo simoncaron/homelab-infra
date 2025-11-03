@@ -1,7 +1,7 @@
 ---
 - name: Enable IP forwarding (for Tailscale)
   ansible.posix.sysctl:
-    name: net.ipv4.ip_forward
+    name: "{{ item }}"
     value: "1"
     sysctl_set: true
     sysctl_file: /etc/sysctl.d/99-sysctl.conf

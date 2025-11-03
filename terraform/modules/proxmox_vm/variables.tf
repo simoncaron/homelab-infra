@@ -132,10 +132,10 @@ variable "initialization" {
     datastore_id = optional(string, "local-zfs")
     ip_config = optional(object({
       ipv4 = optional(object({
-        address = string
-        gateway = string
+        address = optional(string, "dhcp")
+        gateway = optional(string)
       }))
-    }))
+    }), { ipv4 = { address = "dhcp" } })
     user_account = optional(object({
       username = string
       keys     = list(string)
