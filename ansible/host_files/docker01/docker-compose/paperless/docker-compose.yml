@@ -1,7 +1,7 @@
 ---
 services:
   redis:
-    image: redis:8.2.2-alpine
+    image: redis:8.2.3-alpine
     restart: unless-stopped
     volumes:
       - /opt/redis/paperless:/data
