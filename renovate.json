@@ -78,11 +78,6 @@
       ],
       "matchDepNames": [
         "code.forgejo.org/forgejo/runner",
-        "ghcr.io/immich-app/immich-server",
-        "ghcr.io/immich-app/immich-machine-learning",
-        "fosrl/gerbil",
-        "fosrl/pangolin",
-        "fosrl/newt",
         "fredrikburmester/streamystats-v2-migrate",
         "fredrikburmester/streamystats-v2-nextjs",
         "fredrikburmester/streamystats-v2-job-server",
