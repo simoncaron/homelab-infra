@@ -19,7 +19,7 @@ terraform {
     }
     ovh = {
       source  = "ovh/ovh"
-      version = "2.8.0"
+      version = "2.9.0"
     }
     ansiblevault = {
       source  = "MeilleursAgents/ansiblevault"
