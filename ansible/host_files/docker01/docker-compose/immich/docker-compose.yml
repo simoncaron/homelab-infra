@@ -1,7 +1,7 @@
 ---
 services:
   server:
-    image: ghcr.io/immich-app/immich-server:v2.2.2
+    image: ghcr.io/immich-app/immich-server:v2.2.3
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
