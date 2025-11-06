@@ -15,6 +15,11 @@ services:
     volumes:
       - /opt/renovate/config/config.js:/usr/src/app/config.js:ro
       - /opt/renovate/config/entrypoint.sh:/entrypoint.sh:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1G
 
 networks:
   traefik:

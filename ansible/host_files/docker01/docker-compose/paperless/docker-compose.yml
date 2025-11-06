@@ -46,6 +46,11 @@ services:
       USERMAP_UID: "{{ docker_compose_user_id }}"
       USERMAP_GID: "{{ docker_compose_group_id }}"
     env_file: .env
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2G
 
 networks:
   traefik:
