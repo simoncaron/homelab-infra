@@ -53,7 +53,8 @@
 - hosts: proxy
   roles:
     - geerlingguy.redis
-    - simoncaron.traefik
+    - role: simoncaron.traefik
+      tags: [traefik]
 
 - hosts: dns
   roles:

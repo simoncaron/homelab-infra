@@ -1,5 +1,5 @@
 # onkeldom.traefik
-traefik_version: 2.11.15
+traefik_version: 3.6.0
 traefik_copy_default_rules: false
 
 traefik_config:
@@ -59,3 +59,6 @@ traefik_config:
 # geerlingguy.redis
 redis_bind_interface: 0.0.0.0
 redis_databases: "1"
+
+# artis3n.tailscale.machine
+tailscale_oauth_ephemeral: false

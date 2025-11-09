@@ -43,6 +43,9 @@ jobs:
       - name: Ansible Deploy Adguard Home
         run: just ansible-deploy --limit dns --tags adguardhome
 
+      - name: Ansible Deploy traefik
+        run: just ansible-deploy --limit proxy --tags traefik
+
       - name: Notify on Failure
         if: failure()
         run: |
