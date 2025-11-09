@@ -68,7 +68,7 @@ services:
         - -f
         - http://localhost:3001/api/v1/
       timeout: 3s
-    image: fosrl/pangolin:1.12.1
+    image: fosrl/pangolin:1.12.2@sha256:5450161c3e836ff90a6debb65821c3d51d72c37f6e89933a70360025e9ec4600
     restart: unless-stopped
     volumes:
       - /opt/pangolin/config:/app/config
