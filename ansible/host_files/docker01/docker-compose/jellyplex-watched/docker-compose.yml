@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/luigi311/jellyplex-watched:8.3.0
+    image: ghcr.io/luigi311/jellyplex-watched:8.4.0@sha256:e72a10f4cc0bdf6ddad7e03bb8419639ab991fb0b7396f4845340e6f9135f904
     restart: unless-stopped
     environment:
       PUID: "1000"
