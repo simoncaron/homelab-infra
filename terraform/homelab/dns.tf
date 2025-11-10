@@ -346,6 +346,11 @@ resource "adguard_rewrite" "minio_adguardhome_dns_record" {
   domain = "minio.simn.io"
 }
 
+resource "adguard_rewrite" "s3_adguardhome_dns_record" {
+  answer = "192.168.1.100"
+  domain = "s3.simn.io"
+}
+
 resource "adguard_rewrite" "influxdb_adguardhome_dns_record" {
   answer = "192.168.1.100"
   domain = "influxdb.simn.io"
