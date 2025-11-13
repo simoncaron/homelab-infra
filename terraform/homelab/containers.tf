@@ -41,7 +41,7 @@ module "lxc_dns02" {
 
   network_interfaces = [
     { name = "eth0", bridge = "vmbr0", ipv4 = { address = "192.168.1.114/24", gateway = "192.168.1.1" } },
-    { name = "eth1", bridge = "vnet1" }
+    { name = "eth1", bridge = "vnet1", ipv4 = { address = "10.10.10.114/24", gateway = "10.10.10.1" } }
   ]
 
   passthrough_tun = true
