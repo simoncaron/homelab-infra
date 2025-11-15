@@ -37,4 +37,4 @@ roles:
     version: 1.0.2
   - name: lae.proxmox
     src: https://github.com/lae/ansible-role-proxmox
-    version: 248def5
+    version: v1.10.0
