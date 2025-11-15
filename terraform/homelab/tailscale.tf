@@ -15,14 +15,17 @@ data "tailscale_device" "proxy02_tailscale_device" {
 }
 
 resource "tailscale_dns_configuration" "tailscale_dns_configuration" {
-  nameservers {
-    address = "192.168.1.10"
-  }
-  nameservers {
-    address = "192.168.1.114"
+  split_dns {
+    domain = "simn.io"
+    nameservers {
+      address = "192.168.1.10"
+    }
+    nameservers {
+      address = "192.168.1.114"
+    }
   }
   search_paths       = ["local", "simn.io"]
-  override_local_dns = true
+  override_local_dns = false
   magic_dns          = true
 }
 
