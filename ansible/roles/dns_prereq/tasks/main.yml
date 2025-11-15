@@ -10,6 +10,7 @@
   with_items:
     - net.ipv4.ip_forward
     - net.ipv6.conf.all.forwarding
+  when: dns_prereq_enable_ip_forwarding
 
 - name: Copy adguardhome systemd unit file
   ansible.builtin.copy:
@@ -18,3 +19,26 @@
     owner: root
     group: root
     mode: "0644"
+  when: dns_prereq_configure_adguardhome_service
+
+- name: Check if NetworkManager is running
+  ansible.builtin.systemd:
+    name: NetworkManager
+  register: nm_service
+  failed_when: false
+  when: dns_prereq_configure_nm_dns
+
+- name: Configure NetworkManager DNS
+  community.general.nmcli:
+    conn_name: Wired connection 1
+    dns4:
+      - 1.1.1.1
+      - 1.0.0.1
+    dns4_search:
+      - simn.io
+    dns4_ignore_auto: true
+    state: present
+  when:
+    - dns_prereq_configure_nm_dns
+    - nm_service.status is defined
+    - nm_service.status.ActiveState == "active"

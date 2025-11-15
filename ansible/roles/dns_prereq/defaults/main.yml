@@ -1,0 +1,6 @@
+---
+dns_prereq_enable_ip_forwarding: true
+
+dns_prereq_configure_adguardhome_service: true
+
+dns_prereq_configure_nm_dns: true
