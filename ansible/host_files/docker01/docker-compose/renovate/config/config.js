@@ -1,7 +1,7 @@
 module.exports = {
   endpoint: 'https://git.simn.io/',
   token: process.env.GITEA_TOKEN,
-  platform: 'gitea',
+  platform: 'forgejo',
   autodiscover: true,
   onboarding: false,
   binarySource: "docker",
