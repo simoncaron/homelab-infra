@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:17.7
+    image: postgres:18.1
     env_file: .env
     volumes:
       - /opt/postgresql/atuin:/var/lib/postgresql/data
