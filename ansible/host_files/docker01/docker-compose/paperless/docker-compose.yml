@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: ${PAPERLESS_DBPASS}
 
   app:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.19.6@sha256:719a4e4c4314b417646b00e58bfbfbe55e4cb59017a2dec1533e96d8deb66ec1
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.19.6
     restart: unless-stopped
     depends_on:
       - db
