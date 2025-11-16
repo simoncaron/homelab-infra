@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/rommapp/romm:4.4.0@sha256:056114e8fdab8d6b592d1330390e6203f08642d6ba17d1b3ad1681ce8fc8fee3
+    image: ghcr.io/rommapp/romm:4.4.0
     environment:
       DB_HOST: db
       DB_NAME: romm
@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:17.7@sha256:eb37f58646a901dc7727cf448cae36daaefaba79de33b5058dab79aa4c04aefb
+    image: postgres:17.7
     environment:
       POSTGRES_DB: romm
       POSTGRES_USER: ${DB_USER}

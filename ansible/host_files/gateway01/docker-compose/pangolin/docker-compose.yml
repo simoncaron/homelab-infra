@@ -68,7 +68,7 @@ services:
         - -f
         - http://localhost:3001/api/v1/
       timeout: 3s
-    image: fosrl/pangolin:1.12.2@sha256:5450161c3e836ff90a6debb65821c3d51d72c37f6e89933a70360025e9ec4600
+    image: fosrl/pangolin:1.12.2
     restart: unless-stopped
     volumes:
       - /opt/pangolin/config:/app/config
@@ -80,7 +80,7 @@ services:
       pangolin:
         condition: service_healthy
     env_file: .env
-    image: traefik:v3.6.1@sha256:fd5932c796f7e2db9fd6bff485ef693d53797f0ee8ad03dc68aa424ea6f21958
+    image: traefik:v3.6.1
     network_mode: service:gerbil
     restart: unless-stopped
     volumes:
