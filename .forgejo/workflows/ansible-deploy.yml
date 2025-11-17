@@ -48,9 +48,11 @@ jobs:
 
       - name: Notify on Failure
         if: failure()
-        run: |
-          curl -s \
-            --form-string "token=$${{ secrets.PUSHOVER_APP_TOKEN }}" \
-            --form-string "user=$${{ secrets.PUSHOVER_USER_TOKEN }}" \
-            --form-string "message=Ansible Deploy Pipeline Failed!" \
-            https://api.pushover.net/1/messages.json
+        uses: umahmood/pushover-actions@v1.1.0
+        env:
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+          PUSHOVER_USER: ${{ secrets.PUSHOVER_USER_TOKEN }}
+        with:
+          status: ${{ job.status }}
+          title: Ansible Deploy
+          message: Ansible Deploy Pipeline Failed!
