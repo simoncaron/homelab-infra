@@ -1,6 +1,6 @@
 ---
 # simoncaron.pve_nvidia_passthrough
-pve_nvidia_passthrough_driver_version: 570.172.08
+pve_nvidia_passthrough_driver_version: 580.105.08
 pve_nvidia_passthrough_install_mode: guest
 
 pve_nvidia_passthrough_container_runtime_setup: false

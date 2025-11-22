@@ -75,7 +75,7 @@ fstab_mounts_mountpoints:
     opts: vers=3.1.1,_netdev,iocharset=utf8,x-systemd.automount,noatime,uid={{ fstab_mounts_user.id }},gid={{ fstab_mounts_group.id }},dir_mode=0770,file_mode=0770,user={{ cifs_username }},pass={{ cifs_password }}
 
 # simoncaron.pve_nvidia_passthrough
-pve_nvidia_passthrough_driver_version: 570.172.08
+pve_nvidia_passthrough_driver_version: 580.105.08
 
 # oefenweb.postfix
 postfix_install:
