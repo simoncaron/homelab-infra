@@ -26,7 +26,7 @@ roles:
   - name: geerlingguy.redis
     version: 1.9.1
   - name: simoncaron.pve_nvidia_passthrough
-    version: 2.5.0
+    version: 3.0.0
   - name: simoncaron.pve_acme
     version: 1.5.0
   - name: nickjj.acme_sh
