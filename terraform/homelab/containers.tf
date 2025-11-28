@@ -105,6 +105,9 @@ module "lxc_plex01" {
 
   passthrough_gpu = true
 
+  # Required for transcoding to work properly in Plex
+  device_passthrough = ["/dev/nvidia-modeset", "/dev/nvidia-caps/nvidia-cap1", "/dev/nvidia-caps/nvidia-cap2"]
+
   mount_points = [
     { path = "/data", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]

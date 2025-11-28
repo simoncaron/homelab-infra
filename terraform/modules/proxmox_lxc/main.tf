@@ -1,15 +1,22 @@
 locals {
-  passthrough_gpu_devices = var.passthrough_gpu ? ["/dev/nvidia0", "/dev/nvidiactl", "/dev/nvidia-modeset", "/dev/nvidia-uvm", "/dev/nvidia-uvm-tools", "/dev/nvidia-caps/nvidia-cap1", "/dev/nvidia-caps/nvidia-cap2"] : []
   passthrough_tun_device  = var.passthrough_tun ? ["/dev/net/tun"] : []
+  all_passthrough_devices = concat(var.device_passthrough, local.passthrough_tun_device)
 
-  all_passthrough_devices = concat(local.passthrough_gpu_devices, local.passthrough_tun_device)
+  config_file_path = "/etc/pve/lxc/{{VM_ID}}.conf"
+
+  gpu_passthrough_commands = [
+    "sleep 10",
+    "sudo grep -qxF 'lxc.environment: NVIDIA_VISIBLE_DEVICES=all' ${local.config_file_path} || echo 'lxc.environment: NVIDIA_VISIBLE_DEVICES=all' | sudo tee -a ${local.config_file_path}",
+    "sudo grep -qxF 'lxc.environment: NVIDIA_DRIVER_CAPABILITIES=compute,utility,video' ${local.config_file_path} || echo 'lxc.environment: NVIDIA_DRIVER_CAPABILITIES=compute,utility,video' | sudo tee -a ${local.config_file_path}",
+    "sudo grep -qxF 'lxc.hook.mount: /usr/share/lxc/hooks/nvidia' ${local.config_file_path} || echo 'lxc.hook.mount: /usr/share/lxc/hooks/nvidia' | sudo tee -a ${local.config_file_path}",
+    "sudo pct reboot {{VM_ID}}"
+  ]
 }
 
 resource "proxmox_virtual_environment_container" "lxc" {
   node_name     = var.node_name
   vm_id         = var.vm_id
   description   = var.description
-  pool_id       = var.pool_id
   tags          = var.tags
   started       = var.started
   start_on_boot = var.start_on_boot
@@ -105,6 +112,36 @@ resource "proxmox_virtual_environment_container" "lxc" {
       path = device_passthrough.value
       mode = "0666"
     }
+  }
+}
+
+resource "proxmox_virtual_environment_pool_membership" "lxc_membership" {
+  count   = var.pool_id != null ? 1 : 0
+  pool_id = var.pool_id
+  vm_id   = proxmox_virtual_environment_container.lxc.vm_id
+}
+
+resource "null_resource" "set_gpu_passthrough_on_host" {
+  depends_on = [proxmox_virtual_environment_container.lxc]
+  count      = var.passthrough_gpu ? 1 : 0
+
+  # Hack to trigger rerun everytime commands have been edited.
+  triggers = {
+    always_run = jsonencode(local.gpu_passthrough_commands)
+  }
+
+  connection {
+    type  = "ssh"
+    user  = "terraform"
+    host  = format("%s.%s", var.node_name, var.domain)
+    agent = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      for cmd in local.gpu_passthrough_commands :
+      replace(cmd, "{{VM_ID}}", proxmox_virtual_environment_container.lxc.vm_id)
+    ]
   }
 }
 

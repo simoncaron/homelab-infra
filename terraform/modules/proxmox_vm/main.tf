@@ -9,8 +9,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
     enabled = var.agent_enabled
   }
 
-  pool_id = var.pool_id
-  tags    = var.tags
+  tags = var.tags
 
   serial_device {
     device = var.serial_device.device
@@ -118,6 +117,17 @@ resource "proxmox_virtual_environment_vm" "vm" {
   operating_system {
     type = var.operating_system.type
   }
+
+  # https://github.com/bpg/terraform-provider-proxmox/issues/2377
+  lifecycle {
+    ignore_changes = [pool_id]
+  }
+}
+
+resource "proxmox_virtual_environment_pool_membership" "lxc_membership" {
+  count   = var.pool_id != null ? 1 : 0
+  pool_id = var.pool_id
+  vm_id   = proxmox_virtual_environment_vm.vm.id
 }
 
 resource "adguard_rewrite" "proxmox_vm" {

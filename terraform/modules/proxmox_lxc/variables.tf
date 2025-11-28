@@ -185,3 +185,9 @@ variable "passthrough_tun" {
   type        = bool
   default     = false
 }
+
+variable "device_passthrough" {
+  description = "A list of devices to passthrough to the container."
+  type        = list(string)
+  default     = []
+}

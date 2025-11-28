@@ -13,6 +13,7 @@
     - simoncaron.pve_acme
     - geerlingguy.nut_client
     - oefenweb.postfix
+    - simoncaron.pve_nvidia_passthrough
 
 - hosts: docker
   roles:
@@ -26,12 +27,6 @@
     - geerlingguy.mysql
     - role: wzzrd.gitea.gitea
       tags: [forgejo]
-
-- hosts:
-    - pve01
-    - gpu
-  roles:
-    - simoncaron.pve_nvidia_passthrough
 
 - hosts: tdarr
   roles:
