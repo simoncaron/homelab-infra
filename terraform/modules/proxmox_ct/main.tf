@@ -80,6 +80,15 @@ resource "proxmox_virtual_environment_container" "lxc" {
     }
   }
 
+  dynamic "console" {
+    for_each = var.console != null ? [1] : []
+    content {
+      enabled   = true
+      type      = var.console.type
+      tty_count = var.console.tty_count
+    }
+  }
+
   cpu {
     cores        = var.cpu_cores
     architecture = var.cpu_architecture
@@ -101,6 +110,7 @@ resource "proxmox_virtual_environment_container" "lxc" {
       path   = mount_point.value.path
       volume = mount_point.value.volume
       backup = mount_point.value.backup
+      size   = mount_point.value.size
     }
   }
 

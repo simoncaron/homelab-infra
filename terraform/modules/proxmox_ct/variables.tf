@@ -158,12 +158,22 @@ variable "description" {
   default     = ""
 }
 
+variable "console" {
+  description = "The console configuration."
+  type = object({
+    type      = optional(string)
+    tty_count = optional(number)
+  })
+  default = null
+}
+
 variable "mount_points" {
   description = "A list of mount points to configure for the container."
   type = list(object({
     path   = string
     volume = string
     backup = optional(bool, false)
+    size   = optional(string)
   }))
   default = []
 }

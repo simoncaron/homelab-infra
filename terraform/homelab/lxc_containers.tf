@@ -19,7 +19,7 @@ resource "proxmox_virtual_environment_file" "debian_13_container_template" {
 }
 
 module "lxc_dns02" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "dns02"
 
@@ -48,7 +48,7 @@ module "lxc_dns02" {
 }
 
 module "lxc_newt01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "newt01"
 
@@ -69,7 +69,7 @@ module "lxc_newt01" {
 }
 
 module "lxc_jellyfin01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "jellyfin01"
 
@@ -90,7 +90,7 @@ module "lxc_jellyfin01" {
 }
 
 module "lxc_plex01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "plex01"
 
@@ -114,7 +114,7 @@ module "lxc_plex01" {
 }
 
 module "lxc_tdarr01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "tdarr01"
 
@@ -135,7 +135,7 @@ module "lxc_tdarr01" {
 }
 
 module "lxc_forgejo01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "forgejo01"
 
@@ -150,7 +150,7 @@ module "lxc_forgejo01" {
 }
 
 module "lxc_proxy01" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "proxy01"
 
@@ -170,7 +170,7 @@ module "lxc_proxy01" {
 }
 
 module "lxc_proxy02" {
-  source = "../modules/proxmox_lxc"
+  source = "../modules/proxmox_ct"
 
   hostname = "proxy02"
 
