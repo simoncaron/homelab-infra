@@ -184,16 +184,16 @@ variable "domain" {
   default     = "simn.io"
 }
 
-variable "passthrough_gpu" {
-  description = "Whether to enable GPU passthrough for the container."
-  type        = bool
-  default     = false
+variable "hook_mount" {
+  description = "The hook mount script path to set lxc.hook.mount configuration."
+  type        = string
+  default     = null
 }
 
-variable "passthrough_tun" {
-  description = "Whether to enable TUN/TAP device passthrough for the container."
-  type        = bool
-  default     = false
+variable "environment_variables" {
+  description = "A map of environment variables to set in the container."
+  type        = map(string)
+  default     = {}
 }
 
 variable "device_passthrough" {

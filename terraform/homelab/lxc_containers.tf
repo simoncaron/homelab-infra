@@ -44,7 +44,7 @@ module "lxc_dns02" {
     { name = "eth1", bridge = "vnet1", ipv4 = { address = "10.10.10.114/24", gateway = "10.10.10.1" } }
   ]
 
-  passthrough_tun = true
+  device_passthrough = ["/dev/net/tun"]
 }
 
 module "lxc_newt01" {
@@ -65,7 +65,7 @@ module "lxc_newt01" {
 
   network_interfaces = [{ name = "eth0", bridge = "vnet2" }]
 
-  passthrough_tun = true
+  device_passthrough = ["/dev/net/tun"]
 }
 
 module "lxc_jellyfin01" {
@@ -82,7 +82,12 @@ module "lxc_jellyfin01" {
 
   network_interfaces = [{ name = "eth0", bridge = "vnet1" }]
 
-  passthrough_gpu = true
+  hook_mount = "/usr/share/lxc/hooks/nvidia"
+
+  environment_variables = {
+    NVIDIA_VISIBLE_DEVICES     = "all"
+    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
+  }
 
   mount_points = [
     { path = "/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
@@ -103,7 +108,12 @@ module "lxc_plex01" {
 
   network_interfaces = [{ name = "eth0", bridge = "vnet2" }]
 
-  passthrough_gpu = true
+  hook_mount = "/usr/share/lxc/hooks/nvidia"
+
+  environment_variables = {
+    NVIDIA_VISIBLE_DEVICES     = "all"
+    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
+  }
 
   # Required for transcoding to work properly in Plex
   device_passthrough = ["/dev/nvidia-modeset", "/dev/nvidia-caps/nvidia-cap1", "/dev/nvidia-caps/nvidia-cap2"]
@@ -127,7 +137,12 @@ module "lxc_tdarr01" {
 
   network_interfaces = [{ name = "eth0", bridge = "vnet1" }]
 
-  passthrough_gpu = true
+  hook_mount = "/usr/share/lxc/hooks/nvidia"
+
+  environment_variables = {
+    NVIDIA_VISIBLE_DEVICES     = "all"
+    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
+  }
 
   mount_points = [
     { path = "/mnt/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
@@ -166,7 +181,7 @@ module "lxc_proxy01" {
     { name = "eth1", bridge = "vnet1", }
   ]
 
-  passthrough_tun = true
+  device_passthrough = ["/dev/net/tun"]
 }
 
 module "lxc_proxy02" {
@@ -186,5 +201,5 @@ module "lxc_proxy02" {
     { name = "eth1", bridge = "vnet2" }
   ]
 
-  passthrough_tun = true
+  device_passthrough = ["/dev/net/tun"]
 }
