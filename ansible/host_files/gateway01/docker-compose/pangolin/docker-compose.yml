@@ -49,7 +49,7 @@ services:
     depends_on:
       pangolin:
         condition: service_healthy
-    image: fosrl/gerbil:1.2.2
+    image: fosrl/gerbil:1.3.0
     ports:
       - 51820:51820/udp
       - 443:443
