@@ -1,6 +1,6 @@
 ansible-lint==25.12.0
 yamllint==1.37.1
-ansible==13.0.0
+ansible==13.1.0
 netaddr==1.3.0
 dnspython==2.8.0
 requests==2.32.5
