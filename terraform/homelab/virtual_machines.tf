@@ -1,13 +1,3 @@
-resource "proxmox_virtual_environment_download_file" "debian-12_cloud_image" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "pve01"
-  overwrite    = false
-
-  file_name = "debian-12-generic-amd64.qcow2.img"
-  url       = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
-}
-
 resource "proxmox_virtual_environment_download_file" "debian-13_cloud_image" {
   content_type = "iso"
   datastore_id = "local"
@@ -63,9 +53,10 @@ module "vm_nextcloud01" {
   vm_name          = "nextcloud01"
   tags             = ["debian", "nextcloud", "docker"]
   memory_dedicated = 6144
+  memory_floating  = 6144
 
   disks = [{
-    file_id   = proxmox_virtual_environment_download_file.debian-12_cloud_image.id
+    file_id   = proxmox_virtual_environment_download_file.debian-13_cloud_image.id
     interface = "virtio0"
     size      = 256
   }]
@@ -89,9 +80,10 @@ module "vm_monitoring01" {
   vm_name          = "monitoring01"
   tags             = ["debian", "docker", "metrics"]
   memory_dedicated = 8192
+  memory_floating  = 8192
 
   disks = [{
-    file_id   = proxmox_virtual_environment_download_file.debian-12_cloud_image.id
+    file_id   = proxmox_virtual_environment_download_file.debian-13_cloud_image.id
     interface = "virtio0"
     size      = 256
   }]
@@ -115,9 +107,10 @@ module "vm_docker01" {
   vm_name          = "docker01"
   tags             = ["debian", "docker", "apps"]
   memory_dedicated = 8192
+  memory_floating  = 8192
 
   disks = [{
-    file_id   = proxmox_virtual_environment_download_file.debian-12_cloud_image.id
+    file_id   = proxmox_virtual_environment_download_file.debian-13_cloud_image.id
     interface = "virtio0"
     size      = 256
   }]
@@ -141,9 +134,10 @@ module "vm_docker02" {
   vm_name          = "docker02"
   tags             = ["debian", "docker", "vpn"]
   memory_dedicated = 8192
+  memory_floating  = 8192
 
   disks = [{
-    file_id   = proxmox_virtual_environment_download_file.debian-12_cloud_image.id
+    file_id   = proxmox_virtual_environment_download_file.debian-13_cloud_image.id
     interface = "virtio0"
     size      = 256
   }]
