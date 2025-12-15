@@ -19,10 +19,10 @@ jobs:
           token: ${{ secrets.REPOSITORIES_TOKEN }}
           submodules: true
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.14
         uses: actions/setup-python@v6
         with:
-          python-version: 3.14
+          python-version: 3.14.2
 
       - uses: taiki-e/install-action@just
 
