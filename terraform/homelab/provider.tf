@@ -37,3 +37,13 @@ provider "tailscale" {
   oauth_client_secret = data.ansiblevault_string.tailscale_oauth_client_secret.value
   scopes              = ["all"]
 }
+
+provider "restapi" {
+  uri                  = "https://pve01.simn.io:8006/"
+  write_returns_object = true
+
+  headers = {
+    "Content-Type"  = "application/json"
+    "Authorization" = "PVEAPIToken=${data.ansiblevault_string.proxmox_api_token.value}"
+  }
+}
