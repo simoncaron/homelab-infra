@@ -1,7 +1,7 @@
 ---
 services:
   server:
-    image: ghcr.io/immich-app/immich-server:v2.3.1
+    image: ghcr.io/immich-app/immich-server:v2.4.0
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
@@ -24,7 +24,7 @@ services:
       disable: false
 
   machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v2.3.1
+    image: ghcr.io/immich-app/immich-machine-learning:v2.4.0
     volumes:
       - /opt/immich/model-cache:/cache
     env_file:
