@@ -1,6 +1,6 @@
 services:
   migrate:
-    image: fredrikburmester/streamystats-v2-migrate:2.4.0
+    image: fredrikburmester/streamystats-v2-migrate:v2.13.0
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -13,7 +13,7 @@ services:
     restart: "no"
 
   app:
-    image: fredrikburmester/streamystats-v2-nextjs:v2.5.0
+    image: fredrikburmester/streamystats-v2-nextjs:v2.13.0
     ports:
       - 3010:3000
     labels:
@@ -25,43 +25,46 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       JOB_SERVER_URL: http://job-server:3005
       HOSTNAME: 0.0.0.0
+      SESSION_SECRET: ${SESSION_SECRET}
     depends_on:
       db:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
+      job-server:
+        condition: service_healthy
     restart: unless-stopped
-    healthcheck:
-      test:
-        [CMD, wget, --quiet, --tries=1, --spider, http://localhost:3000/api/health]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
     networks:
       - default
       - traefik
 
   job-server:
-    image: fredrikburmester/streamystats-v2-job-server:v2.5.0
+    image: fredrikburmester/streamystats-v2-job-server:v2.13.0
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       PORT: "3005"
       HOST: 0.0.0.0
+      # Session polling interval in milliseconds (default: 5000)
+      SESSION_POLL_INTERVAL_MS: ${SESSION_POLL_INTERVAL_MS:-5000}
+      # Cron schedules (standard cron syntax)
+      CRON_ACTIVITY_SYNC: ${CRON_ACTIVITY_SYNC:-*/1 * * * *}
+      CRON_RECENT_ITEMS_SYNC: ${CRON_RECENT_ITEMS_SYNC:-*/1 * * * *}
+      CRON_USER_SYNC: ${CRON_USER_SYNC:-*/1 * * * *}
+      CRON_PEOPLE_SYNC: ${CRON_PEOPLE_SYNC:-*/15 * * * *}
+      CRON_EMBEDDINGS_SYNC: ${CRON_EMBEDDINGS_SYNC:-*/15 * * * *}
+      CRON_GEOLOCATION_SYNC: ${CRON_GEOLOCATION_SYNC:-*/5 * * * *}
+      CRON_FINGERPRINT_SYNC: ${CRON_FINGERPRINT_SYNC:-0 */6 * * *}
+      CRON_JOB_CLEANUP: ${CRON_JOB_CLEANUP:-*/1 * * * *}
+      CRON_OLD_JOB_CLEANUP: ${CRON_OLD_JOB_CLEANUP:-0 3 * * *}
+      CRON_FULL_SYNC: ${CRON_FULL_SYNC:-0 2 * * *}
+      CRON_DELETED_ITEMS_CLEANUP: ${CRON_DELETED_ITEMS_CLEANUP:-0 * * * *}
     depends_on:
       db:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
     restart: unless-stopped
-    healthcheck:
-      test:
-        [CMD, wget, --quiet, --tries=1, --spider, http://localhost:3005/health]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
 
   db:
     image: ghcr.io/tensorchord/vchord-postgres:pg17-v0.4.1
