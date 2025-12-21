@@ -16,18 +16,6 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^ansible/host_vars/newt01/main\\.yml$/"
-      ],
-      "matchStrings": [
-        "# newt\\s*\\n\\s*newt_version:\\s*(?<currentValue>[\\d\\.]+)"
-      ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "fosrl/newt",
-      "versioningTemplate": "semver"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
         "/^ansible/group_vars/dns/main\\.yml$/"
       ],
       "matchStrings": [

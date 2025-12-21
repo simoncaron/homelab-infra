@@ -45,6 +45,7 @@ variable "environment" {
   description = "A map of environment variables to set in the container."
   type        = map(string)
   default     = {}
+  sensitive   = true
 }
 
 variable "enable_nvidia_gpu" {
@@ -80,7 +81,7 @@ variable "networking" {
   description = "Networking configuration for the container."
   type = object({
     bridge  = string
-    address = string
+    address = optional(string, "dhcp")
     gateway = optional(string)
   })
   default = {

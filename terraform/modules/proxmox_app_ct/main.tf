@@ -1,14 +1,6 @@
 locals {
   config_file_path = "/etc/pve/lxc/{{VM_ID}}.conf"
 
-  environment_variables = merge(
-    var.environment,
-    var.enable_nvidia_gpu ? {
-      NVIDIA_VISIBLE_DEVICES     = "all"
-      NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
-    } : {}
-  )
-
   remove_commands = [
     "sudo sed -i '/^lxc\\.environment:/d' ${local.config_file_path}",
     "sudo sed -i '/^lxc\\.hook\\.mount:/d' ${local.config_file_path}",
@@ -16,7 +8,7 @@ locals {
 
   add_commands = compact(concat(
     [
-      for key, value in local.environment_variables :
+      for key, value in var.environment :
       "echo 'lxc.environment: ${key}=${value}' | sudo tee -a ${local.config_file_path}"
     ],
     [
@@ -47,7 +39,7 @@ resource "proxmox_virtual_environment_container" "app_container" {
 
   console {
     enabled   = true
-    tty_count = 2
+    tty_count = 1
     type      = "console"
   }
 
@@ -70,6 +62,7 @@ resource "proxmox_virtual_environment_container" "app_container" {
       path   = mount_point.value.path
       volume = "${mount_point.value.storage}:subvol-999-${var.name}-${mount_point.key}"
       backup = mount_point.value.backup
+      size   = mount_point.value.size
     }
   }
 

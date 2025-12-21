@@ -1,6 +1,0 @@
----
-- name: Restart Newt service
-  ansible.builtin.systemd:
-    name: newt
-    enabled: true
-    state: restarted

@@ -47,27 +47,6 @@ module "lxc_dns02" {
   device_passthrough = ["/dev/net/tun"]
 }
 
-module "lxc_newt01" {
-  source = "../modules/proxmox_ct"
-
-  hostname = "newt01"
-
-  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
-  tags             = ["debian", "newt", "pangolin"]
-
-  cpu_cores        = 2
-  memory_dedicated = 512
-  disk_size        = 8
-
-  features = {
-    keyctl = true
-  }
-
-  network_interfaces = [{ name = "eth0", bridge = "vnet2" }]
-
-  device_passthrough = ["/dev/net/tun"]
-}
-
 module "lxc_jellyfin01" {
   source = "../modules/proxmox_ct"
 
