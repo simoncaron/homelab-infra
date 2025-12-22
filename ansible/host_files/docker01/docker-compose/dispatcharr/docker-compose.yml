@@ -1,0 +1,21 @@
+---
+services:
+  app:
+    image: ghcr.io/dispatcharr/dispatcharr:0.15.0
+    environment:
+      DISPATCHARR_ENV: aio
+    labels:
+      traefik.enable: true
+      traefik.http.routers.dispatcharr.rule: Host(`dispatcharr.simn.io`)
+      traefik.http.services.dispatcharr.loadbalancer.server.port: "9191"
+    ports:
+      - 9191:9191
+      - 8001:8001
+    volumes:
+      - /opt/dispatcharr/data:/data
+    restart: unless-stopped
+
+networks:
+  default:
+    name: internal
+    external: true

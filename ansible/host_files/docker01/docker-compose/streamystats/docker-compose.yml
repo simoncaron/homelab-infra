@@ -1,6 +1,6 @@
 services:
   migrate:
-    image: fredrikburmester/streamystats-v2-migrate:v2.13.0
+    image: fredrikburmester/streamystats-v2-migrate:v2.14.1
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -13,7 +13,7 @@ services:
     restart: "no"
 
   app:
-    image: fredrikburmester/streamystats-v2-nextjs:v2.13.0
+    image: fredrikburmester/streamystats-v2-nextjs:v2.14.1
     ports:
       - 3010:3000
     labels:
@@ -26,6 +26,7 @@ services:
       JOB_SERVER_URL: http://job-server:3005
       HOSTNAME: 0.0.0.0
       SESSION_SECRET: ${SESSION_SECRET}
+      TZ: "{{ default_timezone }}"
     depends_on:
       db:
         condition: service_healthy
@@ -39,7 +40,7 @@ services:
       - traefik
 
   job-server:
-    image: fredrikburmester/streamystats-v2-job-server:v2.13.0
+    image: fredrikburmester/streamystats-v2-job-server:v2.14.1
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
@@ -59,6 +60,8 @@ services:
       CRON_OLD_JOB_CLEANUP: ${CRON_OLD_JOB_CLEANUP:-0 3 * * *}
       CRON_FULL_SYNC: ${CRON_FULL_SYNC:-0 2 * * *}
       CRON_DELETED_ITEMS_CLEANUP: ${CRON_DELETED_ITEMS_CLEANUP:-0 * * * *}
+      # Skip full sync on server startup (set to "true" or "1" to skip)
+      SKIP_STARTUP_FULL_SYNC: ${SKIP_STARTUP_FULL_SYNC:-false}
     depends_on:
       db:
         condition: service_healthy
