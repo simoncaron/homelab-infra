@@ -159,7 +159,7 @@ module "vm_haos01" {
   source = "../modules/proxmox_vm"
 
   vm_name = "haos01"
-  tags    = ["home-assistant", "ansible-skip"]
+  tags    = ["home-assistant", "appliance"]
 
   cpu_cores        = 2
   memory_dedicated = 4096
