@@ -63,7 +63,7 @@ experimental:
   plugins:
     badger:
       moduleName: github.com/fosrl/badger
-      version: v1.3.0
+      version: v1.3.1
     crowdsec:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
       version: v1.4.6
