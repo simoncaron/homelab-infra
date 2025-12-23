@@ -21,8 +21,12 @@ services:
       test:
         - CMD
         - cscli
-        - capi
+        - lapi
         - status
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     image: crowdsecurity/crowdsec:v1.7.3
     labels:
       - traefik.enable=false

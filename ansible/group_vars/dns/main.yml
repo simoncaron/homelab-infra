@@ -54,5 +54,5 @@ adguardhome_filters:
     name: AdGuard DNS filter
 
 # artis3n.tailscale.machine
-tailscale_args: --advertise-routes={{ network_hosts.cidr }} --accept-dns=false --advertise-exit-node
+tailscale_args: --advertise-routes={{ default_vlan.cidr }},{{ management_zone.cidr }} --accept-dns=false --advertise-exit-node
 tailscale_oauth_ephemeral: false
