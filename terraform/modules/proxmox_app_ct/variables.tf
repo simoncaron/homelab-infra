@@ -4,6 +4,12 @@ variable "node_name" {
   default     = "pve01"
 }
 
+variable "vm_id" {
+  description = "The unique ID of the LXC container."
+  type        = number
+  default     = null
+}
+
 variable "name" {
   description = "The name of the application container."
   type        = string
@@ -55,16 +61,18 @@ variable "enable_nvidia_gpu" {
 }
 
 variable "volumes" {
-  description = "A map of persistent volumes to create and attach to the container."
-  type = map(object({
+  description = "A list of persistent volumes to create and attach to the container."
+  type = list(object({
     path    = string
     storage = optional(string, "local-zfs")
     node    = optional(string, "pve01")
     size    = string
     backup  = optional(bool, true)
+    uid     = optional(number, 100000)
+    gid     = optional(number, 100000)
   }))
 
-  default = {}
+  default = []
 }
 
 variable "bind_mounts" {
@@ -100,4 +108,13 @@ variable "domain" {
   description = "The domain name to use for the container DNS record."
   type        = string
   default     = "simn.io"
+}
+
+variable "device_passthrough" {
+  description = "A list of devices to passthrough to the container."
+  type = list(object({
+    path = string
+    mode = optional(string, "0666")
+  }))
+  default = []
 }

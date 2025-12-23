@@ -7,7 +7,7 @@ module "app_newt01" {
     reference = "docker.io/fosrl/newt:1.7.0"
   }
 
-  tags = ["docker", "newt", "ansible-skip"]
+  tags = ["docker", "newt", "oci"]
 
   environment = {
     PANGOLIN_ENDPOINT = "https://pg.simn.io"
