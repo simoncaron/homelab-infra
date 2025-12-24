@@ -1,7 +1,7 @@
 ---
 services:
   runner:
-    image: code.forgejo.org/forgejo/runner:12.3.0
+    image: code.forgejo.org/forgejo/runner:12.3.1
     user: "{{ docker_compose_user_id }}:994"
     volumes:
       - /opt/forgejo/data:/data
