@@ -32,8 +32,8 @@
   ansible.builtin.deb822_repository:
     name: jellyfin
     types: deb
-    uris: https://repo.jellyfin.org/{{ ansible_distribution | lower }}
-    suites: "{{ ansible_distribution_release }}"
+    uris: https://repo.jellyfin.org/{{ ansible_facts['distribution'] | lower }}
+    suites: "{{ ansible_facts['distribution_release'] }}"
     components: main
     architectures: "{{ jellyfin_apt_arch }}"
     signed_by: /etc/apt/keyrings/jellyfin.asc

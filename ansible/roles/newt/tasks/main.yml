@@ -41,7 +41,7 @@
 
 - name: Fail if unsupported architecture
   ansible.builtin.fail:
-    msg: Unsupported architecture ({{ ansible_architecture }})
+    msg: Unsupported architecture ({{ ansible_facts['architecture'] }})
   when: arch_type == 'unknown'
 
 - name: Set binary name

@@ -16,7 +16,7 @@ acme_sh_default_extra_flags_renew: *flags
 acme_sh_default_issue_post_hook: &hook sleep 30 && chown adguardhome:adguardhome -R /etc/ssl/ansible
 acme_sh_default_issue_renew_hook: *hook
 
-acme_sh_domains: [domains: ["{{ ansible_hostname }}.simn.io"]]
+acme_sh_domains: [domains: ["{{ ansible_facts['hostname'] }}.simn.io"]]
 acme_sh_default_install_cert_reloadcmd: sudo systemctl restart adguardhome
 
 # bcook254.adguardhome
@@ -47,10 +47,10 @@ adguardhome_dnshosts:
   - 0.0.0.0
 
 adguardhome_tls_enabled: "true"
-adguardhome_tls_server_name: "{{ ansible_hostname }}.simn.io"
+adguardhome_tls_server_name: "{{ ansible_facts['hostname'] }}.simn.io"
 adguardhome_tls_force_https: "true"
-adguardhome_tls_certificate_path: /etc/ssl/ansible/{{ ansible_hostname }}.simn.io.pem
-adguardhome_tls_private_key_path: /etc/ssl/ansible/{{ ansible_hostname }}.simn.io.key
+adguardhome_tls_certificate_path: /etc/ssl/ansible/{{ ansible_facts['hostname'] }}.simn.io.pem
+adguardhome_tls_private_key_path: /etc/ssl/ansible/{{ ansible_facts['hostname'] }}.simn.io.key
 
 adguardhome_filters:
   - enabled: "true"
