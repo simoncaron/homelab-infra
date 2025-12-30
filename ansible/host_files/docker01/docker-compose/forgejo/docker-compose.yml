@@ -18,6 +18,7 @@ services:
     image: ghcr.io/tecnativa/docker-socket-proxy:v0.4.2
     restart: unless-stopped
     environment:
+      BUILD: 1
       POST: 1
       CONTAINERS: 1
       INFO: 1
