@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/dani-garcia/vaultwarden:1.35.0-alpine
+    image: ghcr.io/dani-garcia/vaultwarden:1.35.1-alpine
     restart: unless-stopped
     user: "{{ docker_compose_user_id }}:{{ docker_compose_group_id }}"
     volumes:
