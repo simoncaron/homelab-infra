@@ -6,11 +6,11 @@ terraform {
     restapi = {
       source = "Mastercard/restapi"
     }
-    adguard = {
-      source = "gmichels/adguard"
-    }
     null = {
       source = "hashicorp/null"
+    }
+    powerdns = {
+      source = "pan-net/powerdns"
     }
   }
 }

@@ -1,0 +1,7 @@
+---
+# PowerDNS.pdns
+pdns_config_specific:
+  primary: true
+  allow-axfr-ips: 192.168.1.114/32
+  only-notify: ""
+  also-notify: 192.168.1.114:5353

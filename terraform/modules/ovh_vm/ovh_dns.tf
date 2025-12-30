@@ -23,13 +23,18 @@ resource "cloudflare_dns_record" "pangolin_a_record" {
   ttl     = 3600
 }
 
-resource "adguard_rewrite" "gateway01_adguardhome_dns_record" {
-  answer = "51.161.34.166"
-  domain = "gateway01.simn.io"
+resource "powerdns_record" "gateway01_powerdns_dns_record" {
+  zone    = "simn.io."
+  name    = "gateway01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["51.161.34.166"]
 }
 
-resource "adguard_rewrite" "pg_adguardhome_dns_record" {
-  answer = "gateway01.simn.io"
-  domain = "pg.simn.io"
+resource "powerdns_record" "pg_powerdns_dns_record" {
+  zone    = "simn.io."
+  name    = "pg.simn.io."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["gateway01.simn.io."]
 }
-

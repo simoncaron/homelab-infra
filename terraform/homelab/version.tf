@@ -13,10 +13,6 @@ terraform {
       source  = "tailscale/tailscale"
       version = "0.24.0"
     }
-    adguard = {
-      source  = "gmichels/adguard"
-      version = "1.6.2"
-    }
     ovh = {
       source  = "ovh/ovh"
       version = "2.10.0"
@@ -32,6 +28,10 @@ terraform {
     null = {
       source  = "hashicorp/null"
       version = "3.2.4"
+    }
+    powerdns = {
+      source  = "pan-net/powerdns"
+      version = "1.5.0"
     }
   }
 }

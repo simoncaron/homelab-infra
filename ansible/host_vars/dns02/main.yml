@@ -1,0 +1,5 @@
+---
+# PowerDNS.pdns
+pdns_config_specific:
+  secondary: true
+  allow-notify-from: 192.168.1.10/32

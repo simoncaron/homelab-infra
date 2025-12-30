@@ -36,5 +36,6 @@ roles:
   - name: simoncaron.traefik
     version: 1.0.2
   - name: lae.proxmox
-    src: https://github.com/lae/ansible-role-proxmox
     version: v1.10.0
+  - name: PowerDNS.pdns
+    version: v1.8.0

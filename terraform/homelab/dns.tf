@@ -331,62 +331,170 @@ resource "cloudflare_dns_record" "simoncaron_txt3" {
   ttl     = 1
 }
 
-resource "adguard_rewrite" "pbs01_adguardhome_dns_record" {
-  answer = "192.168.1.100"
-  domain = "pbs01.simn.io"
+resource "powerdns_zone" "simn_io" {
+  name         = "simn.io."
+  kind         = "Master"
+  nameservers  = ["ns1.simn.io.", "ns2.simn.io."]
+  soa_edit_api = "DEFAULT"
 }
 
-resource "adguard_rewrite" "dns01_adguardhome_dns_record" {
-  answer = "192.168.1.10"
-  domain = "dns01.simn.io"
+resource "powerdns_zone" "priv_simn_io" {
+  name         = "priv.simn.io."
+  kind         = "Master"
+  nameservers  = ["ns1.simn.io.", "ns2.simn.io."]
+  soa_edit_api = "DEFAULT"
 }
 
-resource "adguard_rewrite" "s3_adguardhome_dns_record" {
-  answer = "192.168.1.100"
-  domain = "s3.simn.io"
+resource "powerdns_zone" "pub_simn_io" {
+  name         = "pub.simn.io."
+  kind         = "Master"
+  nameservers  = ["ns1.simn.io.", "ns2.simn.io."]
+  soa_edit_api = "DEFAULT"
 }
 
-resource "adguard_rewrite" "influxdb_adguardhome_dns_record" {
-  answer = "192.168.1.100"
-  domain = "influxdb.simn.io"
+resource "powerdns_zone" "in_addr_arpa_10" {
+  name         = "10.in-addr.arpa."
+  kind         = "Master"
+  nameservers  = ["ns1.simn.io.", "ns2.simn.io."]
+  soa_edit_api = "DEFAULT"
 }
 
-resource "adguard_rewrite" "truenas01_adguardhome_dns_record" {
-  answer = "192.168.1.100"
-  domain = "truenas01.simn.io"
+resource "powerdns_zone" "simn_io_secondary" {
+  name     = "simn.io."
+  kind     = "Slave"
+  masters  = ["192.168.1.10:5353"]
+  provider = powerdns.pdns_secondary
 }
 
-resource "adguard_rewrite" "truenas01_ilo_adguardhome_dns_record" {
-  answer = "192.168.1.101"
-  domain = "ilo.truenas01.simn.io"
+resource "powerdns_zone" "priv_simn_io_secondary" {
+  name     = "priv.simn.io."
+  kind     = "Slave"
+  masters  = ["192.168.1.10:5353"]
+  provider = powerdns.pdns_secondary
 }
 
-resource "adguard_rewrite" "pve01_ilo_adguardhome_dns_record" {
-  answer = "192.168.1.200"
-  domain = "ilo.pve01.simn.io"
+resource "powerdns_zone" "pub_simn_io_secondary" {
+  name     = "pub.simn.io."
+  kind     = "Slave"
+  masters  = ["192.168.1.10:5353"]
+  provider = powerdns.pdns_secondary
 }
 
-resource "adguard_rewrite" "pms_adguardhome_dns_record" {
-  answer = "gateway01.simn.io"
-  domain = "pms.simn.io"
+resource "powerdns_zone" "in_addr_arpa_10_secondary" {
+  name     = "10.in-addr.arpa."
+  kind     = "Slave"
+  masters  = ["192.168.1.10:5353"]
+  provider = powerdns.pdns_secondary
 }
 
-resource "adguard_rewrite" "plex_adguardhome_dns_record" {
-  answer = "192.168.1.119"
-  domain = "plex.simn.io"
+resource "powerdns_record" "ns1" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "ns1.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.10"]
 }
 
-resource "adguard_rewrite" "homeassistant_adguardhome_dns_record" {
-  answer = "192.168.1.133"
-  domain = "homeassistant.simn.io"
+resource "powerdns_record" "ns2" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "ns2.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.114"]
 }
 
-resource "adguard_rewrite" "pve01_adguardhome_dns_record" {
-  answer = "192.168.1.201"
-  domain = "pve01.simn.io"
+resource "powerdns_record" "pbs01_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "pbs01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.100"]
 }
 
-resource "adguard_rewrite" "default_simnio_adguardhome_dns_record" {
-  answer = "192.168.1.113"
-  domain = "*.simn.io"
+resource "powerdns_record" "dns01_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "dns01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.10"]
+}
+
+resource "powerdns_record" "s3_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "s3.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.100"]
+}
+
+resource "powerdns_record" "influx_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "influxdb.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.100"]
+}
+
+resource "powerdns_record" "truenas01_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "truenas01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.100"]
+}
+
+resource "powerdns_record" "truenas01_ilo_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "ilo.truenas01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.101"]
+}
+
+resource "powerdns_record" "pve01_ilo_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "ilo.pve01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.200"]
+}
+
+resource "powerdns_record" "pms_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "pms.simn.io."
+  type    = "CNAME"
+  ttl     = 300
+  records = ["gateway01.simn.io."]
+}
+
+resource "powerdns_record" "plex_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "plex.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.119"]
+}
+
+resource "powerdns_record" "homeassistant_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "homeassistant.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.133"]
+}
+
+resource "powerdns_record" "pve01_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "pve01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.201"]
+}
+
+resource "powerdns_record" "default_simn_io_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "*.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.113"]
 }

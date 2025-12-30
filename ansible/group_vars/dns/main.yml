@@ -21,17 +21,30 @@ acme_sh_default_install_cert_reloadcmd: sudo systemctl restart adguardhome
 
 # bcook254.adguardhome
 adguardhome_version: 0.107.71
-adguardhome_manage_config: false
+adguardhome_manage_config: true
 
 adguardhome_webhost: 0.0.0.0
 adguardhome_upstream_dns:
+  - "'[/simn.io/]127.0.0.1:5353'"
   - https://cloudflare-dns.com/dns-query
+
+adguardhome_fallback_dns:
+  - https://dns.quad9.net/dns-query
+
+adguardhome_cache_optimistic: "true"
+adguardhome_anonymize_client_ip: "true"
+adguardhome_use_private_ptr_resolvers: "false"
+adguardhome_rewrites_enabled: "false"
+adguardhome_querylog_enabled: "false"
+
+adguardhome_ratelimit: 60
+
+adguardhome_user_rules:
+  - "@@||s.youtube.com^"
 
 adguardhome_language: en
 adguardhome_dnshosts:
   - 0.0.0.0
-
-adguardhome_anonymize_client_ip: true
 
 adguardhome_tls_enabled: "true"
 adguardhome_tls_server_name: "{{ ansible_hostname }}.simn.io"
@@ -56,3 +69,26 @@ adguardhome_filters:
 # artis3n.tailscale.machine
 tailscale_args: --advertise-routes={{ default_vlan.cidr }},{{ management_zone.cidr }} --accept-dns=false --advertise-exit-node
 tailscale_oauth_ephemeral: false
+
+# PowerDNS.pdns
+pdns_config_common:
+  api: true
+  api-key: "{{ powerdns_api_key }}"
+  local-port: "5353"
+  webserver: true
+  webserver-address: 0.0.0.0
+  webserver-allow-from: 127.0.0.1,::1,192.168.1.0/24,100.64.0.0/10
+  webserver-port: "8081"
+
+pdns_config_specific: {}
+
+pdns_config: "{{ pdns_config_common | combine(pdns_config_specific, recursive=True) }}"
+
+database_name: /var/lib/powerdns/db.sqlite
+
+pdns_backends:
+  gsqlite3:
+    database: "{{ database_name }}"
+
+pdns_sqlite_databases_locations:
+  - "{{ database_name }}"

@@ -14,13 +14,6 @@ provider "proxmox" {
   }
 }
 
-provider "adguard" {
-  host     = "dns01.simn.io"
-  username = data.ansiblevault_string.adguard_home_username.value
-  password = data.ansiblevault_string.adguard_home_password.value
-  timeout  = 30
-}
-
 provider "cloudflare" {
   api_token = data.ansiblevault_string.cloudflare_api_token.value
 }
@@ -46,4 +39,15 @@ provider "restapi" {
     "Content-Type"  = "application/json"
     "Authorization" = "PVEAPIToken=${data.ansiblevault_string.proxmox_api_token.value}"
   }
+}
+
+provider "powerdns" {
+  api_key    = "51c2f9e9-8b5d-4d6b-9498-2ba370e79713"
+  server_url = "http://192.168.1.10:8081"
+}
+
+provider "powerdns" {
+  alias      = "pdns_secondary"
+  api_key    = "51c2f9e9-8b5d-4d6b-9498-2ba370e79713"
+  server_url = "http://192.168.1.114:8081"
 }

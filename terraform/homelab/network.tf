@@ -2,8 +2,11 @@ resource "proxmox_virtual_environment_sdn_zone_simple" "sdn_zone_priv01" {
   id    = "znpriv01"
   nodes = ["pve01"]
 
-  ipam = "pve"
-  dhcp = "dnsmasq"
+  ipam        = "pve"
+  dhcp        = "dnsmasq"
+  dns_zone    = "priv.simn.io"
+  dns         = "powerdns"
+  reverse_dns = "powerdns"
 
   depends_on = [
     proxmox_virtual_environment_sdn_applier.finalizer
@@ -14,8 +17,11 @@ resource "proxmox_virtual_environment_sdn_zone_simple" "sdn_zone_pub01" {
   id    = "znpub01"
   nodes = ["pve01"]
 
-  ipam = "pve"
-  dhcp = "dnsmasq"
+  ipam        = "pve"
+  dhcp        = "dnsmasq"
+  dns_zone    = "pub.simn.io"
+  dns         = "powerdns"
+  reverse_dns = "powerdns"
 
   depends_on = [
     proxmox_virtual_environment_sdn_applier.finalizer

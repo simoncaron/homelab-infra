@@ -6,8 +6,8 @@ terraform {
     cloudflare = {
       source = "cloudflare/cloudflare"
     }
-    adguard = {
-      source = "gmichels/adguard"
+    powerdns = {
+      source = "pan-net/powerdns"
     }
   }
 }

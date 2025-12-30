@@ -188,7 +188,7 @@ variable "serial_device" {
 }
 
 variable "domain" {
-  description = "Domain of the virtual machine, used for the primary AdGuard rewrite rule."
+  description = "Domain of the virtual machine, used for the primary PowerDNS record."
   type        = string
   default     = "simn.io"
 }

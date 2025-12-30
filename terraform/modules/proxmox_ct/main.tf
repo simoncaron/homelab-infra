@@ -170,7 +170,10 @@ resource "null_resource" "set_lxc_config_options" {
   }
 }
 
-resource "adguard_rewrite" "defined_rules" {
-  domain = format("%s.%s", var.hostname, var.domain)
-  answer = proxmox_virtual_environment_container.lxc.ipv4[var.network_interfaces[0].name]
+resource "powerdns_record" "powerdns_dns_record" {
+  zone    = "${var.domain}."
+  name    = "${var.hostname}.${var.domain}."
+  type    = "A"
+  ttl     = 14400
+  records = [proxmox_virtual_environment_container.lxc.ipv4[var.network_interfaces[0].name]]
 }

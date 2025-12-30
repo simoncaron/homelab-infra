@@ -3,11 +3,11 @@ terraform {
     proxmox = {
       source = "bpg/proxmox"
     }
-    adguard = {
-      source = "gmichels/adguard"
-    }
     ansiblevault = {
       source = "MeilleursAgents/ansiblevault"
+    }
+    powerdns = {
+      source = "pan-net/powerdns"
     }
   }
 }

@@ -52,6 +52,7 @@
     - nickjj.acme_sh
     - role: bcook254.adguardhome
       tags: [adguardhome]
+    - PowerDNS.pdns
 
 - hosts:
     - dns
