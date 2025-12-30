@@ -187,12 +187,6 @@ variable "serial_device" {
   }
 }
 
-variable "domain" {
-  description = "Domain of the virtual machine, used for the primary PowerDNS record."
-  type        = string
-  default     = "simn.io"
-}
-
 variable "virtiofs" {
   description = "A list of virtiofs mount configurations for the VM. Each object must have a 'mapping' attribute."
   type = list(object({

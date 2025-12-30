@@ -419,6 +419,14 @@ resource "powerdns_record" "dns01_powerdns_dns_record" {
   records = ["192.168.1.10"]
 }
 
+resource "powerdns_record" "dns02_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "dns02.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = ["192.168.1.114"]
+}
+
 resource "powerdns_record" "s3_powerdns_dns_record" {
   zone    = powerdns_zone.simn_io.id
   name    = "s3.simn.io."

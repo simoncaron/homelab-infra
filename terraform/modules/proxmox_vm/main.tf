@@ -129,11 +129,3 @@ resource "proxmox_virtual_environment_pool_membership" "lxc_membership" {
   pool_id = var.pool_id
   vm_id   = proxmox_virtual_environment_vm.vm.id
 }
-
-resource "powerdns_record" "powerdns_dns_record" {
-  zone    = "${var.domain}."
-  name    = "${var.vm_name}.${var.domain}."
-  type    = "A"
-  ttl     = 14400
-  records = [proxmox_virtual_environment_vm.vm.ipv4_addresses[1][0]]
-}

@@ -6,8 +6,5 @@ terraform {
     ansiblevault = {
       source = "MeilleursAgents/ansiblevault"
     }
-    powerdns = {
-      source = "pan-net/powerdns"
-    }
   }
 }

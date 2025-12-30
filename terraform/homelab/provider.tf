@@ -31,16 +31,6 @@ provider "tailscale" {
   scopes              = ["all"]
 }
 
-provider "restapi" {
-  uri                  = "https://pve01.simn.io:8006/"
-  write_returns_object = true
-
-  headers = {
-    "Content-Type"  = "application/json"
-    "Authorization" = "PVEAPIToken=${data.ansiblevault_string.proxmox_api_token.value}"
-  }
-}
-
 provider "powerdns" {
   api_key    = "51c2f9e9-8b5d-4d6b-9498-2ba370e79713"
   server_url = "http://192.168.1.10:8081"

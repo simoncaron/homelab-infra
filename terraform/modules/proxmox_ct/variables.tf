@@ -178,12 +178,6 @@ variable "mount_points" {
   default = []
 }
 
-variable "domain" {
-  description = "The domain suffix to append to the hostname for DNS records."
-  type        = string
-  default     = "simn.io"
-}
-
 variable "hook_mount" {
   description = "The hook mount script path to set lxc.hook.mount configuration."
   type        = string

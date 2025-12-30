@@ -3,8 +3,8 @@ terraform {
     proxmox = {
       source = "bpg/proxmox"
     }
-    powerdns = {
-      source = "pan-net/powerdns"
+    ansiblevault = {
+      source = "MeilleursAgents/ansiblevault"
     }
   }
 }
