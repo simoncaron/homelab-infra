@@ -21,4 +21,4 @@ traefik_rules_config:
           service-plex:
             loadBalancer:
               servers:
-                - url: https://plex01.simn.io:32400
+                - url: https://plex01.pub.simn.io:32400

@@ -17,7 +17,7 @@ traefik_rules_config:
         middlewares:
           auth:
             forwardauth:
-              address: http://docker01.simn.io:9091/api/verify?rd=https%3A%2F%2Fauth.simn.io%2F
+              address: http://docker01.priv.simn.io:9091/api/verify?rd=https%3A%2F%2Fauth.simn.io%2F
               trustForwardHeader: true
               authResponseHeaders:
                 - Remote-User
@@ -57,7 +57,7 @@ traefik_rules_config:
           service-forgejo:
             loadBalancer:
               servers:
-                - url: http://forgejo01.simn.io:3000
+                - url: http://forgejo01.priv.simn.io:3000
 
   - name: nextcloud
     content:
@@ -72,7 +72,7 @@ traefik_rules_config:
           nextcloud:
             loadBalancer:
               servers:
-                - url: http://nextcloud01.simn.io:11000
+                - url: http://nextcloud01.priv.simn.io:11000
         middlewares:
           nextcloud-secure-headers:
             headers:
@@ -101,7 +101,7 @@ traefik_rules_config:
           tdarr:
             loadBalancer:
               servers:
-                - url: http://tdarr01.simn.io:8265
+                - url: http://tdarr01.priv.simn.io:8265
 
   - name: jellyfin
     content:
@@ -114,4 +114,4 @@ traefik_rules_config:
           service-jellyfin:
             loadBalancer:
               servers:
-                - url: http://jellyfin01.simn.io:8096
+                - url: http://jellyfin01.priv.simn.io:8096

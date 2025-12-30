@@ -7,13 +7,13 @@
 #   port: 2375
 
 docker01:
-  host: docker01.simn.io
+  host: docker01.priv.simn.io
   port: 2375
 
 docker02:
-  host: docker02.simn.io
+  host: docker02.priv.simn.io
   port: 2375
 
 monitoring01:
-  host: monitoring01.simn.io
+  host: monitoring01.priv.simn.io
   port: 2375
