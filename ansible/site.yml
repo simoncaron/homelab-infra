@@ -32,6 +32,11 @@
   roles:
     - tdarr
 
+- hosts: newt
+  tags: [newt]
+  roles:
+    - newt
+
 - hosts: jellyfin
   roles:
     - jellyfin
@@ -52,7 +57,6 @@
     - nickjj.acme_sh
     - role: bcook254.adguardhome
       tags: [adguardhome]
-    - PowerDNS.pdns
 
 - hosts:
     - dns
