@@ -2,7 +2,7 @@ collections:
   - name: community.general
     version: 12.2.0
   - name: community.docker
-    version: 5.0.4
+    version: 5.0.5
   - name: community.proxmox
     version: 1.5.0
   - name: ansible.posix
