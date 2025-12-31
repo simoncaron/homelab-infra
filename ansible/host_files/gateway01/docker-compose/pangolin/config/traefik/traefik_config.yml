@@ -69,7 +69,7 @@ experimental:
       version: v1.4.6
     geoblock:
       moduleName: github.com/PascalMinder/geoblock
-      version: v0.3.4
+      version: v0.3.5
 log:
   format: json
   level: INFO
