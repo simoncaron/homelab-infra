@@ -40,7 +40,7 @@ services:
       - traefik
 
   job-server:
-    image: fredrikburmester/streamystats-v2-job-server:v2.15.0
+    image: fredrikburmester/streamystats-v2-job-server:v2.16.0
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
