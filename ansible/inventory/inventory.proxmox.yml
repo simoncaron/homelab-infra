@@ -19,6 +19,14 @@ password: !vault |
 
 want_facts: true
 
+compose:
+  ansible_host: >-
+    inventory_hostname ~
+    (
+      '.priv.simn.io' if (proxmox_net0 | default({})).get('bridge') == 'vnet1' else
+      '.pub.simn.io'  if (proxmox_net0 | default({})).get('bridge') == 'vnet2' else
+      ''
+    )
 
 filters:
   - "'appliance' not in (proxmox_tags_parsed | default([]))"

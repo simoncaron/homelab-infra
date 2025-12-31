@@ -427,6 +427,22 @@ resource "powerdns_record" "dns02_powerdns_dns_record" {
   records = ["192.168.1.114"]
 }
 
+resource "powerdns_record" "proxy01_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "proxy01.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = [module.lxc_proxy01.default_ip]
+}
+
+resource "powerdns_record" "proxy02_powerdns_dns_record" {
+  zone    = powerdns_zone.simn_io.id
+  name    = "proxy02.simn.io."
+  type    = "A"
+  ttl     = 300
+  records = [module.lxc_proxy02.default_ip]
+}
+
 resource "powerdns_record" "s3_powerdns_dns_record" {
   zone    = powerdns_zone.simn_io.id
   name    = "s3.simn.io."
