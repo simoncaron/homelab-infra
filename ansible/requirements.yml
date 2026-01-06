@@ -29,8 +29,6 @@ roles:
     version: 3.0.0
   - name: simoncaron.pve_acme
     version: 1.5.0
-  - name: nickjj.acme_sh
-    version: v1.1.0
   - name: bcook254.adguardhome
     version: 107.71.0
   - name: simoncaron.traefik
@@ -39,3 +37,5 @@ roles:
     version: v1.10.0
   - name: PowerDNS.pdns
     version: v1.8.0
+  - name: caddy_ansible.caddy_ansible
+    version: v3.2.0

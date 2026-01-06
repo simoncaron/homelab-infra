@@ -32,12 +32,12 @@ provider "tailscale" {
 }
 
 provider "powerdns" {
-  api_key    = "51c2f9e9-8b5d-4d6b-9498-2ba370e79713"
-  server_url = "http://192.168.1.10:8081"
+  api_key    = data.ansiblevault_string.powerdns_api_key.value
+  server_url = "https://ns1.simn.io"
 }
 
 provider "powerdns" {
   alias      = "pdns_secondary"
-  api_key    = "51c2f9e9-8b5d-4d6b-9498-2ba370e79713"
-  server_url = "http://192.168.1.114:8081"
+  api_key    = data.ansiblevault_string.powerdns_api_key.value
+  server_url = "https://ns2.simn.io"
 }

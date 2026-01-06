@@ -54,7 +54,8 @@
 - hosts: dns
   roles:
     - dns_prereq
-    - nickjj.acme_sh
+    - caddy_ansible.caddy_ansible
+    - PowerDNS.pdns
     - role: bcook254.adguardhome
       tags: [adguardhome]
 
