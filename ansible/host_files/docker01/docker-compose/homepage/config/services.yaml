@@ -118,12 +118,7 @@
         server: docker01
         description: jellyseerr.simn.io
 
-- Media Management Tools:
-    - Tdarr:
-        icon: tdarr.png
-        weight: 10
-        href: https://tdarr.simn.io/
-        description: tdarr.simn.io
+- Media Management Tools: []
 
 - Self-Hosting:
     - Vaultwarden:
@@ -152,6 +147,10 @@
         container: immich-server-1
         server: docker01
         description: immich.simn.io
+    - Tdarr:
+        icon: tdarr.png
+        href: https://tdarr.simn.io/
+        description: tdarr.simn.io
 
 - Remote Administration:
     - iLO 4 - HPE Proliant Microserver Gen8:

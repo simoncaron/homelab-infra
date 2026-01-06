@@ -26,7 +26,7 @@ layout:
 
   Media Management Tools:
     style: row
-    columns: 4
+    columns: 3
 
   Download Clients:
     style: row
