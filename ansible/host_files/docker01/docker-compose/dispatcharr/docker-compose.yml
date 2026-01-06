@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/dispatcharr/dispatcharr:0.15.1
+    image: ghcr.io/dispatcharr/dispatcharr:0.16.0
     environment:
       DISPATCHARR_ENV: aio
     labels:
