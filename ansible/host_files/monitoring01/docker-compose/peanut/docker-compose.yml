@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: brandawg93/peanut:5.19.2
+    image: brandawg93/peanut:5.20.0
     env_file: .env
     restart: unless-stopped
     labels:
