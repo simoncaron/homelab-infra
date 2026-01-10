@@ -1,0 +1,54 @@
+---
+services:
+  app:
+    image: ghcr.io/karakeep-app/karakeep:0.30.0
+    restart: unless-stopped
+    depends_on:
+      - chrome
+      - meilisearch
+    networks:
+      - default
+      - traefik
+    labels:
+      traefik.enable: true
+      traefik.http.routers.karakeep.rule: Host(`karakeep.simn.io`)
+      traefik.http.services.karakeep.loadbalancer.server.port: "3022"
+    ports:
+      - 3022:3000
+    volumes:
+      - /opt/karakeep/data:/data
+    environment:
+      MEILI_ADDR: http://meilisearch:7700
+      BROWSER_WEB_URL: http://chrome:9222
+      DATA_DIR: /data
+      OPENAI_BASE_URL: https://api.perplexity.ai
+      INFERENCE_TEXT_MODEL: sonar-pro
+      INFERENCE_IMAGE_MODEL: sonar-pro
+      DISABLE_SIGNUPS: true
+    env_file: .env
+
+  chrome:
+    image: gcr.io/zenika-hub/alpine-chrome:124
+    restart: unless-stopped
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --hide-scrollbars
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.13.3
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - /opt/karakeep/meilisearch:/meili_data
+
+networks:
+  traefik:
+    name: internal
+    external: true
