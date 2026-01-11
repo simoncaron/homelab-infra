@@ -41,3 +41,13 @@ provider "powerdns" {
   api_key    = data.ansiblevault_string.powerdns_api_key.value
   server_url = "https://ns2.simn.io"
 }
+
+provider "restapi" {
+  uri                  = "https://pve01.simn.io:8006/"
+  write_returns_object = true
+
+  headers = {
+    "Content-Type"  = "application/json"
+    "Authorization" = "PVEAPIToken=${data.ansiblevault_string.proxmox_api_token.value}"
+  }
+}

@@ -29,5 +29,9 @@ terraform {
       source  = "pan-net/powerdns"
       version = "1.5.0"
     }
+    restapi = {
+      source  = "Mastercard/restapi"
+      version = "2.0.1"
+    }
   }
 }
