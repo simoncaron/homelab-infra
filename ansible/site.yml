@@ -28,10 +28,6 @@
     - role: wzzrd.gitea.gitea
       tags: [forgejo]
 
-- hosts: tdarr
-  roles:
-    - tdarr
-
 - hosts: jellyfin
   roles:
     - jellyfin

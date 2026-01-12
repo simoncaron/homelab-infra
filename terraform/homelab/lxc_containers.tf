@@ -125,28 +125,44 @@ module "lxc_plex01" {
 }
 
 module "lxc_tdarr01" {
-  source = "../modules/proxmox_ct"
+  source = "../modules/proxmox_oci_app"
 
-  hostname = "tdarr01"
+  vm_id = "106"
+  name  = "tdarr01"
+  tags  = ["docker", "tdarr", "oci"]
 
-  cpu_cores        = 4
-  memory_dedicated = 4096
-  disk_size        = 128
+  cpu    = 4
+  memory = 4096
 
-  template_file_id = proxmox_virtual_environment_file.debian_12_container_template.id
-  tags             = ["debian", "tdarr", "gpu"]
-
-  network_interfaces = [{ name = "eth0", bridge = "vnet1" }]
-
-  hook_mount = "/usr/share/lxc/hooks/nvidia"
-
-  environment_variables = {
-    NVIDIA_VISIBLE_DEVICES     = "all"
-    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
+  image = {
+    reference = "docker.io/haveagitgat/tdarr:2.58.02"
   }
 
-  mount_points = [
-    { path = "/mnt/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
+  environment = {
+    TZ                         = "America/Toronto"
+    serverIP                   = "0.0.0.0"
+    internalNode               = "true"
+    nodeIP                     = "0.0.0.0"
+    nodeID                     = "InternalNode"
+    NVIDIA_VISIBLE_DEVICES     = "all"
+    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
+    PUID                       = "10000"
+    PGID                       = "10000"
+  }
+
+  enable_nvidia_gpu = true
+
+  networking = { bridge = "vnet1" }
+
+  volumes = [
+    { id = 1, path = "/app/server", size = "4G" },
+    { id = 2, path = "/app/configs", size = "2G" },
+    { id = 3, path = "/app/logs", size = "2G" },
+    { id = 4, path = "/temp", size = "16G" }
+  ]
+
+  bind_mounts = [
+    { host_path = "/mnt/pve/remote-cifs-truenas01", container_path = "/mnt/media" }
   ]
 }
 
