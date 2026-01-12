@@ -15,8 +15,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "/^terraform/homelab/lxc_containers\\.tf$/"
+      "managerFilePatterns": [
+        "//^terraform/homelab/lxc_containers\\.tf$//"
       ],
       "matchStrings": [
         "image\\s*=\\s*\\{[^}]*reference\\s*=\\s*\"(?<depName>[^:\"]+):(?<currentValue>[^\"]+)\""
