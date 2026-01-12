@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: ghcr.io/atuinsh/atuin:v18.10.0
+    image: ghcr.io/atuinsh/atuin:v18.11.0
     environment:
       TZ: "{{ default_timezone }}"
       RUST_LOG: info
