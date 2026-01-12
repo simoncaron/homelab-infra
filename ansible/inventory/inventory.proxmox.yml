@@ -30,6 +30,7 @@ compose:
 
 filters:
   - "'appliance' not in (proxmox_tags_parsed | default([]))"
+  - "'oci' not in (proxmox_tags_parsed | default([]))"
 
 keyed_groups:
   - key: proxmox_tags_parsed

@@ -1,9 +1,0 @@
----
-# Newt version configuration
-newt_version: 1.0.0
-
-# Newt configuration settings
-# These should be overridden in your playbook or inventory
-newt_id: abcdefhijklmnopqrstuvwxyz
-newt_secret: abcdefhijklmnopqrstuvwxyz
-newt_endpoint: https://example.com

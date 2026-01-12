@@ -32,11 +32,6 @@
   roles:
     - tdarr
 
-- hosts: newt
-  tags: [newt]
-  roles:
-    - newt
-
 - hosts: jellyfin
   roles:
     - jellyfin

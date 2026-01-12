@@ -48,24 +48,25 @@ module "lxc_dns02" {
 }
 
 module "lxc_newt01" {
-  source = "../modules/proxmox_ct"
+  source = "../modules/proxmox_oci_app"
 
-  hostname = "newt01"
-
-  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
-  tags             = ["debian", "newt", "pangolin"]
-
-  cpu_cores        = 2
-  memory_dedicated = 512
-  disk_size        = 8
-
-  features = {
-    keyctl = true
+  name = "newt01"
+  image = {
+    reference = "docker.io/fosrl/newt:1.8.1"
   }
 
-  network_interfaces = [{ name = "eth0", bridge = "vnet2" }]
+  tags = ["docker", "newt", "oci"]
 
-  device_passthrough = ["/dev/net/tun"]
+  environment = {
+    PANGOLIN_ENDPOINT = "https://pg.simn.io"
+    NEWT_ID           = data.ansiblevault_string.newt_id.value
+    NEWT_SECRET       = data.ansiblevault_string.newt_secret.value
+    LOG_LEVEL         = "INFO"
+  }
+
+  networking = {
+    bridge = "vnet2"
+  }
 }
 
 module "lxc_jellyfin01" {

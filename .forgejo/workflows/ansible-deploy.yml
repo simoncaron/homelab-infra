@@ -37,9 +37,6 @@ jobs:
       - name: Ansible Deploy Docker
         run: just ansible-deploy --limit docker --tags docker-compose
 
-      - name: Ansible Deploy Newt
-        run: just ansible-deploy --limit newt --tags newt
-
       - name: Ansible Deploy Adguard Home
         run: just ansible-deploy --limit dns --tags adguardhome
 

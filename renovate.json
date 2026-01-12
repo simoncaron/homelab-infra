@@ -13,18 +13,16 @@
     "enabled": true
   },
   "customManagers": [
-
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^ansible/host_vars/newt01/main\\.yml$/"
+      "fileMatch": [
+        "/^terraform/homelab/lxc_containers\\.tf$/"
       ],
       "matchStrings": [
-        "# newt\\s*\\n\\s*newt_version:\\s*(?<currentValue>[\\d\\.]+)"
+        "image\\s*=\\s*\\{[^}]*reference\\s*=\\s*\"(?<depName>[^:\"]+):(?<currentValue>[^\"]+)\""
       ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "fosrl/newt",
-      "versioningTemplate": "semver"
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
     },
     {
       "customType": "regex",
