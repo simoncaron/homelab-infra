@@ -16,10 +16,10 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "//^terraform/homelab/lxc_containers\\.tf$//"
+        "/^terraform/homelab/lxc_containers\\.tf$"
       ],
       "matchStrings": [
-        "image\\s*=\\s*\\{[^}]*reference\\s*=\\s*\"(?<depName>[^:\"]+):(?<currentValue>[^\"]+)\""
+        "(?s)image\\s*=\\s*\\{.*?reference\\s*=\\s*\"(?<depName>[^:\"]+):(?<currentValue>[^\"]+)\""
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
