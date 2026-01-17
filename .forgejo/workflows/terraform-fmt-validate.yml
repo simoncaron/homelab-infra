@@ -1,9 +1,8 @@
 ---
 name: Terraform fmt/validate
-'on':
-  push:
-    paths:
-      - terraform/**
+
+on:
+  pull_request:
 
 jobs:
   terraform:
