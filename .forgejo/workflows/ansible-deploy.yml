@@ -1,5 +1,6 @@
 ---
 name: Ansible Deploy Docker Compose
+
 on:
   schedule:
     - cron: 0 7 * * *
