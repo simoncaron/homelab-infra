@@ -27,7 +27,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-    image: crowdsecurity/crowdsec:v1.7.3
+    image: crowdsecurity/crowdsec:v1.7.6
     labels:
       - traefik.enable=false
     ports:
