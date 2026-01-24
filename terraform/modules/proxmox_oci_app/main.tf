@@ -1,28 +1,37 @@
 locals {
   config_file_path = "/etc/pve/lxc/{{VM_ID}}.conf"
 
-  # Commands to add/update config options for managed keys (lxc.environment, lxc.hook.mount)
-  config_lines_overrides = compact(concat(
+  # Inject "Docker-style" environment variables as lxc.environment.runtime entries
+  # Update existing environment variables if they already exist in the lxc config
+  environment_variable_config_lines = compact(
     [
       for key, value in var.environment :
       "sudo grep -q '^lxc\\.environment\\.runtime: ${key}=' ${local.config_file_path} && sudo sed -i 's/^lxc\\.environment\\.runtime: ${key}=.*/lxc.environment.runtime: ${key}=${value}/' ${local.config_file_path} || echo 'lxc.environment.runtime: ${key}=${value}' | sudo tee -a ${local.config_file_path}"
     ],
-    [
-      var.enable_nvidia_gpu ? "echo 'lxc.hook.mount: /usr/share/lxc/hooks/nvidia' | sudo tee -a ${local.config_file_path}" : null
-    ],
-  ))
+  )
 
+  # Inject NVIDIA GPU passthrough hook script and environment variables as lxc.environment entries
+  gpu_passthrough_config_lines = [
+    "echo 'lxc.environment: NVIDIA_VISIBLE_DEVICES=all' | sudo tee -a ${local.config_file_path}",
+    "echo 'lxc.environment: NVIDIA_DRIVER_CAPABILITIES=compute,utility,video' | sudo tee -a ${local.config_file_path}",
+    "echo 'lxc.hook.mount: /usr/share/lxc/hooks/nvidia' | sudo tee -a ${local.config_file_path}",
+  ]
+
+  # Merge all required extra config commands
   config_commands = concat(
-    local.config_lines_overrides,
-    # Start the container after updating config
+    local.environment_variable_config_lines,
+    (var.enable_nvidia_gpu ? local.gpu_passthrough_config_lines : []),
     ["sudo pct start {{VM_ID}}"]
   )
 }
 
-# Trigger Container Recreation when environment Variables are changed
+# Trigger Container Recreation when:
+# - Environment variables change
+# - Volumes change (since they are attached outside of the Proxmox provider and order cannot be guaranteed)
 resource "null_resource" "lxc_extra_configs_trigger" {
   triggers = {
-    env_vars = jsonencode(local.config_lines_overrides)
+    env_vars = jsonencode(local.environment_variable_config_lines)
+    volumes  = jsonencode(var.volumes)
   }
 }
 
@@ -68,8 +77,9 @@ resource "proxmox_virtual_environment_container" "app_container" {
     for_each = var.volumes
     content {
       path   = mount_point.value.path
-      volume = "${mount_point.value.storage}:subvol-${var.vm_id}-disk-${mount_point.value.id + 100}"
+      volume = "${mount_point.value.storage}:subvol-${var.vm_id}-disk-${mount_point.key + 1}"
       backup = mount_point.value.backup
+      size   = mount_point.value.size
     }
   }
 
@@ -128,7 +138,7 @@ resource "restapi_object" "proxmox_volumes" {
 
   data = jsonencode({
     vmid     = var.vm_id
-    filename = "subvol-${var.vm_id}-disk-${each.value.id + 100}"
+    filename = "subvol-${var.vm_id}-disk-${each.key + 1}"
     size     = each.value.size
     format   = "subvol"
   })
@@ -189,7 +199,7 @@ resource "null_resource" "fix_permissions" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo chown ${each.value.uid}:${each.value.gid} ${var.storage_mount_path}/subvol-${var.vm_id}-disk-${each.value.id + 100}",
+      "sudo chown ${each.value.uid}:${each.value.gid} ${var.storage_mount_path}/subvol-${var.vm_id}-disk-${each.key + 1}",
     ]
   }
 }
@@ -198,7 +208,7 @@ resource "null_resource" "fix_permissions" {
 # This is necessary for setting environment variables and enabling NVIDIA GPU passthrough
 resource "null_resource" "set_lxc_config_options" {
   depends_on = [proxmox_virtual_environment_container.app_container]
-  count      = length(local.config_lines_overrides) > 0 ? 1 : 0
+  count      = length(local.environment_variable_config_lines) > 0 ? 1 : 0
 
   triggers = {
     # Re-run if the commands list changes

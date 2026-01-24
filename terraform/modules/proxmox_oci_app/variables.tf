@@ -79,7 +79,6 @@ variable "enable_nvidia_gpu" {
 variable "volumes" {
   description = "A list of persistent volumes to create and attach to the container."
   type = list(object({
-    id      = number
     path    = string
     storage = optional(string, "local-zfs")
     node    = optional(string, "pve01")

@@ -139,15 +139,13 @@ module "lxc_tdarr01" {
   }
 
   environment = {
-    TZ                         = "America/Toronto"
-    serverIP                   = "0.0.0.0"
-    internalNode               = "true"
-    nodeIP                     = "0.0.0.0"
-    nodeID                     = "InternalNode"
-    NVIDIA_VISIBLE_DEVICES     = "all"
-    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
-    PUID                       = "10000"
-    PGID                       = "10000"
+    TZ           = "America/Toronto"
+    serverIP     = "0.0.0.0"
+    internalNode = "true"
+    nodeIP       = "0.0.0.0"
+    nodeID       = "InternalNode"
+    PUID         = "10000"
+    PGID         = "10000"
   }
 
   enable_nvidia_gpu = true
@@ -155,10 +153,10 @@ module "lxc_tdarr01" {
   networking = { bridge = "vnet1" }
 
   volumes = [
-    { id = 1, path = "/app/server", size = "4G" },
-    { id = 2, path = "/app/configs", size = "2G" },
-    { id = 3, path = "/app/logs", size = "2G" },
-    { id = 4, path = "/temp", size = "16G" }
+    { path = "/app/server", size = "4G" },
+    { path = "/app/configs", size = "2G" },
+    { path = "/app/logs", size = "2G" },
+    { path = "/temp", size = "16G" }
   ]
 
   bind_mounts = [
