@@ -52,7 +52,7 @@ module "lxc_newt01" {
 
   name = "newt01"
   image = {
-    reference = "docker.io/fosrl/newt:1.8.1"
+    reference = "docker.io/fosrl/newt:1.9.0"
   }
 
   tags = ["docker", "newt", "oci"]

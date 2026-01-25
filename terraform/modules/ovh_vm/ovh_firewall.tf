@@ -53,6 +53,15 @@ resource "ovh_ip_firewall_rule" "ovh_cloud_vps_firewall_rule_wireguard" {
   destination_port = 51820
 }
 
+resource "ovh_ip_firewall_rule" "ovh_cloud_vps_firewall_rule_wireguard_client" {
+  ip               = ovh_ip_firewall.ovh_cloud_vps_firewall.ip
+  ip_on_firewall   = ovh_ip_firewall.ovh_cloud_vps_firewall.ip_on_firewall
+  sequence         = 6
+  action           = "permit"
+  protocol         = "udp"
+  destination_port = 21820
+}
+
 resource "ovh_ip_firewall_rule" "ovh_cloud_vps_firewall_rule_dns" {
   ip             = ovh_ip_firewall.ovh_cloud_vps_firewall.ip
   ip_on_firewall = ovh_ip_firewall.ovh_cloud_vps_firewall.ip_on_firewall
