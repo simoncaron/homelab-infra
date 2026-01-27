@@ -14,7 +14,7 @@ collections:
 
 roles:
   - name: oefenweb.postfix
-    version: v3.8.1
+    version: v3.8.2
   - name: geerlingguy.docker
     version: 8.0.0
   - name: geerlingguy.mysql
