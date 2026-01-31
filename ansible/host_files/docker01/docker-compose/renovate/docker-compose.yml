@@ -2,7 +2,7 @@
 
 services:
   app:
-    image: ghcr.io/renovatebot/renovate:42
+    image: ghcr.io/renovatebot/renovate:43
     command: /entrypoint.sh
     user: "{{ docker_compose_user_id }}"
     environment:
