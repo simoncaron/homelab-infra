@@ -39,7 +39,7 @@ services:
       - --hide-scrollbars
 
   meilisearch:
-    image: getmeili/meilisearch:v1.34.3
+    image: getmeili/meilisearch:v1.35.0
     restart: unless-stopped
     env_file:
       - .env
