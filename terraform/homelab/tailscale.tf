@@ -6,12 +6,12 @@ data "tailscale_device" "dns02_tailscale_device" {
   name = "dns02.tail26f47.ts.net"
 }
 
-data "tailscale_device" "proxy01_tailscale_device" {
-  name = "proxy01.tail26f47.ts.net"
+data "tailscale_device" "ingress01_tailscale_device" {
+  name = "ingress01.tail26f47.ts.net"
 }
 
-data "tailscale_device" "proxy02_tailscale_device" {
-  name = "proxy02.tail26f47.ts.net"
+data "tailscale_device" "ingress02_tailscale_device" {
+  name = "ingress02.tail26f47.ts.net"
 }
 
 resource "tailscale_dns_configuration" "tailscale_dns_configuration" {
@@ -48,15 +48,15 @@ resource "tailscale_device_subnet_routes" "dns02_subnet_routes" {
   ]
 }
 
-resource "tailscale_device_subnet_routes" "proxy01_subnet_routes" {
-  device_id = data.tailscale_device.proxy01_tailscale_device.id
+resource "tailscale_device_subnet_routes" "ingress01_subnet_routes" {
+  device_id = data.tailscale_device.ingress01_tailscale_device.id
   routes = [
     "10.10.10.0/24",
   ]
 }
 
-resource "tailscale_device_subnet_routes" "proxy02_subnet_routes" {
-  device_id = data.tailscale_device.proxy02_tailscale_device.id
+resource "tailscale_device_subnet_routes" "ingress02_subnet_routes" {
+  device_id = data.tailscale_device.ingress02_tailscale_device.id
   routes = [
     "10.10.20.0/24",
   ]
@@ -129,8 +129,8 @@ resource "tailscale_acl" "homelab_acls" {
       ],
 
       "tagOwners": {
-        "tag:dns":   ["simon.caron.8@gmail.com"],
-        "tag:proxy": ["simon.caron.8@gmail.com"],
+        "tag:dns":   ["autogroup:admin"],
+        "tag:ingress": ["autogroup:admin"],
       },
 
       // Test access rules every time they're saved.

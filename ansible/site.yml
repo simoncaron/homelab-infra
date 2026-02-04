@@ -36,23 +36,22 @@
   roles:
     - plex
 
-- hosts: proxy
+- hosts:
+    - ingress
+    - dns
   roles:
-    - geerlingguy.redis
-    - role: simoncaron.traefik
-      tags: [traefik]
+    - caddy_ansible.caddy_ansible
 
 - hosts: dns
   roles:
     - dns_prereq
-    - caddy_ansible.caddy_ansible
     - PowerDNS.pdns
     - role: bcook254.adguardhome
       tags: [adguardhome]
 
 - hosts:
     - dns
-    - proxy
+    - ingress
   tags: [tailscale]
   roles:
     - artis3n.tailscale.machine

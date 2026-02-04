@@ -1,0 +1,36 @@
+---
+# caddy_ansible.caddy_ansible
+caddy_packages:
+  - github.com/caddy-dns/cloudflare
+
+caddy_config: |
+  (cloudflare_tls) {
+      tls {
+          dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+          resolvers 1.1.1.1 1.0.0.1
+      }
+  }
+
+  plex.simn.io {
+      import cloudflare_tls
+
+      handle /library/streams/* {
+          reverse_proxy plex01.pub.simn.io:32400 {
+              header_up -*
+              header_up Host {host}
+          }
+      }
+
+      handle {
+          reverse_proxy plex01.pub.simn.io:32400 {
+              header_up Host {upstream_hostport}
+          }
+      }
+  }
+
+  :80 {
+    redir https://{host}{uri}
+  }
+
+# artis3n.tailscale.machine
+tailscale_args: --advertise-routes={{ pve_hosts.cidr_external }} --accept-dns=false

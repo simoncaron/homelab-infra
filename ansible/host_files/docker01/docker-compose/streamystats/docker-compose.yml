@@ -14,12 +14,10 @@ services:
 
   app:
     image: fredrikburmester/streamystats-v2-nextjs:v2.16.0
-    ports:
-      - 3010:3000
     labels:
       traefik.enable: true
       traefik.http.routers.streamystats.rule: Host(`streamystats.simn.io`)
-      traefik.http.services.streamystats.loadbalancer.server.port: "3010"
+      traefik.http.services.streamystats.loadbalancer.server.port: "3000"
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}

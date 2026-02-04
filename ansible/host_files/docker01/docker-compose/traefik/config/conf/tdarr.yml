@@ -1,0 +1,13 @@
+---
+http:
+  routers:
+    tdarr:
+      rule: Host(`tdarr.simn.io`)
+      service: tdarr
+      middlewares:
+        - auth@file
+  services:
+    tdarr:
+      loadBalancer:
+        servers:
+          - url: http://tdarr01.priv.simn.io:8265

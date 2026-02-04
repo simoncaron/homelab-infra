@@ -1,0 +1,25 @@
+---
+# caddy_ansible.caddy_ansible
+caddy_packages:
+  - github.com/mholt/caddy-l4
+
+caddy_config: |
+  {
+    layer4 {
+      :443 {
+        route {
+          proxy {
+            upstream docker01.priv.simn.io:443
+            proxy_protocol v2
+          }
+        }
+      }
+    }
+  }
+
+  :80 {
+    redir https://{host}{uri}
+  }
+
+# artis3n.tailscale.machine
+tailscale_args: --advertise-routes={{ pve_hosts.cidr_internal }} --accept-dns=false

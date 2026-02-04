@@ -3,11 +3,10 @@
 services:
   app:
     image: ghcr.io/jittering/traefik-kop:0.19.3
-    env_file: .env
     environment:
-      REDIS_ADDR: proxy01.priv.simn.io:6379
+      REDIS_ADDR: docker01.priv.simn.io:6379
       DOCKER_HOST: tcp://docker-socket-proxy:2375
-      BIND_IP: "{{ ansible_facts['hostname'] }}.priv.simn.io"
+      BIND_IP: monitoring01.priv.simn.io
     restart: unless-stopped
 
 networks:

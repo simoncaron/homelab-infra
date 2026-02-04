@@ -13,8 +13,6 @@ services:
       traefik.enable: true
       traefik.http.routers.atuin.rule: Host(`atuin.simn.io`)
       traefik.http.services.atuin.loadbalancer.server.port: "8888"
-    ports:
-      - 8888:8888
     networks:
       - default
       - traefik

@@ -11,8 +11,6 @@ services:
       traefik.enable: true
       traefik.http.routers.tautulli.rule: Host(`tautulli.simn.io`)
       traefik.http.services.tautulli.loadbalancer.server.port: "8181"
-    ports:
-      - 8181:8181
     volumes:
       - /opt/tautulli/config:/config:rw
     restart: unless-stopped

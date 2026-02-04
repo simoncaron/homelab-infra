@@ -16,8 +16,6 @@ services:
       traefik.enable: true
       traefik.http.routers.romm.rule: Host(`romm.simn.io`)
       traefik.http.services.romm.loadbalancer.server.port: "8080"
-    ports:
-      - 8080:8080
     volumes:
       - /opt/romm/resources:/romm/resources
       - /opt/redis/romm:/redis-data

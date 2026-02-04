@@ -10,8 +10,6 @@ services:
       traefik.enable: true
       traefik.http.routers.jellystat.rule: Host(`jellystat.simn.io`)
       traefik.http.services.jellystat.loadbalancer.server.port: "3000"
-    ports:
-      - 3000:3000
     networks:
       - default
       - traefik

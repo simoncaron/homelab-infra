@@ -427,20 +427,20 @@ resource "powerdns_record" "dns02_powerdns_dns_record" {
   records = ["192.168.1.114"]
 }
 
-resource "powerdns_record" "proxy01_powerdns_dns_record" {
+resource "powerdns_record" "ingress01_powerdns_dns_record" {
   zone    = powerdns_zone.simn_io.id
-  name    = "proxy01.simn.io."
+  name    = "ingress01.simn.io."
   type    = "A"
   ttl     = 300
-  records = [module.lxc_proxy01.default_ip]
+  records = [module.lxc_ingress01.default_ip]
 }
 
-resource "powerdns_record" "proxy02_powerdns_dns_record" {
+resource "powerdns_record" "ingress02_powerdns_dns_record" {
   zone    = powerdns_zone.simn_io.id
-  name    = "proxy02.simn.io."
+  name    = "ingress02.simn.io."
   type    = "A"
   ttl     = 300
-  records = [module.lxc_proxy02.default_ip]
+  records = [module.lxc_ingress02.default_ip]
 }
 
 resource "powerdns_record" "s3_powerdns_dns_record" {
@@ -496,7 +496,7 @@ resource "powerdns_record" "plex_powerdns_dns_record" {
   name    = "plex.simn.io."
   type    = "A"
   ttl     = 300
-  records = ["192.168.1.119"]
+  records = [module.lxc_ingress02.default_ip]
 }
 
 resource "powerdns_record" "homeassistant_powerdns_dns_record" {
@@ -520,5 +520,5 @@ resource "powerdns_record" "default_simn_io_powerdns_dns_record" {
   name    = "*.simn.io."
   type    = "A"
   ttl     = 300
-  records = ["192.168.1.113"]
+  records = [module.lxc_ingress01.default_ip]
 }

@@ -1,0 +1,61 @@
+entryPoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: web-secure
+          scheme: https
+    proxyProtocol:
+      trustedIPs:
+        - "{{ lookup('dig', 'ingress01.pub.simn.io') }}"
+  web-secure:
+    address: :443
+    http:
+      middlewares:
+        - compress@file
+      tls:
+        certResolver: le
+    proxyProtocol:
+      trustedIPs:
+        - "{{ lookup('dig', 'ingress01.pub.simn.io') }}"
+
+providers:
+  docker:
+    endpoint: tcp://docker-socket-proxy:2375
+    watch: true
+    exposedByDefault: false
+    network: internal
+  file:
+    directory: /etc/traefik/conf
+  redis:
+    endpoints:
+      - redis:6379
+
+certificatesResolvers:
+  le:
+    acme:
+      storage: /etc/traefik/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: "0"
+        resolvers:
+          - 1.1.1.1:53
+          - 1.0.0.1:53
+
+serversTransport:
+  insecureSkipVerify: true
+
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+
+accessLog:
+  filePath: /var/log/traefik/access.log
+  filters:
+    statusCodes:
+      - 400-600
+
+log:
+  filePath: /var/log/traefik/traefik.log

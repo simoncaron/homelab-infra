@@ -12,9 +12,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.karakeep.rule: Host(`karakeep.simn.io`)
-      traefik.http.services.karakeep.loadbalancer.server.port: "3022"
-    ports:
-      - 3022:3000
+      traefik.http.services.karakeep.loadbalancer.server.port: "3000"
     volumes:
       - /opt/karakeep/data:/data
     environment:

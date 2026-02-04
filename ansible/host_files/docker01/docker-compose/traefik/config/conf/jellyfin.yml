@@ -1,0 +1,11 @@
+---
+http:
+  routers:
+    router-jellyfin:
+      rule: Host(`jellyfin.simn.io`)
+      service: service-jellyfin
+  services:
+    service-jellyfin:
+      loadBalancer:
+        servers:
+          - url: http://jellyfin01.priv.simn.io:8096

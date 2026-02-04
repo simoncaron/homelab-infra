@@ -31,8 +31,6 @@ roles:
     version: 1.5.0
   - name: bcook254.adguardhome
     version: 107.71.0
-  - name: simoncaron.traefik
-    version: 1.0.2
   - name: lae.proxmox
     version: v1.10.0
   - name: PowerDNS.pdns

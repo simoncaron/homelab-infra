@@ -1,0 +1,27 @@
+---
+http:
+  routers:
+    nextcloud:
+      rule: Host(`cloud.simn.io`)
+      service: nextcloud
+      middlewares:
+        - nextcloud-chain
+  services:
+    nextcloud:
+      loadBalancer:
+        servers:
+          - url: http://nextcloud01.priv.simn.io:11000
+  middlewares:
+    nextcloud-secure-headers:
+      headers:
+        hostsProxyHeaders:
+          - X-Forwarded-Host
+        referrerPolicy: same-origin
+    https-redirect:
+      redirectscheme:
+        scheme: https
+    nextcloud-chain:
+      chain:
+        middlewares:
+          - https-redirect
+          - nextcloud-secure-headers

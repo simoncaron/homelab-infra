@@ -16,17 +16,6 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^terraform/homelab/lxc_containers\\.tf$"
-      ],
-      "matchStrings": [
-        "(?s)image\\s*=\\s*\\{.*?reference\\s*=\\s*\"(?<depName>[^:\"]+):(?<currentValue>[^\"]+)\""
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
         "/^ansible/group_vars/dns/main\\.yml$/"
       ],
       "matchStrings": [

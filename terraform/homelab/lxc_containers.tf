@@ -179,40 +179,40 @@ module "lxc_forgejo01" {
   network_interfaces = [{ name = "eth0", bridge = "vnet1" }]
 }
 
-module "lxc_proxy01" {
+module "lxc_ingress01" {
   source = "../modules/proxmox_ct"
 
-  hostname = "proxy01"
+  hostname = "ingress01"
 
   template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
-  tags             = ["debian", "proxy", "tailscale"]
+  tags             = ["debian", "ingress", "tailscale"]
 
   features = {
     keyctl = true
   }
 
   network_interfaces = [
-    { name = "eth0", bridge = "vmbr0", ipv4 = { address = "192.168.1.113/24", gateway = "192.168.1.1" } },
+    { name = "eth0", bridge = "vmbr0", ipv4 = { address = "192.168.1.115/24", gateway = "192.168.1.1" } },
     { name = "eth1", bridge = "vnet1", }
   ]
 
   device_passthrough = ["/dev/net/tun"]
 }
 
-module "lxc_proxy02" {
+module "lxc_ingress02" {
   source = "../modules/proxmox_ct"
 
-  hostname = "proxy02"
+  hostname = "ingress02"
 
   template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
-  tags             = ["debian", "proxy", "tailscale"]
+  tags             = ["debian", "ingress", "tailscale"]
 
   features = {
     keyctl = true
   }
 
   network_interfaces = [
-    { name = "eth0", bridge = "vmbr0", ipv4 = { address = "192.168.1.119/24", gateway = "192.168.1.1" } },
+    { name = "eth0", bridge = "vmbr0", ipv4 = { address = "192.168.1.120/24", gateway = "192.168.1.1" } },
     { name = "eth1", bridge = "vnet2" }
   ]
 

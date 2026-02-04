@@ -1,0 +1,11 @@
+---
+http:
+  routers:
+    router-forgejo:
+      rule: Host(`git.simn.io`)
+      service: service-forgejo
+  services:
+    service-forgejo:
+      loadBalancer:
+        servers:
+          - url: http://forgejo01.priv.simn.io:3000

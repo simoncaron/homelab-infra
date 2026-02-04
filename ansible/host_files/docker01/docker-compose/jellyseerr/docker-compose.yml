@@ -9,8 +9,6 @@ services:
       traefik.enable: true
       traefik.http.routers.jellyseerr.rule: Host(`jellyseerr.simn.io`)
       traefik.http.services.jellyseerr.loadbalancer.server.port: "5055"
-    ports:
-      - 5055:5055
     volumes:
       - /opt/jellyseerr/config:/app/config
     restart: unless-stopped

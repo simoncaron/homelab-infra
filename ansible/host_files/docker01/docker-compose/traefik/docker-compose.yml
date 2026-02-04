@@ -1,0 +1,32 @@
+---
+services:
+  server:
+    image: ghcr.io/traefik/traefik:3.6.7
+    user: "{{ docker_compose_user_id }}:{{ docker_compose_group_id }}"
+    volumes:
+      - /opt/traefik/config:/etc/traefik
+      - /opt/traefik/logs:/var/log/traefik
+      - /opt/traefik/logrotate/logrotate.conf:/etc/logrotate.d/traefik
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 443:443
+      - 80:80
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.4.0
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+      - /opt/redis/traefik:/data
+
+networks:
+  default:
+    name: internal
+    external: true

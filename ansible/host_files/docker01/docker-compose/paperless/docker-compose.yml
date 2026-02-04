@@ -29,8 +29,6 @@ services:
       traefik.enable: true
       traefik.http.routers.paperless.rule: Host(`paperless.simn.io`)
       traefik.http.services.paperless.loadbalancer.server.port: "8000"
-    ports:
-      - 8000:8000
     volumes:
       - /opt/paperless/data:/usr/src/paperless/data
       - /opt/paperless/media:/usr/src/paperless/media
