@@ -48,25 +48,24 @@ module "lxc_dns02" {
 }
 
 module "lxc_newt01" {
-  source = "../modules/proxmox_oci_app"
+  source = "../modules/proxmox_ct"
 
-  name = "newt01"
-  image = {
-    reference = "docker.io/fosrl/newt:1.9.0"
+  hostname = "newt01"
+
+  template_file_id = proxmox_virtual_environment_file.debian_13_container_template.id
+  tags             = ["debian", "newt", "pangolin"]
+
+  cpu_cores        = 2
+  memory_dedicated = 512
+  disk_size        = 8
+
+  features = {
+    keyctl = true
   }
 
-  tags = ["docker", "newt", "oci"]
+  network_interfaces = [{ name = "eth0", bridge = "vnet2" }]
 
-  environment = {
-    PANGOLIN_ENDPOINT = "https://pg.simn.io"
-    NEWT_ID           = data.ansiblevault_string.newt_id.value
-    NEWT_SECRET       = data.ansiblevault_string.newt_secret.value
-    LOG_LEVEL         = "INFO"
-  }
-
-  networking = {
-    bridge = "vnet2"
-  }
+  device_passthrough = ["/dev/net/tun"]
 }
 
 module "lxc_jellyfin01" {
@@ -125,42 +124,28 @@ module "lxc_plex01" {
 }
 
 module "lxc_tdarr01" {
-  source = "../modules/proxmox_oci_app"
+  source = "../modules/proxmox_ct"
 
-  vm_id = "106"
-  name  = "tdarr01"
-  tags  = ["docker", "tdarr", "oci"]
+  hostname = "tdarr01"
 
-  cpu    = 4
-  memory = 4096
+  cpu_cores        = 4
+  memory_dedicated = 4096
+  disk_size        = 128
 
-  image = {
-    reference = "docker.io/haveagitgat/tdarr:2.58.02"
+  template_file_id = proxmox_virtual_environment_file.debian_12_container_template.id
+  tags             = ["debian", "tdarr", "gpu"]
+
+  network_interfaces = [{ name = "eth0", bridge = "vnet1" }]
+
+  hook_mount = "/usr/share/lxc/hooks/nvidia"
+
+  environment_variables = {
+    NVIDIA_VISIBLE_DEVICES     = "all"
+    NVIDIA_DRIVER_CAPABILITIES = "compute,utility,video"
   }
 
-  environment = {
-    TZ           = "America/Toronto"
-    serverIP     = "0.0.0.0"
-    internalNode = "true"
-    nodeIP       = "0.0.0.0"
-    nodeID       = "InternalNode"
-    PUID         = "10000"
-    PGID         = "10000"
-  }
-
-  enable_nvidia_gpu = true
-
-  networking = { bridge = "vnet1" }
-
-  volumes = [
-    { path = "/app/server", size = "4G" },
-    { path = "/app/configs", size = "2G" },
-    { path = "/app/logs", size = "2G" },
-    { path = "/temp", size = "16G" }
-  ]
-
-  bind_mounts = [
-    { host_path = "/mnt/pve/remote-cifs-truenas01", container_path = "/mnt/media" }
+  mount_points = [
+    { path = "/mnt/media", volume = "/mnt/pve/remote-cifs-truenas01", backup = false }
   ]
 }
 

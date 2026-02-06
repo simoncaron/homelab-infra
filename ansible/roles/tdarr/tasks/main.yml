@@ -1,0 +1,83 @@
+---
+- name: Install tdarr dependencies
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ tdarr_dependencies }}"
+
+- name: Create tdarr user
+  ansible.builtin.user:
+    name: "{{ tdarr_user }}"
+    group: "{{ tdarr_group }}"
+    shell: /usr/sbin/nologin
+    uid: "{{ tdarr_uid }}"
+    create_home: false
+
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ tdarr_install_folder }}"
+    owner: "{{ tdarr_user }}"
+    group: "{{ tdarr_group }}"
+    state: directory
+
+- name: Create temp directory
+  ansible.builtin.file:
+    path: "{{ tdarr_temp_folder }}"
+    owner: "{{ tdarr_user }}"
+    group: "{{ tdarr_group }}"
+    state: directory
+
+- name: Check if tdarr updater binary exists
+  ansible.builtin.stat:
+    path: "{{ tdarr_install_folder }}/Tdarr_Updater"
+  register: result
+
+- name: Download tdarr updater
+  ansible.builtin.get_url:
+    url: https://storage.tdarr.io/versions/{{ tdarr_updater_version }}/linux_x64/Tdarr_Updater.zip
+    dest: "{{ tdarr_install_folder }}/Tdarr_Updater.zip"
+  when: not result.stat.exists
+
+- name: Extract tdarr updater archive
+  ansible.builtin.unarchive:
+    src: "{{ tdarr_install_folder }}/Tdarr_Updater.zip"
+    dest: "{{ tdarr_install_folder }}"
+    remote_src: true
+    owner: "{{ tdarr_user }}"
+    group: "{{ tdarr_group }}"
+  when: not result.stat.exists
+
+- name: Remove tdarr updater archive
+  ansible.builtin.file:
+    path: "{{ tdarr_install_folder }}/Tdarr_Updater.zip"
+    state: absent
+
+- name: Set tdarr updater executable
+  ansible.builtin.file:
+    dest: "{{ tdarr_install_folder }}/Tdarr_Updater"
+    mode: a+x
+    owner: "{{ tdarr_user }}"
+    group: "{{ tdarr_group }}"
+
+- name: Run tdarr updater
+  ansible.builtin.shell: "&>/dev/null"
+  become: true
+  become_user: "{{ tdarr_user }}"
+  args:
+    executable: "{{ tdarr_install_folder }}/Tdarr_Updater"
+    chdir: "{{ tdarr_install_folder }}"
+    creates: "{{ tdarr_install_folder }}/Tdarr_Server"
+
+- name: Copy tdarr-server service file
+  ansible.builtin.template:
+    src: tdarr-server.service.j2
+    dest: /etc/systemd/system/tdarr-server.service
+  notify:
+    - Enable service tdarr-server service
+
+- name: Copy tdarr-node service file
+  ansible.builtin.template:
+    src: tdarr-node.service.j2
+    dest: /etc/systemd/system/tdarr-node.service
+  notify:
+    - Enable service tdarr-node service

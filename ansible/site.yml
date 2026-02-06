@@ -28,6 +28,15 @@
     - role: wzzrd.gitea.gitea
       tags: [forgejo]
 
+- hosts: newt
+  tags: [newt]
+  roles:
+    - newt
+
+- hosts: tdarr
+  roles:
+    - tdarr
+
 - hosts: jellyfin
   roles:
     - jellyfin
