@@ -2,7 +2,7 @@
 
 services:
   app:
-    image: ghcr.io/jittering/traefik-kop:0.19.3
+    image: ghcr.io/jittering/traefik-kop:0.19.4
     environment:
       REDIS_ADDR: docker01.priv.simn.io:6379
       DOCKER_HOST: tcp://docker-socket-proxy:2375
